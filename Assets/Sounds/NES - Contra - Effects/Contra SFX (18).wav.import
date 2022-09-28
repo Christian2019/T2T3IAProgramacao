@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Contra SFX (18).wav-09eecfb4c41c15a171b84a277f72e43b.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (18).wav"
+dest_files=[ "res://.import/Contra SFX (18).wav-09eecfb4c41c15a171b84a277f72e43b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
