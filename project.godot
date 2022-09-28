@@ -11,8 +11,12 @@ config_version=4
 [application]
 
 config/name="T2T3IAProgramacao"
-run/main_scene="res://Scripts/Main.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/stretch/mode="2d"
 
 [gui]
 
