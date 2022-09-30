@@ -15,8 +15,8 @@ func _process(delta: float) -> void:
 		return
 	
 	horizontal_Move(delta)
-	var centerA= {"x":(position.x-14),"y":(position.y+54)}
-	var extentsA= {"x":15,"y":1}
+	var centerA= {"x":(position.x+$FootBoxColision.position.x*scale.x),"y":(position.y+$FootBoxColision.position.y*scale.y)}
+	var extentsA= {"x":$FootBoxColision.shape.extents.x*scale.x,"y":$FootBoxColision.shape.extents.y*scale.y}
 	var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
 	var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
 
@@ -99,9 +99,8 @@ func _on_Floor_area_exited(area: Area2D) -> void:
 
 
 func _on_Timer_timeout() -> void:
-	var centerA= {"x":(position.x+$FootBoxColision/CollisionShape2D.position.x),"y":(position.y+$FootBoxColision/CollisionShape2D.position.y)}
-	#var centerA= {"x":$FootBoxColision/CollisionShape2D.get_global_transform_with_canvas().x,"y":(position.y+$FootBoxColision/CollisionShape2D.position.y)}
-	var extentsA= {"x":$FootBoxColision/CollisionShape2D.shape.extents.x,"y":$FootBoxColision/CollisionShape2D.shape.extents.y}
+	var centerA= {"x":(position.x+$FootBoxColision.position.x*scale.x),"y":(position.y+$FootBoxColision.position.y*scale.y)}
+	var extentsA= {"x":$FootBoxColision.shape.extents.x*scale.x,"y":$FootBoxColision.shape.extents.y*scale.y}
 	var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
 	var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
 	print (centerA,extentsA,centerB,extentsB)
