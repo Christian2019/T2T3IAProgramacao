@@ -31,11 +31,11 @@ speed = 1000
 [node name="Animation" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 
-[node name="BodyBoxColision" type="CollisionShape2D" parent="."]
+[node name="BodyBoxCollision" type="CollisionShape2D" parent="."]
 position = Vector2( -5.18868, 3.90268 )
 shape = SubResource( 5 )
 
-[node name="FootBoxColision" type="CollisionShape2D" parent="."]
+[node name="FootBoxCollision" type="CollisionShape2D" parent="."]
 position = Vector2( -3.30189, 20.1637 )
 scale = Vector2( 0.999999, 1 )
 shape = SubResource( 4 )

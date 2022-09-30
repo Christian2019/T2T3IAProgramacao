@@ -15,21 +15,25 @@ func _process(delta: float) -> void:
 		return
 	
 	horizontal_Move(delta)
-	var centerA= {"x":(position.x+$FootBoxColision.position.x*scale.x),"y":(position.y+$FootBoxColision.position.y*scale.y)}
-	var extentsA= {"x":$FootBoxColision.shape.extents.x*scale.x,"y":$FootBoxColision.shape.extents.y*scale.y}
-	var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
-	var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
+	var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
+	var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
+		
+	var allFloorShapes= get_parent().get_node("Tiles/Floor").get_children()
+	var centerB
+	var extentsB
+	for index in range(allFloorShapes.size()):
+		centerB= {"x":allFloorShapes[index].position.x,"y":allFloorShapes[index].position.y}
+		extentsB={"x":allFloorShapes[index].shape.extents.x,"y":allFloorShapes[index].shape.extents.y}
+		if squareCollision(centerA,extentsA,centerB,extentsB):
+			print("certo")
 
-#	var extentsA= {"x":$FootBoxColision/CollisionShape2D.shape.extents.x,"y":$FootBoxColision/CollisionShape2D.shape.extents.y}
+#    var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
+#		var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
+
+#	if squareCollision(centerA,extentsA,centerB,extentsB):
+#		print("certo")
+
 	
-	#var centerA= {"x":(position.x+$FootBoxColision/CollisionShape2D.getposition),"y":(position.y+$FootBoxColision/CollisionShape2D.position.y)}
-#	var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
-#	var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
-
-	if squareColision(centerA,extentsA,centerB,extentsB):
-		print("certo")
-
-	#collisions()
 	#verifica se o pe do player esta no chao
 	
 	#se estiver ele pode pular, caso contrario ele deve cair
@@ -67,7 +71,7 @@ func collisions():
 		print(collision.collider.name)
 		
 
-func squareColision(centerA,extentsA,centerB,extentsB):
+func squareCollision(centerA,extentsA,centerB,extentsB):
 	if (insideInterval((centerA.x-extentsA.x),(centerB.x-extentsB.x),(centerB.x+extentsB.x)) or 
 	insideInterval((centerA.x+extentsA.x) ,(centerB.x-extentsB.x),(centerB.x+extentsB.x)) or
 	insideInterval((centerB.x-extentsB.x), (centerA.x-extentsA.x),(centerA.x+extentsA.x)) or
@@ -99,8 +103,8 @@ func _on_Floor_area_exited(area: Area2D) -> void:
 
 
 func _on_Timer_timeout() -> void:
-	var centerA= {"x":(position.x+$FootBoxColision.position.x*scale.x),"y":(position.y+$FootBoxColision.position.y*scale.y)}
-	var extentsA= {"x":$FootBoxColision.shape.extents.x*scale.x,"y":$FootBoxColision.shape.extents.y*scale.y}
+	var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
+	var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
 	var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
 	var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
 	print (centerA,extentsA,centerB,extentsB)
