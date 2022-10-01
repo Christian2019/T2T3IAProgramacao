@@ -10,7 +10,6 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func select_mode(): 
-	
 	if(Input.is_action_pressed("ui_up") and actual_position==1):
 		actual_position=0
 		$Seleciona.position.x=196
@@ -20,6 +19,18 @@ func select_mode():
 		actual_position=1
 		$Seleciona.position.x=196
 		$Seleciona.position.y=600 
+
+func _physics_process(delta: float) -> void:
+	if($Menu_Animation.position.x > 513):
+		$Menu_Animation.position.x-=180*delta
+	else:
+		$Menu_Animation.position.x=513
+		$Menu_Animation.visible=false
+		$"1Player".visible=true
+		$"2Player".visible=true
+		$Seleciona.visible=true
+		$ContraBG.visible=true 
+	$Menu_Animation.position.x=clamp($Menu_Animation.position.x,0,get_viewport_rect().size.x)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	select_mode() 
