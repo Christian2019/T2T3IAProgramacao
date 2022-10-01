@@ -14,4 +14,4 @@ scale = Vector2( 3, 3 )
 visible = false
 
 [node name="Bullet" parent="." instance=ExtResource( 11 )]
-position = Vector2( 35, 54 )
+position = Vector2( 645, 347 )

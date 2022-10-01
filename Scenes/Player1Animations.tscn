@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://Assets/Spritesheets/Player/jump.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Spritesheets/Player/run.png" type="Texture" id=2]
@@ -11,9 +11,10 @@
 [ext_resource path="res://Assets/Spritesheets/Player/Idle.png" type="Texture" id=9]
 [ext_resource path="res://Assets/Spritesheets/Player/death.png" type="Texture" id=10]
 [ext_resource path="res://Scripts/PlayerShoot.gd" type="Script" id=11]
+[ext_resource path="res://Scenes/Bullet.tscn" type="PackedScene" id=12]
 
-[sub_resource type="CapsuleShape2D" id=2]
-height = 14.0
+[sub_resource type="RectangleShape2D" id=88]
+extents = Vector2( 10, 17 )
 
 [sub_resource type="AtlasTexture" id=49]
 flags = 4
@@ -298,16 +299,24 @@ resource_name = "run"
 
 [node name="Player1Animations" type="KinematicBody2D"]
 script = ExtResource( 11 )
+bullet = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 2 )
+position = Vector2( 0, 4 )
+shape = SubResource( 88 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "idle"
+playing = true
 
 [node name="BulletPosition" type="Position2D" parent="."]
 position = Vector2( 12, -1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/run = SubResource( 3 )
+
+[node name="CoolDownTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[connection signal="timeout" from="CoolDownTimer" to="." method="_on_CoolDownTimer_timeout"]
