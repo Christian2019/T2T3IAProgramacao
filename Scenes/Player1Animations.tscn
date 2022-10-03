@@ -307,7 +307,7 @@ shape = SubResource( 88 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-animation = "idle_lowered"
+animation = "idle"
 
 [node name="BulletPosition" type="Position2D" parent="."]
 position = Vector2( 12, -1 )
