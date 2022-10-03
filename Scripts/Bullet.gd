@@ -10,7 +10,10 @@ func _ready():
 func _process(delta):
 	position += velocity * speed * delta
 
-func direction(dir):
+func set_speed(speed):
+	self.speed = speed
+
+func set_direction(dir):
 	velocity.x = dir.x
 	velocity.y = dir.y 
 
