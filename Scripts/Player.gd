@@ -51,6 +51,18 @@ func floorCollision(centerA,extentsA):
 			return true
 	
 	return false
+	
+func lastFloorCollision(centerA,extentsA):
+	var allFloorShapes= get_parent().get_node("Tiles/LastFloor").get_children()
+	var centerB
+	var extentsB
+	for index in range(allFloorShapes.size()):
+		centerB= {"x":allFloorShapes[index].position.x,"y":allFloorShapes[index].position.y}
+		extentsB={"x":allFloorShapes[index].shape.extents.x,"y":allFloorShapes[index].shape.extents.y}
+		if squareCollision(centerA,extentsA,centerB,extentsB):
+			return true
+	
+	return false
 		
 
 func _process(delta: float) -> void:
@@ -64,6 +76,16 @@ func _process(delta: float) -> void:
 		if Input.is_action_pressed("ui_accept"):
 			position.y-=1
 			gravity-=jumpForce
+	
+	
+	#drop
+		if Input.is_action_pressed("ui_down"):
+				var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
+				var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
+				if (!lastFloorCollision(centerA,extentsA)):
+						while(floorCollision(centerA,extentsA)):
+							centerA.y+=1
+						position.y= centerA.y+1-$FootBoxCollision.position.y*scale.y
 	
 	horizontal_Move(delta)
 	

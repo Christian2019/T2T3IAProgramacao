@@ -65,9 +65,14 @@ shape = SubResource( 5 )
 position = Vector2( 834.75, 424 )
 shape = SubResource( 6 )
 
+[node name="LastFloor" type="Area2D" parent="Tiles"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tiles/LastFloor"]
+position = Vector2( 512.5, 504.25 )
+shape = SubResource( 1 )
+
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 215, 242 )
-speed = 200
 
 [connection signal="area_entered" from="Tiles/Floor" to="Player" method="_on_Floor_area_entered"]
 [connection signal="area_exited" from="Tiles/Floor" to="Player" method="_on_Floor_area_exited"]
