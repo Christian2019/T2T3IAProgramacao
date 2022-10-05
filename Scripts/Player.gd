@@ -2,22 +2,45 @@ extends KinematicBody2D
 
 export var speed = 400
 var screen_size
-var isJumping=false
-var onTheFloor=false
 var gravity=0
-
-
+export var gravityForce=10
+export var jumpForce=4
 func _ready() -> void:
 	screen_size= get_viewport_rect().size
-
-func _process(delta: float) -> void:
-	if (!get_parent().visible):
-		return
 	
-	horizontal_Move(delta)
+func gravityF(delta):
+	if (gravity>=0):
+		var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
+		var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
+		for index in gravity:
+			centerA.y+=index
+			if floorCollision(centerA,extentsA):
+				gravity =0
+				fit(centerA,extentsA)
+				return
+	
+	position.y+=gravity
+	gravity+=gravityForce*delta
+	
+	
+func onTheFloor():
+	if (gravity<0):
+		return false
 	var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
 	var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
+	if floorCollision(centerA,extentsA):
+		fit(centerA,extentsA)
+		return true
+	return false
+
+func fit(centerA,extentsA):
+	centerA.y-=1
+	while(floorCollision(centerA,extentsA)):
+		centerA.y-=1
+	position.y= centerA.y+1-$FootBoxCollision.position.y*scale.y
 		
+	
+func floorCollision(centerA,extentsA):
 	var allFloorShapes= get_parent().get_node("Tiles/Floor").get_children()
 	var centerB
 	var extentsB
@@ -25,7 +48,25 @@ func _process(delta: float) -> void:
 		centerB= {"x":allFloorShapes[index].position.x,"y":allFloorShapes[index].position.y}
 		extentsB={"x":allFloorShapes[index].shape.extents.x,"y":allFloorShapes[index].shape.extents.y}
 		if squareCollision(centerA,extentsA,centerB,extentsB):
-			print("certo")
+			return true
+	
+	return false
+		
+
+func _process(delta: float) -> void:
+	if (!get_parent().visible):
+		return
+		
+		
+	if (!onTheFloor()):
+		gravityF(delta)
+	else:
+		if Input.is_action_pressed("ui_accept"):
+			position.y-=1
+			gravity-=jumpForce
+	
+	horizontal_Move(delta)
+	
 
 #    var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
 #		var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
@@ -45,30 +86,11 @@ func _process(delta: float) -> void:
 	position.y = clamp(position.y,0,screen_size.y)
 
 func horizontal_Move(delta):
-	var velocity = Vector2()
 	if Input.is_action_pressed("ui_right"):
-		velocity.x=1
+		position.x += speed*delta
 	elif Input.is_action_pressed("ui_left"):
-		velocity.x=-1
-	elif Input.is_action_pressed("ui_up"):
-		velocity.y=-1
-	elif Input.is_action_pressed("ui_down"):
-		velocity.y=+1
-	else:
-		velocity.x=0
-		velocity.y=0
-
-	for index in speed:
-		if !onTheFloor:
-			position.x += velocity.x*delta
-			position.y += velocity.y*delta
+			position.x -= speed*delta
 	
-	#move_and_slide(velocity,Vector2(0,0),false,4,0.785,true)
-
-func collisions():
-	for index in get_slide_count():
-		var collision = get_slide_collision(index)
-		print(collision.collider.name)
 		
 
 func squareCollision(centerA,extentsA,centerB,extentsB):
@@ -92,19 +114,13 @@ func insideInterval(a,b,c):
 	else:
 		return false
 
-func _on_Floor_area_entered(area: Area2D) -> void:
-	pass
-	#print(area.name+"Entrou")
-	#onTheFloor=true
-
-func _on_Floor_area_exited(area: Area2D) -> void:
-	pass
-	#print(area.name+"Saiu")
-
 
 func _on_Timer_timeout() -> void:
+	pass
+	"""
 	var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
 	var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
 	var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
 	var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
 	print (centerA,extentsA,centerB,extentsB)
+	"""
