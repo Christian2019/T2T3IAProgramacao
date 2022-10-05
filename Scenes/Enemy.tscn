@@ -7,11 +7,11 @@ extents = Vector2( 13.5, 18 )
 
 [node name="Enemy" type="KinematicBody2D"]
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 18.0879, -1.41772, 42.558, 49.522 )
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.5, 2 )
 shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 14.6, 255.3, 41.8, 56.05 )
