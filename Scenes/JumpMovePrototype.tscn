@@ -1,33 +1,33 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Assets/Background/background_jump_move_prototype.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Background/background_jump_move_prototype3.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/JumpMovePrototype.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Background/reference.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 510.5, 2.75 )
+extents = Vector2( 145.781, 2.75 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 190.188, 3.5 )
+extents = Vector2( 70.6485, 3.5 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 255.5, 3.5 )
+extents = Vector2( 216.25, 3.5 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 255, 3.5 )
+extents = Vector2( 511.5, 3.5 )
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 190.875, 2.625 )
+extents = Vector2( 71.4375, 3.3125 )
 
-[sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 191.25, 2 )
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 510.5, 6 )
 
 [node name="JumpMovePrototype" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Background" type="Sprite" parent="."]
-position = Vector2( 514, 297 )
+position = Vector2( 512, 317 )
 scale = Vector2( 4, 2.5 )
 texture = ExtResource( 1 )
 
@@ -42,37 +42,33 @@ texture = ExtResource( 4 )
 [node name="Floor" type="Area2D" parent="Tiles"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tiles/Floor"]
-position = Vector2( 512.5, 504.25 )
+position = Vector2( 730.219, 587 )
 shape = SubResource( 1 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Tiles/Floor"]
-position = Vector2( 833.813, 180 )
+position = Vector2( 512.352, 489 )
 shape = SubResource( 2 )
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Tiles/Floor"]
-position = Vector2( 257, 178 )
+position = Vector2( 221.75, 398 )
 shape = SubResource( 3 )
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Tiles/Floor"]
-position = Vector2( 642, 260 )
+position = Vector2( 512.5, 305 )
 shape = SubResource( 4 )
 
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="Tiles/Floor"]
-position = Vector2( 705.125, 340 )
+position = Vector2( 949, 490 )
 shape = SubResource( 5 )
 
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="Tiles/Floor"]
-position = Vector2( 834.75, 424 )
-shape = SubResource( 6 )
+[node name="Water" type="Area2D" parent="Tiles"]
 
-[node name="LastFloor" type="Area2D" parent="Tiles"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tiles/LastFloor"]
-position = Vector2( 512.5, 504.25 )
-shape = SubResource( 1 )
+[node name="CollisionShape2Da" type="CollisionShape2D" parent="Tiles/Water"]
+position = Vector2( 511, 627 )
+shape = SubResource( 7 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 215, 242 )
+position = Vector2( 96.0001, 50 )
 
 [connection signal="area_entered" from="Tiles/Floor" to="Player" method="_on_Floor_area_entered"]
 [connection signal="area_exited" from="Tiles/Floor" to="Player" method="_on_Floor_area_exited"]

@@ -5,115 +5,51 @@ var screen_size
 var gravity=0
 export var gravityForce=10
 export var jumpForce=4
+var onTheTile=false
+var Tile_Floor
+var Tile_Water
+
 func _ready() -> void:
 	screen_size= get_viewport_rect().size
+	loadTiles()
+	
+func loadTiles():
+		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
+		Tile_Water= get_parent().get_node("Tiles/Water").get_children()
+
+func getFootPosition():
+		var center= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
+		var extents= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
+		return {"center":center,"extents":extents}
+
+func getBodyPosition():
+		var center= {"x":(position.x+$BodyBoxCollision.position.x*scale.x),"y":(position.y+$BodyBoxCollision.position.y*scale.y)}
+		var extents= {"x":$BodyBoxCollision.shape.extents.x*scale.x,"y":$BodyBoxCollision.shape.extents.y*scale.y}
+		return {"center":center,"extents":extents}
 	
 func gravityF(delta):
 	if (gravity>=0):
-		var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
-		var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
+		var footPosition= getFootPosition()
 		for index in gravity:
-			centerA.y+=index
-			if floorCollision(centerA,extentsA):
+			footPosition.center.y+=index
+			if (tileCollision(footPosition,Tile_Floor)||tileCollision(footPosition,Tile_Water)):
 				gravity =0
-				fit(centerA,extentsA)
+				fit(footPosition)
+				onTheTile=true
 				return
-	
+	onTheTile=false
 	position.y+=gravity
 	gravity+=gravityForce*delta
-	
-	
-func onTheFloor():
-	if (gravity<0):
-		return false
-	var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
-	var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
-	if floorCollision(centerA,extentsA):
-		fit(centerA,extentsA)
-		return true
-	return false
 
-func fit(centerA,extentsA):
-	centerA.y-=1
-	while(floorCollision(centerA,extentsA)):
-		centerA.y-=1
-	position.y= centerA.y+1-$FootBoxCollision.position.y*scale.y
-		
-	
-func floorCollision(centerA,extentsA):
-	var allFloorShapes= get_parent().get_node("Tiles/Floor").get_children()
-	var centerB
-	var extentsB
-	for index in range(allFloorShapes.size()):
-		centerB= {"x":allFloorShapes[index].position.x,"y":allFloorShapes[index].position.y}
-		extentsB={"x":allFloorShapes[index].shape.extents.x,"y":allFloorShapes[index].shape.extents.y}
-		if squareCollision(centerA,extentsA,centerB,extentsB):
+func tileCollision(objectCollisionShape,tileColissionShapes):
+	var center
+	var extents
+	for index in range(tileColissionShapes.size()):
+		center= {"x":tileColissionShapes[index].position.x,"y":tileColissionShapes[index].position.y}
+		extents={"x":tileColissionShapes[index].shape.extents.x,"y":tileColissionShapes[index].shape.extents.y}
+		if squareCollision(objectCollisionShape.center,objectCollisionShape.extents,center,extents):
 			return true
-	
 	return false
-	
-func lastFloorCollision(centerA,extentsA):
-	var allFloorShapes= get_parent().get_node("Tiles/LastFloor").get_children()
-	var centerB
-	var extentsB
-	for index in range(allFloorShapes.size()):
-		centerB= {"x":allFloorShapes[index].position.x,"y":allFloorShapes[index].position.y}
-		extentsB={"x":allFloorShapes[index].shape.extents.x,"y":allFloorShapes[index].shape.extents.y}
-		if squareCollision(centerA,extentsA,centerB,extentsB):
-			return true
-	
-	return false
-		
-
-func _process(delta: float) -> void:
-	if (!get_parent().visible):
-		return
-		
-		
-	if (!onTheFloor()):
-		gravityF(delta)
-	else:
-		if Input.is_action_pressed("ui_accept"):
-			position.y-=1
-			gravity-=jumpForce
-	
-	
-	#drop
-		if Input.is_action_pressed("ui_down"):
-				var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
-				var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
-				if (!lastFloorCollision(centerA,extentsA)):
-						while(floorCollision(centerA,extentsA)):
-							centerA.y+=1
-						position.y= centerA.y+1-$FootBoxCollision.position.y*scale.y
-	
-	horizontal_Move(delta)
-	
-
-#    var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
-#		var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
-
-#	if squareCollision(centerA,extentsA,centerB,extentsB):
-#		print("certo")
-
-	
-	#verifica se o pe do player esta no chao
-	
-	#se estiver ele pode pular, caso contrario ele deve cair
-	
-	#pulo quando aplicado a colisao com chao so eh considerada quando estiver em queda
-	
-	#matem o personagem dentro da tela
-	position.x = clamp(position.x,0,screen_size.x)
-	position.y = clamp(position.y,0,screen_size.y)
-
-func horizontal_Move(delta):
-	if Input.is_action_pressed("ui_right"):
-		position.x += speed*delta
-	elif Input.is_action_pressed("ui_left"):
-			position.x -= speed*delta
-	
-		
 
 func squareCollision(centerA,extentsA,centerB,extentsB):
 	if (insideInterval((centerA.x-extentsA.x),(centerB.x-extentsB.x),(centerB.x+extentsB.x)) or 
@@ -127,7 +63,6 @@ func squareCollision(centerA,extentsA,centerB,extentsB):
 		insideInterval((centerB.y+extentsB.y), (centerA.y-extentsA.y),(centerA.y+extentsA.y)) 
 		):
 			return true
-	
 	return false
 
 func insideInterval(a,b,c):
@@ -136,13 +71,59 @@ func insideInterval(a,b,c):
 	else:
 		return false
 
+func fit(footPosition):
+	footPosition.center.y-=1
+	while(tileCollision(footPosition,Tile_Floor)||tileCollision(footPosition,Tile_Water)):
+		footPosition.center.y-=1
+	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
+
+func _process(delta: float) -> void:
+	#Se a cena estiver invisivel nao roda
+	if (!get_parent().visible):
+		return
+	
+	#Funcao de gravidade	
+	gravityF(delta)
+		
+	#Pulo
+	jump()
+	
+	#Movimento Lateral
+	horizontal_Move(delta)
+	
+	#Matem o personagem dentro da tela
+	insideScreen()
+
+func horizontal_Move(delta):
+	if Input.is_action_pressed("ui_right"):
+		position.x += speed*delta
+	elif Input.is_action_pressed("ui_left"):
+			position.x -= speed*delta
+
+func jump():
+	if (onTheTile and !tileCollision(getFootPosition(),Tile_Water)):
+		#Drop
+		if Input.is_action_pressed("Arrow_DOWN"):
+			if Input.is_action_pressed("Jump"):
+				var footPosition= getFootPosition()
+				while(tileCollision(footPosition,Tile_Floor)):
+					footPosition.center.y+=1
+				position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
+					
+		else:
+			#Jump
+			if Input.is_action_pressed("Jump"):
+				position.y-=1
+				gravity-=jumpForce
+
+func insideScreen():
+	var leftWidth= $BodyBoxCollision.shape.extents.x*scale.x-$BodyBoxCollision.position.x*scale.x
+	var rightWidth =$BodyBoxCollision.shape.extents.x*scale.x+$BodyBoxCollision.position.x*scale.x
+	var upHeight= $BodyBoxCollision.shape.extents.y*scale.y-$BodyBoxCollision.position.y*scale.y
+	var downHeight = $BodyBoxCollision.shape.extents.y*scale.y+$BodyBoxCollision.position.y*scale.y
+	position.x = clamp(position.x,0+leftWidth,screen_size.x-rightWidth)
+	position.y = clamp(position.y,0+upHeight,screen_size.y-downHeight)
 
 func _on_Timer_timeout() -> void:
 	pass
-	"""
-	var centerA= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
-	var extentsA= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
-	var centerB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").position.y}
-	var extentsB= {"x":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.x,"y":get_parent().get_node("Tiles/Floor/CollisionShape2D").shape.extents.y}
-	print (centerA,extentsA,centerB,extentsB)
-	"""
+
