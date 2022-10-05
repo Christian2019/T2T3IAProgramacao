@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Scenes/Enemies/StandShooter.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 293.25, 7.75 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Icon" type="Sprite" parent="."]
+position = Vector2( 136.58, 203 )
+scale = Vector2( 9.20313, 1 )
+texture = ExtResource( 1 )
+offset = Vector2( 17.1594, 326 )
+
+[node name="Icon2" type="Sprite" parent="."]
+position = Vector2( 839.188, 204 )
+scale = Vector2( 9.10938, 1 )
+texture = ExtResource( 1 )
+offset = Vector2( 17.1594, 326 )
+
+[node name="Tiles" type="Node2D" parent="."]
+
+[node name="Floor" type="Area2D" parent="Tiles"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Tiles/Floor"]
+position = Vector2( 508, 550 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tiles/Floor/StaticBody2D"]
+position = Vector2( -214.25, -47 )
+shape = SubResource( 1 )
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Tiles/Floor"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tiles/Floor/StaticBody2D2"]
+position = Vector2( 996, 508 )
+shape = SubResource( 1 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+unique_name_in_owner = true
+
+[node name="Enemy" parent="." instance=ExtResource( 3 )]
+position = Vector2( 824, 433 )
+scale = Vector2( 2, 2 )
+player = NodePath("../Player")
