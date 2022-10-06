@@ -26,7 +26,7 @@ extents = Vector2( 4.12737, 0.650436 )
 position = Vector2( 212, 445 )
 scale = Vector2( 4.24, 2.69048 )
 script = ExtResource( 2 )
-speed = 200
+speed = 265
 gravityForce = 13
 jumpForce = 8
 
@@ -35,7 +35,6 @@ frames = SubResource( 1 )
 
 [node name="BodyBoxCollision" type="CollisionShape2D" parent="."]
 position = Vector2( -3.41982, 3.90268 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 5 )
 
 [node name="FootBoxCollision" type="CollisionShape2D" parent="."]
