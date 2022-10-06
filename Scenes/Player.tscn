@@ -17,10 +17,10 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 6.60377, 16.9115 )
+extents = Vector2( 4.12736, 16.9115 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 3.53773, 0.650436 )
+extents = Vector2( 4.12737, 0.650436 )
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 212, 445 )
@@ -33,11 +33,12 @@ jumpForce = 6
 frames = SubResource( 1 )
 
 [node name="BodyBoxCollision" type="CollisionShape2D" parent="."]
-position = Vector2( -5.18868, 3.90268 )
+position = Vector2( -3.41982, 3.90268 )
+scale = Vector2( 1, 1 )
 shape = SubResource( 5 )
 
 [node name="FootBoxCollision" type="CollisionShape2D" parent="."]
-position = Vector2( -3.30189, 20.1637 )
+position = Vector2( -3.41982, 20.1637 )
 scale = Vector2( 0.999999, 1 )
 shape = SubResource( 4 )
 

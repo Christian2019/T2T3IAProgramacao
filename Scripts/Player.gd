@@ -9,6 +9,7 @@ var onTheTile=false
 var Tile_Floor
 var Tile_Water
 
+
 func _ready() -> void:
 	screen_size= get_viewport_rect().size
 	loadTiles()
@@ -91,14 +92,29 @@ func _process(delta: float) -> void:
 	#Movimento Lateral
 	horizontal_Move(delta)
 	
+	#Subir na plataforma se estiver na agua
+	climb()
+	
 	#Matem o personagem dentro da tela
 	insideScreen()
 
+func climb():
+	if (tileCollision(getFootPosition(),Tile_Water)and
+		tileCollision(getBodyPosition(),Tile_Floor)
+	): 
+		var footPosition= getFootPosition()
+		var bodyPosition = getBodyPosition()
+		footPosition.center.y-=1
+		while(!tileCollision(footPosition,Tile_Floor)):
+			footPosition.center.y-=1
+		fit(footPosition)
+
 func horizontal_Move(delta):
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("Arrow_RIGHT"):
 		position.x += speed*delta
-	elif Input.is_action_pressed("ui_left"):
+	elif Input.is_action_pressed("Arrow_LEFT"):
 			position.x -= speed*delta
+		
 
 func jump():
 	if (onTheTile and !tileCollision(getFootPosition(),Tile_Water)):
@@ -108,7 +124,8 @@ func jump():
 				var footPosition= getFootPosition()
 				while(tileCollision(footPosition,Tile_Floor)):
 					footPosition.center.y+=1
-				position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
+				if (!tileCollision(footPosition,Tile_Water)):
+					position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 					
 		else:
 			#Jump
