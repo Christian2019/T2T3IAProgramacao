@@ -8,11 +8,15 @@
 [node name="Animations" type="Node2D"]
 
 [node name="Enemy" parent="." instance=ExtResource( 3 )]
+position = Vector2( 658, 347 )
+scale = Vector2( 3, 3 )
+
+[node name="Enemy2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 799, 344 )
 scale = Vector2( 3, 3 )
 
 [node name="Player1Animations" parent="." instance=ExtResource( 1 )]
-position = Vector2( 407, 338 )
+position = Vector2( 372, 338 )
 scale = Vector2( 3, 3 )
 
 [node name="Player2Animations" parent="." instance=ExtResource( 2 )]
