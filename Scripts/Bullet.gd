@@ -4,6 +4,7 @@ var speed = 500
 export(Array, Texture) var bullet_type
 var sprite
 var direction : Vector2
+var stop = false
 var hit_player = false
 
 func _ready():
@@ -12,7 +13,8 @@ func _ready():
 	direction.y = 0
 
 func _process(delta):
-	position += direction * speed * delta
+	if not stop:
+		position += direction * speed * delta
 
 func set_speed(speed):
 	self.speed = speed
@@ -31,4 +33,10 @@ func _on_VisibilityNotifier2D_screen_exited():
 func _on_Bullet_body_entered(body):
 	if "Enemy" in body.name:
 		body.queue_free()
-		queue_free()
+		stop = true
+		sprite.texture = bullet_type[4]
+		$Timer.start()
+
+
+func _on_Timer_timeout():
+	queue_free()

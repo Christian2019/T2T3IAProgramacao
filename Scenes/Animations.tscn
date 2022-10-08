@@ -6,6 +6,7 @@
 [ext_resource path="res://Scenes/Bullet.tscn" type="PackedScene" id=11]
 
 [node name="Animations" type="Node2D"]
+position = Vector2( 1, -1 )
 
 [node name="Enemy" parent="." instance=ExtResource( 3 )]
 position = Vector2( 658, 347 )
