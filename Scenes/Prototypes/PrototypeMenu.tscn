@@ -1,0 +1,99 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Menu/PrototypesMenu.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Prototypes/PrototypeMenu.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Fonts/Contra.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/Sounds/Contra (NES) Music - Title Theme.mp3" type="AudioStream" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 11
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 8
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 8
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 8
+font_data = ExtResource( 3 )
+
+[node name="PrototypeMenu" type="Sprite"]
+position = Vector2( 512.5, 315.5 )
+scale = Vector2( 3.98828, 2.84375 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 0.498062
+margin_top = -65.719
+margin_right = 40.4981
+margin_bottom = -51.719
+custom_fonts/font = SubResource( 1 )
+text = "Prototypes"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+autoplay = true
+
+[node name="Normal" type="Node2D" parent="."]
+
+[node name="JumpMove" type="Button" parent="Normal"]
+margin_left = -99.8599
+margin_top = 33.5074
+margin_right = -15.8599
+margin_bottom = 48.5074
+custom_fonts/font = SubResource( 2 )
+text = "Jump/Move"
+
+[node name="Enemies" type="Button" parent="Normal"]
+margin_left = -100.0
+margin_top = 61.0
+margin_right = -16.0
+margin_bottom = 76.0
+custom_fonts/font = SubResource( 3 )
+text = "Enemies"
+
+[node name="Shots" type="Button" parent="Normal"]
+margin_left = -99.0
+margin_top = 88.0
+margin_right = -16.0
+margin_bottom = 103.0
+custom_fonts/font = SubResource( 4 )
+text = "shots"
+
+[node name="Enemies" type="Node2D" parent="."]
+visible = false
+
+[node name="Wall turret" type="Button" parent="Enemies"]
+margin_left = -125.0
+margin_top = 19.0
+margin_right = -25.0
+margin_bottom = 34.0
+custom_fonts/font = SubResource( 4 )
+text = "Wall turret"
+
+[node name="Cannon" type="Button" parent="Enemies"]
+margin_left = -124.991
+margin_top = 38.5055
+margin_right = -24.9912
+margin_bottom = 53.5055
+rect_pivot_offset = Vector2( -55.6543, 7.54945 )
+custom_fonts/font = SubResource( 4 )
+text = "Cannon"
+
+[node name="Back" type="Button" parent="Enemies"]
+margin_left = -124.239
+margin_top = 58.1978
+margin_right = -24.239
+margin_bottom = 73.1978
+custom_fonts/font = SubResource( 4 )
+text = "Back"
+
+[connection signal="pressed" from="Normal/JumpMove" to="." method="_on_JumpMove_pressed"]
+[connection signal="pressed" from="Normal/Enemies" to="." method="_on_Enemies_pressed"]
+[connection signal="pressed" from="Enemies/Wall turret" to="." method="_on_Wall_turret_pressed"]
+[connection signal="pressed" from="Enemies/Back" to="." method="_on_Back_pressed"]
