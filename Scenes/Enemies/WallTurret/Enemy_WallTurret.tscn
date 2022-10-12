@@ -34,10 +34,17 @@ animation = "Idle"
 
 [node name="Cannon" type="Sprite" parent="."]
 visible = false
-rotation = -6.28319
+rotation = 3.14159
 texture = ExtResource( 4 )
 
 [node name="Transition" type="Timer" parent="."]
 wait_time = 0.5
 
+[node name="BulletCD" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="RotationCD" type="Timer" parent="."]
+
 [connection signal="timeout" from="Transition" to="." method="_on_Transition_timeout"]
+[connection signal="timeout" from="BulletCD" to="." method="_on_BulletCD_timeout"]
+[connection signal="timeout" from="RotationCD" to="." method="_on_RotationCD_timeout"]

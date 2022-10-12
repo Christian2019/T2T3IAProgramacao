@@ -8,3 +8,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	position.x += speed*delta*cos(deg2rad(angle))
 	position.y += speed*delta*sin(deg2rad(angle))
+
+
+
+func _on_VisibilityNotifier2D_screen_exited() -> void:
+	queue_free()
