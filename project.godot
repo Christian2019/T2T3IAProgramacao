@@ -14,6 +14,10 @@ config/name="T2T3IAProgramacao"
 run/main_scene="res://Scenes/Animations.tscn"
 config/icon="res://icon.png"
 
+[global]
+
+frame=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true

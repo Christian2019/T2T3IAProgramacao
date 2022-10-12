@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/4.png-f548e90d2ca0b65098a1800dafe55413.stex"
+path="res://.import/pop.png-f013b57ed1d2db048f602c52499d501a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Spritesheets/Bullets/4.png"
-dest_files=[ "res://.import/4.png-f548e90d2ca0b65098a1800dafe55413.stex" ]
+source_file="res://Assets/Spritesheets/Bullets/pop.png"
+dest_files=[ "res://.import/pop.png-f013b57ed1d2db048f602c52499d501a.stex" ]
 
 [params]
 

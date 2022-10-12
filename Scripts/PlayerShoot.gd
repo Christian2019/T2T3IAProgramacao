@@ -1,8 +1,11 @@
 extends KinematicBody2D
 
 export (PackedScene) var bullet
-var bullet_speed_player = 500
-var bullet_type = 1
+export var normal_bullet_speed = 500
+export var flame_bullet_speed = 50
+var bullet_speed
+var bullet_type = 3
+# 0->normal 1->machinegun 2->spread 3->flamethrower 4->bullet pop
 var facing_right = true
 var is_jumping = false
 var is_shooting = false
@@ -29,11 +32,21 @@ func _ready():
 	animated_sprite_node = $AnimatedSprite
 	bullet_position_node = $BulletPosition
 	cool_down_timer_node = $CoolDownTimer
+	#bullet_type = 0
 
 func _process(delta):
+	change_shoot()
 	jump()
 	move()
 	shoot()
+
+func change_shoot():
+	if Input.is_action_just_pressed("ui_accept"):
+		if bullet_type == 3:
+			bullet_type = 0
+		else:
+			bullet_type += 1
+		print("bullet changed: " , bullet_type)
 
 func move():
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_left"):
@@ -119,7 +132,7 @@ func shoot():
 		if can_shoot:
 			bullet_shoot(bullet_direction)
 			
-			if bullet_type == 1:
+			if bullet_type == 2:
 				spread_bullet()
 			
 			can_shoot = false
@@ -132,7 +145,22 @@ func bullet_shoot(dir):
 	get_parent().add_child(bullet_instance)
 	bullet_instance.global_position = bullet_position_node.global_position
 	bullet_instance.set_scale(Vector2(3,3))
-	bullet_instance.set_bullet(bullet_speed_player, bullet_type, dir, false)
+	
+	if bullet_type == 3:
+		bullet_speed = flame_bullet_speed
+		var axis_position = bullet_position_node.global_position
+		bullet_instance.set_bullet(axis_position, bullet_speed, bullet_type, dir, facing_right, false)
+	else:
+		bullet_speed = normal_bullet_speed
+		bullet_instance.set_bullet(bullet_position_node.global_position, 
+			bullet_speed, bullet_type, dir, facing_right, false)
+	
+
+func spread_bullet():
+	bullet_shoot(bullet_adjacent_1)
+	bullet_shoot(bullet_adjacent_2)
+	bullet_shoot(bullet_adjacent_3)
+	bullet_shoot(bullet_adjacent_4)
 
 func shooting_directions(direction):
 	match direction:
@@ -207,12 +235,6 @@ func shooting_directions(direction):
 			bullet_adjacent_3 = Vector2(sin_cos5[1], sin_cos5[0])
 			bullet_adjacent_4 = Vector2(sin_cos10[1], sin_cos10[0])
 	
-
-func spread_bullet():
-	bullet_shoot(bullet_adjacent_1)
-	bullet_shoot(bullet_adjacent_2)
-	bullet_shoot(bullet_adjacent_3)
-	bullet_shoot(bullet_adjacent_4)
 
 func flip_player():
 	if(facing_right):

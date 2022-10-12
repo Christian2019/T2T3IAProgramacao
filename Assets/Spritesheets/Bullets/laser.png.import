@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/1.png-f339b4deb3999c07585ada53f40638e8.stex"
+path="res://.import/laser.png-044a65b7344d90074c0e9000b2cccccd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Spritesheets/Bullets/1.png"
-dest_files=[ "res://.import/1.png-f339b4deb3999c07585ada53f40638e8.stex" ]
+source_file="res://Assets/Spritesheets/Bullets/laser.png"
+dest_files=[ "res://.import/laser.png-044a65b7344d90074c0e9000b2cccccd.stex" ]
 
 [params]
 

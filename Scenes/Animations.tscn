@@ -9,19 +9,19 @@
 position = Vector2( 1, -1 )
 
 [node name="Enemy" parent="." instance=ExtResource( 3 )]
-position = Vector2( 658, 347 )
+position = Vector2( 674, 346 )
 scale = Vector2( 3, 3 )
 
 [node name="Enemy2" parent="." instance=ExtResource( 3 )]
-position = Vector2( 799, 344 )
+position = Vector2( 852, 345 )
 scale = Vector2( 3, 3 )
 
 [node name="Player1Animations" parent="." instance=ExtResource( 1 )]
-position = Vector2( 372, 338 )
+position = Vector2( 181, 341 )
 scale = Vector2( 3, 3 )
 
 [node name="Player2Animations" parent="." instance=ExtResource( 2 )]
 visible = false
 
 [node name="Bullet" parent="." instance=ExtResource( 11 )]
-position = Vector2( 99, -30 )
+position = Vector2( 211, 150 )
