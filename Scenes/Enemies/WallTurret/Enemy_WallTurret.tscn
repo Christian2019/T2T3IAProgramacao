@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Spritesheets/Enemies/WallTurret/WallTurret_Transition.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Spritesheets/Enemies/WallTurret/WallTurret_Active.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Spritesheets/Enemies/WallTurret/Cannon.png" type="Texture" id=4]
-[ext_resource path="res://Scripts/Enemies/Enemy_WallTurret.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/Enemies/WallTurret/Enemy_WallTurret.gd" type="Script" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -30,7 +30,14 @@ script = ExtResource( 5 )
 [node name="Structure" type="AnimatedSprite" parent="."]
 scale = Vector2( 1.32653, 0.835051 )
 frames = SubResource( 1 )
-animation = "Active"
+animation = "Idle"
 
 [node name="Cannon" type="Sprite" parent="."]
+visible = false
+rotation = -6.28319
 texture = ExtResource( 4 )
+
+[node name="Transition" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="timeout" from="Transition" to="." method="_on_Transition_timeout"]
