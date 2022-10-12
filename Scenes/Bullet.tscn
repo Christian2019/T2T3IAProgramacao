@@ -1,29 +1,24 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Bullet.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Spritesheets/Bullets/6.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Spritesheets/Bullets/4.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Spritesheets/Bullets/3.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Spritesheets/Bullets/0.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Spritesheets/Bullets/7.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Spritesheets/Bullets/5.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Spritesheets/Bullets/fire.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Spritesheets/Bullets/machinegun.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Spritesheets/Bullets/normal.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Spritesheets/Bullets/pop.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Spritesheets/Bullets/spread.png" type="Texture" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 3.60555
 
 [sub_resource type="AtlasTexture" id=2]
-flags = 4
-atlas = ExtResource( 4 )
 region = Rect2( 7, 0, 7, 8 )
 
 [sub_resource type="AtlasTexture" id=3]
-flags = 4
-atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 7, 8 )
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
-"frames": [ ExtResource( 3 ) ],
+"frames": [ null ],
 "loop": true,
 "name": "bullet_hit",
 "speed": 5.0
@@ -33,22 +28,22 @@ animations = [ {
 "name": "flame_bullet",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 5 ) ],
+"frames": [ null ],
 "loop": true,
 "name": "laser_bullet",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 2 ) ],
+"frames": [ null ],
 "loop": true,
 "name": "machinegun_bullet",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 6 ) ],
+"frames": [ null ],
 "loop": true,
 "name": "normal_bullet",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 2 ), ExtResource( 7 ), SubResource( 3 ) ],
+"frames": [ null, null, SubResource( 3 ) ],
 "loop": true,
 "name": "spreadgun_bullet",
 "speed": 1.0
@@ -56,7 +51,7 @@ animations = [ {
 
 [node name="Bullet" type="Area2D"]
 script = ExtResource( 1 )
-bullet_type = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 3 ) ]
+bullet_type_sprite = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 5 ) ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -66,7 +61,6 @@ position = Vector2( -5.68434e-14, -5.68434e-14 )
 scale = Vector2( 0.35, 0.35 )
 
 [node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 visible = false
@@ -75,6 +69,8 @@ animation = "laser_bullet"
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.2
+
+[node name="Position2D" type="Position2D" parent="."]
 
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

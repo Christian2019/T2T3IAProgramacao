@@ -17,8 +17,6 @@ var going_right = true
 
 var dir_correction = 1
 
-var stop = false
-
 func _ready():
 	sprite = $Sprite
 	axis = $Position2D
@@ -87,13 +85,6 @@ func _on_Bullet_body_entered(body):
 		sprite.texture = bullet_type_sprite[4]
 		$Timer.start()
 		body.queue_free()
-		stop = true
-		sprite.texture = bullet_type[4]
-		$Timer.start()
-
-		stop = true
-		sprite.texture = bullet_type[4]
-		$Timer.start()
 
 
 func _on_Timer_timeout():
