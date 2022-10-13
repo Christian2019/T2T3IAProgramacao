@@ -11,10 +11,10 @@ var RotationCD=false
 
 
 func _ready() -> void:
+	player = get_parent().get_node("Player")
 	pass 
 	
 func _physics_process(delta: float) -> void:
-	updatePlayer()
 	drawLine()
 	chageState()
 
@@ -29,11 +29,6 @@ func drawLine():
 	linha.clear_points()
 	linha.add_point(Vector2(position.x,position.y))
 	linha.add_point(Vector2(player.position.x,player.position.y))
-
-			
-func updatePlayer():
-	player = get_parent().get_node("Player")
-		
 
 func chageState():
 	if (state_in_process):

@@ -22,3 +22,7 @@ func _on_Back_pressed() -> void:
 
 func _on_Wall_turret_pressed() -> void:
 	get_tree().change_scene("res://Scenes/Prototypes/Enemies/WallTurret.tscn")
+
+
+func _on_Cannon_pressed() -> void:
+	get_tree().change_scene("res://Scenes/Prototypes/Enemies/Cannon.tscn")

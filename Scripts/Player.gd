@@ -79,9 +79,9 @@ func fit(footPosition):
 	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 
 func _process(delta: float) -> void:
-	#Se a cena estiver invisivel nao roda
-	if (!get_parent().visible):
-		return
+
+	if Input.is_action_pressed("Escape"):
+		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 	
 	#Funcao de gravidade	
 	gravityF(delta)

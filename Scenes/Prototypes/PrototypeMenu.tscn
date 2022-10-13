@@ -96,4 +96,5 @@ text = "Back"
 [connection signal="pressed" from="Normal/JumpMove" to="." method="_on_JumpMove_pressed"]
 [connection signal="pressed" from="Normal/Enemies" to="." method="_on_Enemies_pressed"]
 [connection signal="pressed" from="Enemies/Wall turret" to="." method="_on_Wall_turret_pressed"]
+[connection signal="pressed" from="Enemies/Cannon" to="." method="_on_Cannon_pressed"]
 [connection signal="pressed" from="Enemies/Back" to="." method="_on_Back_pressed"]
