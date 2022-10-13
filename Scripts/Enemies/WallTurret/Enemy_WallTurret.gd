@@ -1,6 +1,6 @@
 extends Node2D
 
-export var DetectionDistance = 200
+export var DetectionDistance = 450
 var player
 var state = "Idle"
 var state_in_process=false
@@ -90,94 +90,55 @@ func f_rotation():
 	RotationCD=true
 	$RotationCD.start()
 	var angleToPlayer= rad2deg(player.position.angle_to_point(position))
-	var playerQuadrant = getQuadrant(angleToPlayer)
-	var cannonQuadrant = getQuadrant($Cannon.rotation_degrees)
-	if (playerQuadrant!=cannonQuadrant):
-		var rotationAngle =getRotationAngle(playerQuadrant,cannonQuadrant)
+	var playerAverageIntervalAngle = getAverageIntervalAngle(angleToPlayer)
+	var cannonAverageIntervalAngle = getAverageIntervalAngle($Cannon.rotation_degrees)
+	#print ("playerAverageIntervalAngle: ",playerAverageIntervalAngle)
+	#print ("cannonAverageIntervalAngle: ",cannonAverageIntervalAngle)
+	if (playerAverageIntervalAngle!=cannonAverageIntervalAngle):
+		var rotationAngle =getRotationAngle(playerAverageIntervalAngle,cannonAverageIntervalAngle)
 		$Cannon.rotation_degrees = rotationAngle
 
-func getRotationAngle(playerQuadrant,cannonQuadrant):
-	var clockwise = [6,3,2,1,4,7,8,9]
-	var counter_clockwise = [6,9,8,7,4,1,2,3]
+func getRotationAngle(playerAverageIntervalAngle,cannonAverageIntervalAngle):
 	var steps_clockwise=0
 	var steps_counter_clockwise=0 
 	
-	var clockwise_Position = clockwise.find(cannonQuadrant,0)
-	while (clockwise[clockwise_Position]!=playerQuadrant):
-		steps_clockwise+=1
-		if (clockwise_Position+1>clockwise.size()-1):
-			clockwise_Position=0
+	var clockwise_Position = cannonAverageIntervalAngle
+	while (clockwise_Position!=playerAverageIntervalAngle):
+		if (clockwise_Position==180):
+			clockwise_Position=-180
 		else:
-			clockwise_Position+=1
-			
-	var counter_clockwise_Position = counter_clockwise.find(cannonQuadrant,0)
-	while (counter_clockwise[counter_clockwise_Position]!=playerQuadrant):
-		steps_counter_clockwise+=1
-		if (counter_clockwise_Position+1>counter_clockwise.size()-1):
-			counter_clockwise_Position=0
-		else:
-			counter_clockwise_Position+=1
+			steps_clockwise+=1
+			clockwise_Position+=30
 
-	var angle
+	var counter_clockwise_Position = cannonAverageIntervalAngle
+
+	while (counter_clockwise_Position!=playerAverageIntervalAngle):
+		if (counter_clockwise_Position==-180):
+			counter_clockwise_Position=180
+		else:
+			steps_counter_clockwise+=1	
+			counter_clockwise_Position-=30
+
 	if (steps_clockwise<steps_counter_clockwise):
-			var p = clockwise.find(cannonQuadrant,0)
-			if (p+1>clockwise.size()-1):
-				p=0
-			else:
-				p+=1
-			angle= getAngle(clockwise[p])
-		
+		return cannonAverageIntervalAngle+30
 	else:
-			var p = counter_clockwise.find(cannonQuadrant,0)
-			if (p+1>counter_clockwise.size()-1):
-				p=0
-			else:
-				p+=1
-			angle= getAngle(counter_clockwise[p])
-	return angle
+		return cannonAverageIntervalAngle-30
 
-func getAngle(quadrant):
-		if (quadrant==6):
-			return 0
-		elif(quadrant ==9):
-			return -45
-		elif(quadrant ==8):
-			return -90
-		elif(quadrant ==7):
-			return -135
-		elif(quadrant ==4):
-			return -180
-		elif(quadrant ==1):
-			return 135
-		elif(quadrant ==2):
-			return 90
-		elif(quadrant ==3):
-			return 45
+func getAverageIntervalAngle(angle):
+	#print("angle: ",angle)
+	if (angle>180):
+		angle = -180+(angle-180)
+	elif(angle<-180):
+		angle = 180+(angle+180)
+
+	for index in range(0,-181,-30):
+		if (angle>=(index-15) and angle<index+15):
+			return index
 	
-func getQuadrant(angle):
-	var quadAngle=0
-	if (angle>=(quadAngle-22.5) and angle<quadAngle+22.5):
-		return 6
-	quadAngle-=45
-	if (angle>=(quadAngle-22.5) and angle<quadAngle+22.5):
-		return 9
-	quadAngle-=45
-	if (angle>=(quadAngle-22.5) and angle<quadAngle+22.5):
-		return 8
-	quadAngle-=45
-	if (angle>=(quadAngle-22.5) and angle<quadAngle+22.5):
-		return 7 
-	quadAngle=45
-	if (angle>=(quadAngle-22.5) and angle<quadAngle+22.5):
-		return 3
-	quadAngle+=45
-	if (angle>=(quadAngle-22.5) and angle<quadAngle+22.5):
-		return 2
-	quadAngle+=45
-	if (angle>=(quadAngle-22.5) and angle<quadAngle+22.5):
-		return 1
-	else:
-		return 4
+	for index in range(0,181,30):
+		if (angle>=(index-15) and angle<index+15):
+			return index
+	
 func fire():
 	if (!shoot_cd):
 		shoot_cd=true
@@ -199,20 +160,9 @@ func _on_Transition_timeout() -> void:
 func _on_BulletCD_timeout() -> void:
 		shoot_cd=false
 
+func _on_RotationCD_timeout() -> void:
+	RotationCD=false
 
 func _on_Teste_timeout() -> void:
 	pass
 
-
-
-	
-		
-
-
-
-
-
-
-
-func _on_RotationCD_timeout() -> void:
-	RotationCD=false

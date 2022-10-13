@@ -67,7 +67,6 @@ autoplay = true
 [node name="Enemy_WallTurret" parent="." instance=ExtResource( 4 )]
 position = Vector2( 801, 421 )
 scale = Vector2( 1.16, 1.2 )
-DetectionDistance = 400
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 130, 209 )
