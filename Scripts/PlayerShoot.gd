@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 export (PackedScene) var bullet
+export (PackedScene) var laser
 export var normal_bullet_speed = 500
 export var flame_bullet_speed = 50
 var bullet_speed
@@ -11,6 +12,7 @@ var is_jumping = false
 var is_shooting = false
 
 var bullet_direction : Vector2 = Vector2.ZERO
+var laser_rotaion := 0
 var can_shoot = true
 
 var bullet_adjacent_1 : Vector2 = Vector2.ZERO
@@ -42,7 +44,7 @@ func _process(delta):
 
 func change_shoot():
 	if Input.is_action_just_pressed("ui_accept"):
-		if bullet_type == 3:
+		if bullet_type == 4:
 			bullet_type = 0
 		else:
 			bullet_type += 1
@@ -130,13 +132,16 @@ func shoot():
 	if Input.is_action_pressed("shoot"):
 		is_shooting = true
 		if can_shoot:
-			bullet_shoot(bullet_direction)
+			if bullet_type == 4:
+				laser_shoot()
+			else:
+				bullet_shoot(bullet_direction)
 			
-			if bullet_type == 2:
-				spread_bullet()
+				if bullet_type == 2:
+					spread_bullet()
+				cool_down_timer_node.start()
 			
 			can_shoot = false
-			cool_down_timer_node.start()
 	else:
 		is_shooting = false
 
@@ -144,17 +149,24 @@ func bullet_shoot(dir):
 	var bullet_instance = bullet.instance()
 	get_parent().add_child(bullet_instance)
 	bullet_instance.global_position = bullet_position_node.global_position
-	bullet_instance.set_scale(Vector2(3,3))
+	bullet_instance.set_scale(Vector2(2,2))
 	
 	if bullet_type == 3:
 		bullet_speed = flame_bullet_speed
-		var axis_position = bullet_position_node.global_position
-		bullet_instance.set_bullet(axis_position, bullet_speed, bullet_type, dir, facing_right, false)
 	else:
 		bullet_speed = normal_bullet_speed
-		bullet_instance.set_bullet(bullet_position_node.global_position, 
-			bullet_speed, bullet_type, dir, facing_right, false)
 	
+	bullet_instance.set_bullet(bullet_position_node.global_position, 
+		bullet_speed, bullet_type, dir, facing_right, false)
+	
+
+func laser_shoot():
+	$LaserCoolDownTimer.start()
+	var laser_instance = laser.instance()
+	get_parent().add_child(laser_instance)
+	laser_instance.global_position = bullet_position_node.global_position
+	laser_instance.set_scale(Vector2(2,2))
+	laser_instance.set_rotation(laser_rotaion)
 
 func spread_bullet():
 	bullet_shoot(bullet_adjacent_1)
@@ -171,6 +183,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(-sin_cos5[0], -sin_cos5[1])
 			bullet_adjacent_3 = Vector2(sin_cos5[0], -sin_cos5[1])
 			bullet_adjacent_4 = Vector2(sin_cos10[0], -sin_cos10[1])
+			laser_rotaion = -90
 		"up_left":
 			bullet_position_node.position = Vector2(-8, -14)
 			bullet_direction = Vector2(-sin_cos45, -sin_cos45)
@@ -178,6 +191,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(-sin_cos40[1], -sin_cos40[0])
 			bullet_adjacent_3 = Vector2(-sin_cos40[0], -sin_cos40[1])
 			bullet_adjacent_4 = Vector2(-sin_cos35[0], -sin_cos35[1])
+			laser_rotaion = -135
 		"up_right":
 			bullet_position_node.position = Vector2(8, -14)
 			bullet_direction = Vector2(sin_cos45, -sin_cos45)
@@ -185,6 +199,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(sin_cos40[1], -sin_cos40[0])
 			bullet_adjacent_3 = Vector2(sin_cos40[0], -sin_cos40[1])
 			bullet_adjacent_4 = Vector2(sin_cos35[0], -sin_cos35[1])
+			laser_rotaion = -45
 		"left":
 			bullet_position_node.position = Vector2(-12, -1)
 			bullet_direction = Vector2(-1, 0)
@@ -192,6 +207,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(-sin_cos5[1], -sin_cos5[0])
 			bullet_adjacent_3 = Vector2(-sin_cos5[1], sin_cos5[0])
 			bullet_adjacent_4 = Vector2(-sin_cos10[1], sin_cos10[0])
+			laser_rotaion = 180
 		"right":
 			bullet_position_node.position = Vector2(12, -1)
 			bullet_direction = Vector2(1, 0)
@@ -199,6 +215,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(sin_cos5[1], -sin_cos5[0])
 			bullet_adjacent_3 = Vector2(sin_cos5[1], sin_cos5[0])
 			bullet_adjacent_4 = Vector2(sin_cos10[1], sin_cos10[0])
+			laser_rotaion = 0
 		"down":
 			bullet_position_node.position = Vector2(0, 20)
 			bullet_direction = Vector2(0, 1)
@@ -206,6 +223,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(-sin_cos5[0], sin_cos5[1])
 			bullet_adjacent_3 = Vector2(sin_cos5[0], sin_cos5[1])
 			bullet_adjacent_4 = Vector2(sin_cos10[0], sin_cos10[1])
+			laser_rotaion = 90
 		"down_left":
 			bullet_position_node.position = Vector2(-10, 7)
 			bullet_direction = Vector2(-sin_cos45, sin_cos45)
@@ -213,6 +231,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(-sin_cos40[1], sin_cos40[0])
 			bullet_adjacent_3 = Vector2(-sin_cos40[0], sin_cos40[1])
 			bullet_adjacent_4 = Vector2(-sin_cos35[0], sin_cos35[1])
+			laser_rotaion = 135
 		"down_right":
 			bullet_position_node.position = Vector2(10, 7)
 			bullet_direction = Vector2(sin_cos45, sin_cos45)
@@ -220,6 +239,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(sin_cos40[1], sin_cos40[0])
 			bullet_adjacent_3 = Vector2(sin_cos40[0], sin_cos40[1])
 			bullet_adjacent_4 = Vector2(sin_cos35[0], sin_cos35[1])
+			laser_rotaion = 45
 		"lowered_left":
 			bullet_position_node.position = Vector2(-17, 13)
 			bullet_direction = Vector2(-1, 0)
@@ -227,6 +247,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(-sin_cos5[1], -sin_cos5[0])
 			bullet_adjacent_3 = Vector2(-sin_cos5[1], sin_cos5[0])
 			bullet_adjacent_4 = Vector2(-sin_cos10[1], sin_cos10[0])
+			laser_rotaion = 180
 		"lowered_right":
 			bullet_position_node.position = Vector2(17, 13)
 			bullet_direction = Vector2(1, 0)
@@ -234,6 +255,7 @@ func shooting_directions(direction):
 			bullet_adjacent_2 = Vector2(sin_cos5[1], -sin_cos5[0])
 			bullet_adjacent_3 = Vector2(sin_cos5[1], sin_cos5[0])
 			bullet_adjacent_4 = Vector2(sin_cos10[1], sin_cos10[0])
+			laser_rotaion = 0
 	
 
 func flip_player():
@@ -245,4 +267,8 @@ func flip_player():
 		animated_sprite_node.flip_h = false
 
 func _on_CoolDownTimer_timeout():
+	can_shoot = true
+
+
+func _on_LaserCoolDownTimer_timeout():
 	can_shoot = true

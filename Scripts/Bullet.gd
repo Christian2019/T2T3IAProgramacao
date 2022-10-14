@@ -7,6 +7,7 @@ var sprite
 var direction : Vector2
 var stop = false
 var hit_player = false
+var hit_enemy = true
 var axis
 
 var angle = PI / 2
@@ -25,13 +26,10 @@ func _ready():
 
 func _process(delta):
 	if not stop:
-		position += direction * speed * delta
-
 		if bullet_type == 3:
 			rotate_around_axis(delta)
 		else:
 			position += direction * speed * delta
-		position += direction * speed * delta
 
 func rotate_around_axis(delta):
 	angle += PI * angular_speed * delta
@@ -78,14 +76,22 @@ func radius_position(dir):
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
-
 func _on_Bullet_body_entered(body):
-	if "Enemy" in body.name:
-		stop = true
-		sprite.texture = bullet_type_sprite[4]
-		$Timer.start()
-		body.queue_free()
-
+	if hit_enemy:
+		if "Enemy" in body.name:
+			body.queue_free()
+			sprite.texture = bullet_type_sprite[4]
+			hit_enemy = false
+			stop = true
+			$Timer.start()
+		elif "Turret" in body.name:
+			body.loose_life()
+			
+		
+			sprite.texture = bullet_type_sprite[4]
+			hit_enemy = false
+			stop = true
+			$Timer.start()
 
 func _on_Timer_timeout():
 	queue_free()
