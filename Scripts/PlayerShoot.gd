@@ -129,7 +129,13 @@ func jump():
 		animated_sprite_node.play("jump")
 
 func shoot():
-	if Input.is_action_pressed("shoot"):
+	if bullet_type == 1 and Input.is_action_pressed("shoot"):
+		is_shooting = true
+		if can_shoot:
+			bullet_shoot(bullet_direction)
+			cool_down_timer_node.start()
+			can_shoot = false
+	elif Input.is_action_just_pressed("shoot"):
 		is_shooting = true
 		if can_shoot:
 			if bullet_type == 4:
@@ -139,9 +145,9 @@ func shoot():
 			
 				if bullet_type == 2:
 					spread_bullet()
-				cool_down_timer_node.start()
+				#cool_down_timer_node.start()
 			
-			can_shoot = false
+			#can_shoot = false
 	else:
 		is_shooting = false
 
