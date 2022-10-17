@@ -2,16 +2,11 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ContraAnim.png-1c6bd169a7fbf42b5a1fd6f2512414d5.stex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
-source_file="res://Assets/Menu/ContraAnim.png"
-dest_files=[ "res://.import/ContraAnim.png-1c6bd169a7fbf42b5a1fd6f2512414d5.stex" ]
-
+source_file="res://Assets/Spritesheets/Enemies/e1.png"
 [params]
 
 compress/mode=0

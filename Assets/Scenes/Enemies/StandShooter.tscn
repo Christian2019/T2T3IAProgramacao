@@ -16,15 +16,24 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 15.0
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 18.5, 23 )
 
-[node name="StaticBody2D" type="StaticBody2D"]
+[node name="StaticBody2D" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -1, 0 )
 frames = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 12, 3 )
+position = Vector2( 6.5, 3 )
 shape = SubResource( 3 )
+
+[node name="ChangeState" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="ShootBullet" type="Timer" parent="."]
+
+[connection signal="timeout" from="ChangeState" to="." method="_on_ChangeState_timeout"]
+[connection signal="timeout" from="ShootBullet" to="." method="_on_ShootBullet_timeout"]
