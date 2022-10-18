@@ -12,7 +12,7 @@ var is_jumping = false
 var is_shooting = false
 
 var bullet_direction : Vector2 = Vector2.ZERO
-var laser_rotaion := 0
+var laser_rotaion := 0.0
 var can_shoot = true
 
 var bullet_adjacent_1 : Vector2 = Vector2.ZERO

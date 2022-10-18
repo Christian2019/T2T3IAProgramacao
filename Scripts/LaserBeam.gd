@@ -14,10 +14,12 @@ func _ready():
 func _process(delta):
 	
 	if not stop:
+		
 		position += direction * speed * delta
 
-func change_direction(dir):
+func change_direction(dir, rot):
 	direction = dir
+	rotation_degrees = rot
 
 func _on_LaserBeam_body_entered(body):
 	if hit_enemy:
@@ -36,10 +38,5 @@ func _on_LaserBeam_body_entered(body):
 			stop = true
 			$Timer.start()
 
-
-func _on_Timer_timeout():
-	queue_free()
-
-
 func _on_VisibilityNotifier2D_screen_exited():
-	queue_free()
+	get_parent().queue_free()
