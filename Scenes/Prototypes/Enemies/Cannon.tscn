@@ -64,9 +64,6 @@ shape = SubResource( 6 )
 stream = ExtResource( 2 )
 autoplay = true
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 182, 561 )
-
 [node name="Teste" type="Timer" parent="."]
 autostart = true
 
@@ -75,3 +72,6 @@ default_color = Color( 0.4, 0.501961, 1, 1 )
 
 [node name="Enemy_Cannon" parent="." instance=ExtResource( 4 )]
 position = Vector2( 724, 522 )
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 182, 561 )
