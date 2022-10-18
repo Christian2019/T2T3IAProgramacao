@@ -14,6 +14,10 @@ config/name="T2T3IAProgramacao"
 run/main_scene="res://Scenes/Gustavo/Animations.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/height=601
+
 [global]
 
 frame=false
