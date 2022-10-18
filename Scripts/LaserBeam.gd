@@ -39,3 +39,7 @@ func _on_LaserBeam_body_entered(body):
 
 func _on_Timer_timeout():
 	queue_free()
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	queue_free()
