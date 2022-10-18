@@ -46,6 +46,9 @@ wait_time = 2.0
 [node name="RotationCD" type="Timer" parent="."]
 wait_time = 0.5
 
+[node name="ExtraBulletCD" type="Timer" parent="."]
+
 [connection signal="timeout" from="Transition" to="." method="_on_Transition_timeout"]
 [connection signal="timeout" from="BulletCD" to="." method="_on_BulletCD_timeout"]
 [connection signal="timeout" from="RotationCD" to="." method="_on_RotationCD_timeout"]
+[connection signal="timeout" from="ExtraBulletCD" to="." method="_on_ExtraBulletCD_timeout"]

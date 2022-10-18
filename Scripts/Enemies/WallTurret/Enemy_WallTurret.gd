@@ -6,6 +6,8 @@ var state = "Idle"
 var state_in_process=false
 var bullet = preload("res://Scenes/Enemies/WallTurret/Bullet.tscn")
 var shoot_cd=false
+var extra_shoot_cd=true
+var extra_shoot_cd_time=1
 var RotationCD=false
 
 
@@ -17,8 +19,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	drawLine()
 	chageState()
-
-
 
 func drawLine():
 	var linha = get_parent().get_node("Line2D")
@@ -43,7 +43,7 @@ func chageState():
 			f_active()
 		_:
 			print("default")
-		
+
 	
 func f_idle():
 		$Structure.animation= "Idle"
@@ -59,10 +59,14 @@ func f_transition():
 		$RotationCD.stop()
 		RotationCD=false
 		shoot_cd=false
+		extra_shoot_cd=true
 		if (position.distance_to(player.position)<DetectionDistance):
 			state_in_process=true
 			state = "Active"
 			$Transition.start()
+			$ExtraBulletCD.stop()
+			$ExtraBulletCD.wait_time=$Transition.wait_time+extra_shoot_cd_time
+			$ExtraBulletCD.start()
 		else:
 			state_in_process=true
 			state = "Idle"
@@ -87,9 +91,13 @@ func f_rotation():
 	var angleToPlayer= rad2deg(player.position.angle_to_point(position))
 	var playerAverageIntervalAngle = getAverageIntervalAngle(angleToPlayer)
 	var cannonAverageIntervalAngle = getAverageIntervalAngle($Cannon.rotation_degrees)
-	#print ("playerAverageIntervalAngle: ",playerAverageIntervalAngle)
-	#print ("cannonAverageIntervalAngle: ",cannonAverageIntervalAngle)
+	
+	#Turn
 	if (playerAverageIntervalAngle!=cannonAverageIntervalAngle):
+		extra_shoot_cd=true
+		$ExtraBulletCD.stop()
+		$ExtraBulletCD.wait_time=extra_shoot_cd_time
+		$ExtraBulletCD.start()
 		var rotationAngle =getRotationAngle(playerAverageIntervalAngle,cannonAverageIntervalAngle)
 		$Cannon.rotation_degrees = rotationAngle
 
@@ -135,7 +143,7 @@ func getAverageIntervalAngle(angle):
 			return index
 	
 func fire():
-	if (!shoot_cd):
+	if (!shoot_cd and !extra_shoot_cd):
 		shoot_cd=true
 		$BulletCD.start()
 		var newbullet = bullet.instance()
@@ -149,15 +157,17 @@ func fire():
 
 func _on_Transition_timeout() -> void:
 	state_in_process=false
-	
-
 
 func _on_BulletCD_timeout() -> void:
 		shoot_cd=false
 
 func _on_RotationCD_timeout() -> void:
 	RotationCD=false
+	
+func _on_ExtraBulletCD_timeout() -> void:
+	extra_shoot_cd=false
 
 func _on_Teste_timeout() -> void:
 	pass
+
 
