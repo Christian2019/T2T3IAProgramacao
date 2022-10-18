@@ -39,4 +39,8 @@ func _on_LaserBeam_body_entered(body):
 			$Timer.start()
 
 func _on_VisibilityNotifier2D_screen_exited():
-	get_parent().queue_free()
+	if hit_enemy:
+		get_parent().queue_free()
+
+func _on_Timer_timeout():
+	queue_free()

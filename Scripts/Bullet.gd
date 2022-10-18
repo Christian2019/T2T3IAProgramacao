@@ -86,8 +86,6 @@ func _on_Bullet_body_entered(body):
 			$Timer.start()
 		elif "Turret" in body.name:
 			body.loose_life()
-			
-		
 			sprite.texture = bullet_type_sprite[4]
 			hit_enemy = false
 			stop = true
