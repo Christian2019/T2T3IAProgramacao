@@ -13,7 +13,7 @@ var axis
 var angle = PI / 2
 var radius = 50
 var sin_cos45 = 0.7071
-var angular_speed = 1
+var angular_speed = 2
 var going_right = true
 
 var dir_correction = 1
