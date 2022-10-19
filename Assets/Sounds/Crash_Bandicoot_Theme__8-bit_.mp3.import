@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Crash_Bandicoot_Theme__8-bit_.mp3-fdd51a1f23c9b364ff572f048f18ca33.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sounds/Crash_Bandicoot_Theme__8-bit_.mp3"
+dest_files=[ "res://.import/Crash_Bandicoot_Theme__8-bit_.mp3-fdd51a1f23c9b364ff572f048f18ca33.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

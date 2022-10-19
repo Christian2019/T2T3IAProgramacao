@@ -41,6 +41,14 @@ autoplay = true
 
 [node name="Normal" type="Node2D" parent="."]
 
+[node name="Start Screen" type="Button" parent="Normal"]
+margin_left = 3.88638
+margin_top = 88.0879
+margin_right = 111.886
+margin_bottom = 103.088
+custom_fonts/font = SubResource( 2 )
+text = "Start Screen"
+
 [node name="JumpMove" type="Button" parent="Normal"]
 margin_left = -99.8599
 margin_top = 33.5074
@@ -85,17 +93,48 @@ rect_pivot_offset = Vector2( -55.6543, 7.54945 )
 custom_fonts/font = SubResource( 4 )
 text = "Cannon"
 
+[node name="Sniper" type="Button" parent="Enemies"]
+margin_left = -124.74
+margin_top = 57.8462
+margin_right = -24.7407
+margin_bottom = 72.8462
+rect_pivot_offset = Vector2( -55.6543, 7.54945 )
+custom_fonts/font = SubResource( 4 )
+text = "Sniper"
+
+[node name="SniperBush" type="Button" parent="Enemies"]
+margin_left = -124.74
+margin_top = 76.8352
+margin_right = -24.7405
+margin_bottom = 91.8352
+rect_pivot_offset = Vector2( -55.6543, 7.54945 )
+custom_fonts/font = SubResource( 4 )
+text = "Sniper Bush"
+
+[node name="Soldier" type="Button" parent="Enemies"]
+margin_left = -125.493
+margin_top = 95.4725
+margin_right = -25.4927
+margin_bottom = 110.473
+rect_pivot_offset = Vector2( -55.6543, 7.54945 )
+custom_fonts/font = SubResource( 4 )
+text = "Soldier"
+
 [node name="Back" type="Button" parent="Enemies"]
-margin_left = -124.239
-margin_top = 58.1978
-margin_right = -24.239
-margin_bottom = 73.1978
+margin_left = 6.14301
+margin_top = 87.033
+margin_right = 106.143
+margin_bottom = 102.033
 custom_fonts/font = SubResource( 4 )
 text = "Back"
 
+[connection signal="pressed" from="Normal/Start Screen" to="." method="_on_Start_Screen_pressed"]
 [connection signal="pressed" from="Normal/JumpMove" to="." method="_on_JumpMove_pressed"]
 [connection signal="pressed" from="Normal/Enemies" to="." method="_on_Enemies_pressed"]
 [connection signal="pressed" from="Normal/Shots" to="." method="_on_Shots_pressed"]
 [connection signal="pressed" from="Enemies/Wall turret" to="." method="_on_Wall_turret_pressed"]
 [connection signal="pressed" from="Enemies/Cannon" to="." method="_on_Cannon_pressed"]
+[connection signal="pressed" from="Enemies/Sniper" to="." method="_on_Sniper_pressed"]
+[connection signal="pressed" from="Enemies/SniperBush" to="." method="_on_SniperBush_pressed"]
+[connection signal="pressed" from="Enemies/Soldier" to="." method="_on_Soldier_pressed"]
 [connection signal="pressed" from="Enemies/Back" to="." method="_on_Back_pressed"]

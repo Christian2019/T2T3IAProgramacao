@@ -30,3 +30,19 @@ func _on_Cannon_pressed() -> void:
 
 func _on_Shots_pressed() -> void:
 	get_tree().change_scene("res://Scenes/Gustavo/Animations.tscn")
+
+
+func _on_Start_Screen_pressed() -> void:
+	get_tree().change_scene("res://Scenes/Mateus/StartScreen.tscn")
+
+
+func _on_Sniper_pressed() -> void:
+	get_tree().change_scene("res://Scenes/Mateus/StandShooterTest.tscn")
+
+
+func _on_SniperBush_pressed() -> void:
+	get_tree().change_scene("res://Scenes/Mateus/StandGunnerTest.tscn")
+
+
+func _on_Soldier_pressed() -> void:
+	get_tree().change_scene("res://Scenes/Mateus/MochileiroTeste.tscn")
