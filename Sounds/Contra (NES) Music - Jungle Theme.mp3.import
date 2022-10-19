@@ -2,12 +2,12 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-path="res://.import/Contra (NES) Music - Jungle Theme.mp3-2f81186a8d7474c78b6f19d946fda479.mp3str"
+path="res://.import/Contra (NES) Music - Jungle Theme.mp3-da53408fa250735384a42b7031b90542.mp3str"
 
 [deps]
 
-source_file="res://Assets/Sounds/Contra (NES) Music - Jungle Theme.mp3"
-dest_files=[ "res://.import/Contra (NES) Music - Jungle Theme.mp3-2f81186a8d7474c78b6f19d946fda479.mp3str" ]
+source_file="res://Sounds/Contra (NES) Music - Jungle Theme.mp3"
+dest_files=[ "res://.import/Contra (NES) Music - Jungle Theme.mp3-da53408fa250735384a42b7031b90542.mp3str" ]
 
 [params]
 

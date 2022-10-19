@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/NES - Contra - Bill Rizer & Lance Bean.png-133163b1fb27b3a8dda0b7d89618e7ee.stex"
+path="res://.import/NES - Contra - Bill Rizer & Lance Bean.png-242ede9d3abc32140acea688065d992c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Spritesheets/Player/NES - Contra - Bill Rizer & Lance Bean.png"
-dest_files=[ "res://.import/NES - Contra - Bill Rizer & Lance Bean.png-133163b1fb27b3a8dda0b7d89618e7ee.stex" ]
+source_file="res://Spritesheets/Player/NES - Contra - Bill Rizer & Lance Bean.png"
+dest_files=[ "res://.import/NES - Contra - Bill Rizer & Lance Bean.png-242ede9d3abc32140acea688065d992c.stex" ]
 
 [params]
 

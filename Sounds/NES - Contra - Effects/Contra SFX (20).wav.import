@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/Contra SFX (20).wav-37dba301ae9c3ac4ca25b269a2d0fdc0.sample"
+path="res://.import/Contra SFX (20).wav-8fc56af0c77a023255c31de5f7e20103.sample"
 
 [deps]
 
-source_file="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (20).wav"
-dest_files=[ "res://.import/Contra SFX (20).wav-37dba301ae9c3ac4ca25b269a2d0fdc0.sample" ]
+source_file="res://Sounds/NES - Contra - Effects/Contra SFX (20).wav"
+dest_files=[ "res://.import/Contra SFX (20).wav-8fc56af0c77a023255c31de5f7e20103.sample" ]
 
 [params]
 
