@@ -4,6 +4,8 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
+
+
 func _on_JumpMove_pressed() -> void:
 	get_tree().change_scene("res://Scenes/Prototypes/JumpMovePrototype.tscn")
 
