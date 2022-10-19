@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="T2T3IAProgramacao"
-run/main_scene="res://Scenes/Gustavo/Animations.tscn"
+run/main_scene="res://Scenes/Prototypes/PrototypeMenu.tscn"
 config/icon="res://icon.png"
 
 [display]
@@ -27,7 +27,8 @@ common/drop_mouse_on_gui_input_disabled=true
 
 ui_accept={
 "deadzone": 0.5,
-"events": [  ]
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":88,"unicode":0,"echo":false,"script":null)
+ ]
 }
 Arrow_UP={
 "deadzone": 0.5,
@@ -51,7 +52,8 @@ Arrow_LEFT={
 }
 Shoot={
 "deadzone": 0.5,
-"events": [  ]
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
 }
 Jump={
 "deadzone": 0.5,

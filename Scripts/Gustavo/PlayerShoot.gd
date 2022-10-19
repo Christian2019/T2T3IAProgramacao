@@ -37,6 +37,8 @@ func _ready():
 	#bullet_type = 0
 
 func _process(delta):
+	if Input.is_action_pressed("Escape"):
+		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 	change_shoot()
 	jump()
 	move()
@@ -123,19 +125,19 @@ func move():
 			animated_sprite_node.play("idle")
 
 func jump():
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_just_pressed("Jump"):
 		is_jumping = !is_jumping
 	if is_jumping:
 		animated_sprite_node.play("jump")
 
 func shoot():
-	if bullet_type == 1 and Input.is_action_pressed("shoot"):
+	if bullet_type == 1 and Input.is_action_pressed("Shoot"):
 		is_shooting = true
 		if can_shoot:
 			bullet_shoot(bullet_direction)
 			cool_down_timer_node.start()
 			can_shoot = false
-	elif Input.is_action_just_pressed("shoot"):
+	elif Input.is_action_just_pressed("Shoot"):
 		is_shooting = true
 		if can_shoot:
 			if bullet_type == 4:
