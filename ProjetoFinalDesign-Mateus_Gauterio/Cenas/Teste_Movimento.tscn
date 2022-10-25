@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Cenas/Personagens/BlockMan.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/icon.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 21.8864, 10.1499 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 5.2928, 10 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Node2D" parent="." instance=ExtResource( 1 )]
+position = Vector2( 503, 278 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 543.75, 897 )
+scale = Vector2( 20.4922, 12.7188 )
+
+[node name="Icon" type="Sprite" parent="StaticBody2D"]
+position = Vector2( -6.72207, 14.5454 )
+scale = Vector2( 0.693099, 1 )
+texture = ExtResource( 2 )
+offset = Vector2( 7.21672, -14.5454 )
+
+[node name="Icon3" type="Sprite" parent="StaticBody2D"]
+position = Vector2( -17.4091, -17.3759 )
+scale = Vector2( 0.179947, 1 )
+texture = ExtResource( 2 )
+offset = Vector2( -0.105286, 1.02211 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( -1.28098, -21.8501 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( -17.4091, -38.1325 )
+shape = SubResource( 2 )
