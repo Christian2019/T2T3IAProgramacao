@@ -32,7 +32,7 @@ func gravityF(delta):
 	if (gravity>=0):
 		var footPosition= getFootPosition()
 		for index in gravity:
-			footPosition.center.y+=index
+			footPosition.center.y+=1
 			if (tileCollision(footPosition,Tile_Floor)||tileCollision(footPosition,Tile_Water)):
 				gravity =0
 				fit(footPosition)
@@ -95,18 +95,15 @@ func _process(delta: float) -> void:
 	#Subir na plataforma se estiver na agua
 	climb()
 	
-	#Matem o personagem dentro da tela
+	#Mantem o personagem dentro da tela
 	insideScreen()
 
 func climb():
-	if (tileCollision(getFootPosition(),Tile_Water)and
-		tileCollision(getBodyPosition(),Tile_Floor)
+	var footPosition= getFootPosition()
+	var bodyPosition = getBodyPosition()
+	if (tileCollision(footPosition,Tile_Water)and
+		tileCollision(bodyPosition,Tile_Floor)
 	): 
-		var footPosition= getFootPosition()
-		var bodyPosition = getBodyPosition()
-		footPosition.center.y-=1
-		while(!tileCollision(footPosition,Tile_Floor)):
-			footPosition.center.y-=1
 		fit(footPosition)
 
 func horizontal_Move(delta):
@@ -134,10 +131,10 @@ func jump():
 				gravity-=jumpForce
 
 func insideScreen():
-	var leftWidth= $BodyBoxCollision.shape.extents.x*scale.x-$BodyBoxCollision.position.x*scale.x
-	var rightWidth =$BodyBoxCollision.shape.extents.x*scale.x+$BodyBoxCollision.position.x*scale.x
-	var upHeight= $BodyBoxCollision.shape.extents.y*scale.y-$BodyBoxCollision.position.y*scale.y
-	var downHeight = $BodyBoxCollision.shape.extents.y*scale.y+$BodyBoxCollision.position.y*scale.y
+	var leftWidth= $BodyBoxCollision.shape.extents.x*scale.x
+	var rightWidth =$BodyBoxCollision.shape.extents.x*scale.x
+	var upHeight= $BodyBoxCollision.shape.extents.y*scale.y
+	var downHeight = $BodyBoxCollision.shape.extents.y*scale.y
 	position.x = clamp(position.x,0+leftWidth,screen_size.x-rightWidth)
 	position.y = clamp(position.y,0+upHeight,screen_size.y-downHeight)
 
