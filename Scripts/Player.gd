@@ -8,6 +8,9 @@ export var jumpForce=4
 var onTheTile=false
 var Tile_Floor
 var Tile_Water
+var wait=false
+var inWater=false
+
 
 
 func _ready() -> void:
@@ -35,6 +38,11 @@ func gravityF():
 		for index in gravity:
 			footPosition.center.y+=1
 			if (tileCollision(footPosition,Tile_Floor)||tileCollision(footPosition,Tile_Water)):
+				if (!inWater and tileCollision(footPosition,Tile_Water)):
+					print("entrou")
+					inWater=true
+					wait=true
+					timerCreator("removeWait",0.3)
 				gravity =0
 				fit(footPosition)
 				onTheTile=true
@@ -84,6 +92,9 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("Escape"):
 		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 	
+	if (wait):
+		return
+	
 	#Funcao de gravidade	
 	gravityF()
 		
@@ -93,11 +104,18 @@ func _process(delta: float) -> void:
 	#Movimento Lateral
 	horizontal_Move()
 	
-	#Subir na plataforma se estiver na agua
-	climb()
 	
 	#Mantem o personagem dentro da tela
 	insideScreen()
+
+func removeClimbCD(footPosition):
+	removeWait()
+	fit(footPosition)
+	inWater=false
+	
+func removeWait():
+	wait=false	
+	
 
 func climb():
 	var footPosition= getFootPosition()
@@ -105,13 +123,16 @@ func climb():
 	if (tileCollision(footPosition,Tile_Water)and
 		tileCollision(bodyPosition,Tile_Floor)
 	): 
-		fit(footPosition)
+		wait=true
+		timerCreator2("removeClimbCD",0.3,[footPosition])
 
 func horizontal_Move():
 	if Input.is_action_pressed("Arrow_RIGHT"):
 		position.x += speed*Fps.MAX_FPS
 	elif Input.is_action_pressed("Arrow_LEFT"):
 			position.x -= speed*Fps.MAX_FPS
+	#Subir na plataforma se estiver na agua
+	climb()
 		
 
 func jump():
@@ -138,6 +159,41 @@ func insideScreen():
 	var downHeight = $BodyBoxCollision.shape.extents.y*scale.y
 	position.x = clamp(position.x,0+leftWidth,screen_size.x-rightWidth)
 	position.y = clamp(position.y,0+upHeight,screen_size.y-downHeight)
+
+func timerCreator(functionName,time):
+	var timer = Timer.new()
+	timer.connect("timeout",self,functionName)
+	timer.set_wait_time(time)
+	add_child(timer)
+	timer.one_shot=true
+	timer.start()
+
+	var timer2 = Timer.new()
+	timer2.connect("timeout",self,"timerDestroyer",[timer,timer2])
+	timer2.set_wait_time(time+1)
+	add_child(timer2)
+	timer2.one_shot=true
+	timer2.start() 
+
+func timerCreator2(functionName,time,parameter):
+	var timer = Timer.new()
+	timer.connect("timeout",self,functionName,parameter)
+	timer.set_wait_time(time)
+	add_child(timer)
+	timer.one_shot=true
+	timer.start()
+
+	var timer2 = Timer.new()
+	timer2.connect("timeout",self,"timerDestroyer",[timer,timer2])
+	timer2.set_wait_time(time+1)
+	add_child(timer2)
+	timer2.one_shot=true
+	timer2.start()   
+	
+func timerDestroyer(timer,timer2):
+	remove_child(timer)
+	remove_child(timer2)
+
 
 func _on_Timer_timeout() -> void:
 	pass
