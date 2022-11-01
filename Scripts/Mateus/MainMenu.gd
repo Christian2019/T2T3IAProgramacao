@@ -22,7 +22,7 @@ func select_mode():
 
 func _physics_process(delta: float) -> void:
 	if($Menu_Animation.position.x > 513):
-		$Menu_Animation.position.x-=180*delta
+		$Menu_Animation.position.x-=180*Fps.MAX_FPS
 	else:
 		$Menu_Animation.position.x=513
 		$Menu_Animation.visible=false

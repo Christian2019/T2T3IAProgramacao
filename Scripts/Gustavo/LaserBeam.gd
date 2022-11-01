@@ -15,7 +15,7 @@ func _process(delta):
 	
 	if not stop:
 		
-		position += direction * speed * delta
+		position += direction * speed * Fps.MAX_FPS
 
 func change_direction(dir, rot):
 	direction = dir

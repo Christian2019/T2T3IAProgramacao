@@ -34,7 +34,7 @@ func drawLine():
 	linha.add_point(Vector2(position.x,position.y))
 	linha.add_point(Vector2(player_.position.x,player_.position.y))
 		
-func _on_ChangeState_timeout() -> void: 
+func _onhang_CeState_timeout() -> void: 
 	if(state==states.SHOOT):   
 			state=states.STOP 
 			$ChangeState.start() 

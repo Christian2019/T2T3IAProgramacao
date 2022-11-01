@@ -27,18 +27,18 @@ func _ready():
 func _process(delta):
 	if not stop:
 		if bullet_type == 3:
-			rotate_around_axis(delta)
+			rotate_around_axis()
 		else:
-			position += direction * speed * delta
+			position += direction * speed * Fps.MAX_FPS
 
-func rotate_around_axis(delta):
-	angle += PI * angular_speed * delta
+func rotate_around_axis():
+	angle += PI * angular_speed * Fps.MAX_FPS
 	rotation_degrees = 90
 	var dx = sin(angle) * radius
 	var dy = cos(angle) * radius
 	
 	position = dir_correction * Vector2(-dx, dir_correction * dy) + axis.position
-	axis.position += direction * speed * delta
+	axis.position += direction * speed * Fps.MAX_FPS
 
 func set_bullet(position, speed, type, dir, facing_right, hitplayer):
 	direction = dir

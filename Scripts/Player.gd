@@ -28,7 +28,8 @@ func getBodyPosition():
 		var extents= {"x":$BodyBoxCollision.shape.extents.x*scale.x,"y":$BodyBoxCollision.shape.extents.y*scale.y}
 		return {"center":center,"extents":extents}
 	
-func gravityF(delta):
+func gravityF():
+
 	if (gravity>=0):
 		var footPosition= getFootPosition()
 		for index in gravity:
@@ -40,7 +41,7 @@ func gravityF(delta):
 				return
 	onTheTile=false
 	position.y+=gravity
-	gravity+=gravityForce*delta
+	gravity+=gravityForce*Fps.MAX_FPS
 
 func tileCollision(objectCollisionShape,tileColissionShapes):
 	var center
@@ -84,13 +85,13 @@ func _process(delta: float) -> void:
 		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 	
 	#Funcao de gravidade	
-	gravityF(delta)
+	gravityF()
 		
 	#Pulo
 	jump()
 	
 	#Movimento Lateral
-	horizontal_Move(delta)
+	horizontal_Move()
 	
 	#Subir na plataforma se estiver na agua
 	climb()
@@ -106,11 +107,11 @@ func climb():
 	): 
 		fit(footPosition)
 
-func horizontal_Move(delta):
+func horizontal_Move():
 	if Input.is_action_pressed("Arrow_RIGHT"):
-		position.x += speed*delta
+		position.x += speed*Fps.MAX_FPS
 	elif Input.is_action_pressed("Arrow_LEFT"):
-			position.x -= speed*delta
+			position.x -= speed*Fps.MAX_FPS
 		
 
 func jump():
