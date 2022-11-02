@@ -39,7 +39,6 @@ func gravityF():
 			footPosition.center.y+=1
 			if (tileCollision(footPosition,Tile_Floor)||tileCollision(footPosition,Tile_Water)):
 				if (!inWater and tileCollision(footPosition,Tile_Water)):
-					print("entrou")
 					inWater=true
 					wait=true
 					timerCreator("removeWait",0.3)
