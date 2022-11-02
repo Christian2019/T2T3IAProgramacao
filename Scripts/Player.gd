@@ -156,8 +156,9 @@ func insideScreen():
 	var rightWidth =$BodyBoxCollision.shape.extents.x*scale.x
 	var upHeight= $BodyBoxCollision.shape.extents.y*scale.y
 	var downHeight = $BodyBoxCollision.shape.extents.y*scale.y
-	position.x = clamp(position.x,0+leftWidth,screen_size.x-rightWidth)
-	position.y = clamp(position.y,0+upHeight,screen_size.y-downHeight)
+	
+	position.x = clamp(position.x,0+leftWidth,10307-rightWidth)
+	position.y = clamp(position.y,0+upHeight,665-downHeight)
 
 func timerCreator(functionName,time):
 	var timer = Timer.new()
