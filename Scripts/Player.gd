@@ -12,11 +12,25 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 
+enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE}
+enum sides{RIGHT,LEFT}
+var state = states.IDLE
+var side= sides.RIGHT
+
+var fix_Y_FALLING_INTO_THE_WATER=30
+
 
 
 func _ready() -> void:
 	screen_size= get_viewport_rect().size
 	loadTiles()
+	#Start
+	global_position.x=255
+	global_position.y=232
+	
+	#Test
+	global_position.x=6783
+	global_position.y=232
 	
 func loadTiles():
 		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
@@ -44,6 +58,11 @@ func gravityF():
 					inWater=true
 					wait=true
 					timerCreator("removeWait",0.3,null,true)
+					state=states.FALLING_INTO_THE_WATER
+					$AnimatedSprite.frame=0
+					$AnimatedSprite.global_position.y+=fix_Y_FALLING_INTO_THE_WATER
+				elif(!tileCollision(footPosition,Tile_Water)):
+					state=states.IDLE
 				gravity =0
 				fit(footPosition)
 				onTheTile=true
@@ -93,6 +112,8 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("Escape"):
 		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 	
+	animationController()
+	
 	if (wait):
 		return
 	
@@ -105,11 +126,47 @@ func _process(delta: float) -> void:
 	#Movimento Lateral
 	horizontal_Move()
 	
+	lowered()
+	
 	death()
 	
 	
 	#Mantem o personagem dentro da tela
 	insideScreen()
+
+func lowered():
+	if (state==states.IDLE):
+		if Input.is_action_pressed("Arrow_DOWN"):
+			state=states.LOWERED
+	if (state==states.LOWERED):
+		if !Input.is_action_pressed("Arrow_DOWN") or gravity>=1:
+			state=states.IDLE
+
+func animationController():
+	if (side==sides.LEFT):
+		$AnimatedSprite.flip_h=true
+	else:
+		$AnimatedSprite.flip_h=false
+		
+	if (state==states.DEATH):
+		$AnimatedSprite.animation="Death"
+		if ($AnimatedSprite.frame==5):
+			$AnimatedSprite.playing=false
+	elif (state==states.FALLING_INTO_THE_WATER):
+		$AnimatedSprite.animation="Falling_Into_The_Water"
+		if ($AnimatedSprite.frame==3):
+			state=states.INTO_THE_WATER
+			
+	elif (state==states.INTO_THE_WATER):
+		$AnimatedSprite.animation="Into_The_Water"
+	elif (state==states.JUMP):
+		$AnimatedSprite.animation="Jump"
+	elif (state==states.LOWERED):
+		$AnimatedSprite.animation="Lowered"
+	elif (state==states.RUNNING):
+		$AnimatedSprite.animation="Running"
+	elif (state==states.IDLE):
+		$AnimatedSprite.animation="idle"
 
 func death():
 	var dead = false
@@ -121,6 +178,9 @@ func death():
 	#Morte por colisao com inimigo
 	
 	if (dead):
+		state=states.DEATH
+		$AnimatedSprite.frame=0
+		wait=true
 		#Revive num ponto safe
 		var respawnPositionX = get_parent().get_node("Camera2D").global_position.x-360
 		var respawnPositionY = 20
@@ -137,11 +197,15 @@ func death():
 						respawnPositionX+=$BodyBoxCollision.shape.extents.x*$BodyBoxCollision.scale.x+20
 						break
 				respawnPositionX+=1
-		
-		#Die
-		global_position.x=respawnPositionX
-		global_position.y=respawnPositionY
+		timerCreator("respawn",1,[respawnPositionX,respawnPositionY],true)
+
 	
+func respawn(respawnPositionX,respawnPositionY):
+	wait=false
+	global_position.x=respawnPositionX
+	global_position.y=respawnPositionY
+	state=states.IDLE
+	$AnimatedSprite.playing=true
 
 func removeClimbCD(footPosition):
 	removeWait()
@@ -159,13 +223,26 @@ func climb():
 		tileCollision(bodyPosition,Tile_Floor)
 	): 
 		wait=true
+		state=states.IDLE
+		$AnimatedSprite.global_position.y-=fix_Y_FALLING_INTO_THE_WATER
 		timerCreator("removeClimbCD",0.3,[footPosition],true)
 
 func horizontal_Move():
 	if Input.is_action_pressed("Arrow_RIGHT"):
 		position.x += speed*Fps.MAX_FPS
+		side=sides.RIGHT
+		if (state==states.IDLE):
+			state=states.RUNNING
+			
 	elif Input.is_action_pressed("Arrow_LEFT"):
-			position.x -= speed*Fps.MAX_FPS
+		position.x -= speed*Fps.MAX_FPS
+		side=sides.LEFT
+		if (state==states.IDLE):
+			state=states.RUNNING
+	
+	elif (state==states.RUNNING):
+		state=states.IDLE
+			
 	#Subir na plataforma se estiver na agua
 	climb()
 		
@@ -186,6 +263,7 @@ func jump():
 			if Input.is_action_pressed("Jump"):
 				position.y-=1
 				gravity-=jumpForce
+				state=states.JUMP
 
 func insideScreen():
 	var leftWidth= $BodyBoxCollision.shape.extents.x*scale.x
