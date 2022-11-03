@@ -12,7 +12,7 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 
-enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE}
+enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING}
 enum sides{RIGHT,LEFT}
 var state = states.IDLE
 var side= sides.RIGHT
@@ -29,8 +29,8 @@ func _ready() -> void:
 	global_position.y=232
 	
 	#Test
-	global_position.x=6783
-	global_position.y=232
+	#global_position.x=6783
+	#global_position.y=232
 	
 func loadTiles():
 		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
@@ -57,7 +57,7 @@ func gravityF():
 				if (!inWater and tileCollision(footPosition,Tile_Water)):
 					inWater=true
 					wait=true
-					timerCreator("removeWait",0.3,null,true)
+					timerCreator("removeWait",0.7,null,true)
 					state=states.FALLING_INTO_THE_WATER
 					$AnimatedSprite.frame=0
 					$AnimatedSprite.global_position.y+=fix_Y_FALLING_INTO_THE_WATER
@@ -166,7 +166,9 @@ func animationController():
 	elif (state==states.RUNNING):
 		$AnimatedSprite.animation="Running"
 	elif (state==states.IDLE):
-		$AnimatedSprite.animation="idle"
+		$AnimatedSprite.animation="Idle"
+	elif (state==states.DROP_FALLING):
+		$AnimatedSprite.animation="Drop_Falling"
 
 func death():
 	var dead = false
@@ -211,6 +213,7 @@ func removeClimbCD(footPosition):
 	removeWait()
 	fit(footPosition)
 	inWater=false
+	state=states.IDLE
 	
 func removeWait():
 	wait=false	
@@ -223,9 +226,9 @@ func climb():
 		tileCollision(bodyPosition,Tile_Floor)
 	): 
 		wait=true
-		state=states.IDLE
+		state=states.DROP_FALLING
 		$AnimatedSprite.global_position.y-=fix_Y_FALLING_INTO_THE_WATER
-		timerCreator("removeClimbCD",0.3,[footPosition],true)
+		timerCreator("removeClimbCD",0.1,[footPosition],true)
 
 func horizontal_Move():
 	if Input.is_action_pressed("Arrow_RIGHT"):
@@ -252,6 +255,7 @@ func jump():
 		#Drop
 		if Input.is_action_pressed("Arrow_DOWN"):
 			if Input.is_action_pressed("Jump"):
+				state=states.DROP_FALLING
 				var footPosition= getFootPosition()
 				while(tileCollision(footPosition,Tile_Floor)):
 					footPosition.center.y+=1

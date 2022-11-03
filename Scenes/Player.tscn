@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Spritesheets/Player/player/lowered.png" type="Texture" id=3]
@@ -39,6 +39,11 @@ flags = 4
 atlas = ExtResource( 7 )
 region = Rect2( 256, 0, 64, 64 )
 
+[sub_resource type="AtlasTexture" id=116]
+flags = 4
+atlas = ExtResource( 5 )
+region = Rect2( 256, 0, 64, 64 )
+
 [sub_resource type="AtlasTexture" id=97]
 flags = 4
 atlas = ExtResource( 6 )
@@ -53,6 +58,16 @@ region = Rect2( 64, 0, 64, 64 )
 flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=89]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=90]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=100]
 flags = 4
@@ -124,16 +139,6 @@ flags = 4
 atlas = ExtResource( 5 )
 region = Rect2( 318, 0, 62, 64 )
 
-[sub_resource type="AtlasTexture" id=89]
-flags = 4
-atlas = ExtResource( 13 )
-region = Rect2( 0, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=90]
-flags = 4
-atlas = ExtResource( 13 )
-region = Rect2( 64, 0, 64, 64 )
-
 [sub_resource type="SpriteFrames" id=91]
 animations = [ {
 "frames": [ SubResource( 92 ), SubResource( 93 ), SubResource( 94 ), SubResource( 95 ), SubResource( 96 ), SubResource( 96 ) ],
@@ -141,9 +146,19 @@ animations = [ {
 "name": "Death",
 "speed": 10.0
 }, {
+"frames": [ SubResource( 116 ) ],
+"loop": true,
+"name": "Drop_Falling",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 97 ), SubResource( 98 ), SubResource( 99 ), SubResource( 99 ) ],
 "loop": true,
 "name": "Falling_Into_The_Water",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 89 ), SubResource( 90 ) ],
+"loop": true,
+"name": "Idle",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 100 ), SubResource( 101 ) ],
@@ -165,11 +180,6 @@ animations = [ {
 "loop": true,
 "name": "Running",
 "speed": 12.0
-}, {
-"frames": [ SubResource( 89 ), SubResource( 90 ) ],
-"loop": true,
-"name": "idle",
-"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=114]
@@ -200,8 +210,7 @@ autostart = true
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -5.575 )
 frames = SubResource( 91 )
-animation = "Jump"
-frame = 2
+animation = "Drop_Falling"
 playing = true
 
 [node name="LoweredBoxCollision" type="CollisionShape2D" parent="."]
