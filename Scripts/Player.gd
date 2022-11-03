@@ -43,7 +43,7 @@ func gravityF():
 				if (!inWater and tileCollision(footPosition,Tile_Water)):
 					inWater=true
 					wait=true
-					timerCreator("removeWait",0.3)
+					timerCreator("removeWait",0.3,null,true)
 				gravity =0
 				fit(footPosition)
 				onTheTile=true
@@ -159,7 +159,7 @@ func climb():
 		tileCollision(bodyPosition,Tile_Floor)
 	): 
 		wait=true
-		timerCreator2("removeClimbCD",0.3,[footPosition])
+		timerCreator("removeClimbCD",0.3,[footPosition],true)
 
 func horizontal_Move():
 	if Input.is_action_pressed("Arrow_RIGHT"):
@@ -196,40 +196,28 @@ func insideScreen():
 	position.x = clamp(position.x,get_parent().get_node("Camera2D").cameraClampX+leftWidth,10307-rightWidth)
 	position.y = clamp(position.y,0+upHeight,665-downHeight)
 
-func timerCreator(functionName,time):
-	var timer = Timer.new()
-	timer.connect("timeout",self,functionName)
-	timer.set_wait_time(time)
-	add_child(timer)
-	timer.one_shot=true
-	timer.start()
-
-	var timer2 = Timer.new()
-	timer2.connect("timeout",self,"timerDestroyer",[timer,timer2])
-	timer2.set_wait_time(time+1)
-	add_child(timer2)
-	timer2.one_shot=true
-	timer2.start() 
-
-func timerCreator2(functionName,time,parameter):
-	var timer = Timer.new()
-	timer.connect("timeout",self,functionName,parameter)
-	timer.set_wait_time(time)
-	add_child(timer)
-	timer.one_shot=true
-	timer.start()
-
-	var timer2 = Timer.new()
-	timer2.connect("timeout",self,"timerDestroyer",[timer,timer2])
-	timer2.set_wait_time(time+1)
-	add_child(timer2)
-	timer2.one_shot=true
-	timer2.start()   
+#Usar create sempre true, e parameters da functionName [v1,v2] ou null
+func timerCreator(functionName,time,parameters,create):
+	if (create):
+		var timer = Timer.new()
+		if (parameters==null):
+			timer.connect("timeout",self,functionName)
+		else:
+			timer.connect("timeout",self,functionName,parameters)
+		timer.set_wait_time(time)
+		add_child(timer)
+		timer.one_shot=true
+		timer.start()
 	
-func timerDestroyer(timer,timer2):
-	remove_child(timer)
-	remove_child(timer2)
-
+		var timer2 = Timer.new()
+		timer2.connect("timeout",self,"timerCreator",["",0,[timer,timer2],false])
+		timer2.set_wait_time(time+1)
+		add_child(timer2)
+		timer2.one_shot=true
+		timer2.start()
+	else:
+		remove_child(parameters[0])
+		remove_child(parameters[1])
 
 func _on_Timer_timeout() -> void:
 	pass
