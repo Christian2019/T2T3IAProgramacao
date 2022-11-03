@@ -8,6 +8,7 @@ export var jumpForce=4
 var onTheTile=false
 var Tile_Floor
 var Tile_Water
+var Tile_DeathZone
 var wait=false
 var inWater=false
 
@@ -20,6 +21,7 @@ func _ready() -> void:
 func loadTiles():
 		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
 		Tile_Water= get_parent().get_node("Tiles/Water").get_children()
+		Tile_DeathZone= get_parent().get_node("Tiles/DeathZone").get_children()
 
 func getFootPosition():
 		var center= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
@@ -103,9 +105,43 @@ func _process(delta: float) -> void:
 	#Movimento Lateral
 	horizontal_Move()
 	
+	death()
+	
 	
 	#Mantem o personagem dentro da tela
 	insideScreen()
+
+func death():
+	var dead = false
+	#Morte por queda
+	if (tileCollision(getBodyPosition(),Tile_DeathZone)):
+		dead=true
+		
+	#Morte por colisao com bala
+	#Morte por colisao com inimigo
+	
+	if (dead):
+		#Revive num ponto safe
+		var respawnPositionX = get_parent().get_node("Camera2D").global_position.x-360
+		var respawnPositionY = 20
+		
+		#DeathZone
+		if (respawnPositionX>5725):
+			var canDrop=false
+			while(!canDrop):
+				for index in range(0,Tile_Floor.size(),1):
+					var tile = Tile_Floor[index]
+					if (tile.global_position.x-tile.shape.extents.x*tile.scale.x<respawnPositionX and
+					tile.global_position.x+tile.shape.extents.x*tile.scale.x>respawnPositionX ):
+						canDrop=true
+						respawnPositionX+=$BodyBoxCollision.shape.extents.x*$BodyBoxCollision.scale.x+20
+						break
+				respawnPositionX+=1
+		
+		#Die
+		global_position.x=respawnPositionX
+		global_position.y=respawnPositionY
+	
 
 func removeClimbCD(footPosition):
 	removeWait()
@@ -157,7 +193,7 @@ func insideScreen():
 	var upHeight= $BodyBoxCollision.shape.extents.y*scale.y
 	var downHeight = $BodyBoxCollision.shape.extents.y*scale.y
 	
-	position.x = clamp(position.x,0+leftWidth,10307-rightWidth)
+	position.x = clamp(position.x,get_parent().get_node("Camera2D").cameraClampX+leftWidth,10307-rightWidth)
 	position.y = clamp(position.y,0+upHeight,665-downHeight)
 
 func timerCreator(functionName,time):
