@@ -12,7 +12,7 @@ animations = [ {
 "frames": [ ExtResource( 1 ), ExtResource( 2 ) ],
 "loop": true,
 "name": "default",
-"speed": 2.0
+"speed": 4.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -177,7 +177,6 @@ __meta__ = {
 position = Vector2( 5154, 331 )
 scale = Vector2( 2.98214, 2.98214 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="MainMusic" type="AudioStreamPlayer2D" parent="."]

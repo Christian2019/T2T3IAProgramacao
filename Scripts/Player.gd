@@ -30,12 +30,12 @@ func _ready() -> void:
 	
 	#Start
 	lives = 3
-	#global_position.x=255
-	#global_position.y=232
+	global_position.x=255
+	global_position.y=232
 	
 	#Test
-	global_position.x=6783
-	global_position.y=232
+	#global_position.x=6783
+	#global_position.y=232
 	
 func loadTiles():
 		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
