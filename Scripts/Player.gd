@@ -194,6 +194,7 @@ func death():
 		state=states.DEATH
 		$AnimatedSprite.frame=0
 		wait=true
+		get_parent().get_node("Sounds/DeathSound").play()
 		#Revive num ponto safe
 		var respawnPositionX = get_parent().get_node("Camera2D").global_position.x-360
 		var respawnPositionY = 20
