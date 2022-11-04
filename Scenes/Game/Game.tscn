@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Background/jungleBackground/background.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Sounds/Contra (NES) Music - Jungle Theme.mp3" type="AudioStream" id=3]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scripts/Game/Camera2D.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/Camera2D.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -176,7 +176,6 @@ __meta__ = {
 position = Vector2( 5154, 331 )
 scale = Vector2( 2.98214, 2.98214 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
@@ -399,8 +398,4 @@ shape = SubResource( 29 )
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 6783, 222 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 512, 343 )
-current = true
-zoom = Vector2( 1, 1.02 )
-script = ExtResource( 5 )
+[node name="Camera2D" parent="." instance=ExtResource( 5 )]

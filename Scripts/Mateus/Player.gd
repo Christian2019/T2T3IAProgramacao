@@ -47,5 +47,5 @@ func _physics_process(delta):
 	#calc_velocity_click()
 	#rotation += rotation_dir * rotation_speed * delta
 	#if position.distance_to(target) > 5:
-	velocity.y += gravity * Fps.MAX_FPS
+	velocity.y += gravity * Global.Inverse_MAX_FPS
 	velocity = move_and_slide(velocity, Vector2.UP)

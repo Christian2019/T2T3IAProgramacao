@@ -11,12 +11,14 @@ var Tile_Water
 var Tile_DeathZone
 var wait=false
 var inWater=false
+var lives
 
 enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING}
 enum sides{RIGHT,LEFT}
 var state = states.IDLE
 var side= sides.RIGHT
 
+#Ajuste de animacao
 var fix_Y_FALLING_INTO_THE_WATER=30
 
 
@@ -24,13 +26,15 @@ var fix_Y_FALLING_INTO_THE_WATER=30
 func _ready() -> void:
 	screen_size= get_viewport_rect().size
 	loadTiles()
+	
 	#Start
-	global_position.x=255
-	global_position.y=232
+	lives = 3
+	#global_position.x=255
+	#global_position.y=232
 	
 	#Test
-	#global_position.x=6783
-	#global_position.y=232
+	global_position.x=6783
+	global_position.y=232
 	
 func loadTiles():
 		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
@@ -69,7 +73,7 @@ func gravityF():
 				return
 	onTheTile=false
 	position.y+=gravity
-	gravity+=gravityForce*Fps.MAX_FPS
+	gravity+=gravityForce*Global.Inverse_MAX_FPS
 
 func tileCollision(objectCollisionShape,tileColissionShapes):
 	var center
@@ -180,6 +184,8 @@ func death():
 	#Morte por colisao com inimigo
 	
 	if (dead):
+		if (lives>0):
+			lives-=1
 		state=states.DEATH
 		$AnimatedSprite.frame=0
 		wait=true
@@ -232,13 +238,13 @@ func climb():
 
 func horizontal_Move():
 	if Input.is_action_pressed("Arrow_RIGHT"):
-		position.x += speed*Fps.MAX_FPS
+		position.x += speed*Global.Inverse_MAX_FPS
 		side=sides.RIGHT
 		if (state==states.IDLE):
 			state=states.RUNNING
 			
 	elif Input.is_action_pressed("Arrow_LEFT"):
-		position.x -= speed*Fps.MAX_FPS
+		position.x -= speed*Global.Inverse_MAX_FPS
 		side=sides.LEFT
 		if (state==states.IDLE):
 			state=states.RUNNING
@@ -302,5 +308,6 @@ func timerCreator(functionName,time,parameters,create):
 		remove_child(parameters[1])
 
 func _on_Timer_timeout() -> void:
+	
 	pass
 

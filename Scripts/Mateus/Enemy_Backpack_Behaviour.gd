@@ -61,11 +61,11 @@ func _process(delta: float) -> void:
 func _physics_process(delta): 
 	changeState()  
 	if(state==actions.RUN):  
-		run_left(Fps.MAX_FPS) 
+		run_left(Global.Inverse_MAX_FPS) 
 	elif(state==actions.TURN):      
-		run_right(Fps.MAX_FPS) 
+		run_right(Global.Inverse_MAX_FPS) 
 	elif(state==actions.JUMP):
-		jump(Fps.MAX_FPS)
-	velocity.y += gravity * Fps.MAX_FPS
+		jump(Global.Inverse_MAX_FPS)
+	velocity.y += gravity * Global.Inverse_MAX_FPS
 	velocity = move_and_slide(velocity, Vector2.UP)
 

@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scripts/Game/Camera2D.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Fonts/Contra.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scripts/Game/HUD.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Game/FPS.gd" type="Script" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 17
+font_data = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D"]
+position = Vector2( 512, 343 )
+current = true
+zoom = Vector2( 1, 1.02 )
+script = ExtResource( 1 )
+
+[node name="HUD" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Lives" type="Node2D" parent="HUD"]
+
+[node name="FPS" type="Label" parent="."]
+margin_left = 353.0
+margin_top = -308.0
+margin_right = 529.0
+margin_bottom = -283.0
+custom_colors/font_color = Color( 0.886275, 0.121569, 0.121569, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "FPS: 999"
+script = ExtResource( 4 )

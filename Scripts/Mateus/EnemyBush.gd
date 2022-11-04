@@ -35,7 +35,7 @@ func stand():
 	print("STAND")
 	 
 func _process(delta):
-	timer-=Fps.MAX_FPS
+	timer-=Global.Inverse_MAX_FPS
 	if(timer<=0 and status==states.WAIT):
 		status=states.SHOOT
 		timer=3
