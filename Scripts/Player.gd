@@ -1,10 +1,9 @@
 extends KinematicBody2D
-
-export var speed = 400
+var speed = 265
 var screen_size
 var gravity=0
-export var gravityForce=10
-export var jumpForce=4
+var gravityForce=13
+var jumpForce=8
 var onTheTile=false
 var Tile_Floor
 var Tile_Water
@@ -32,6 +31,10 @@ func _ready() -> void:
 	lives = 3
 	global_position.x=255
 	global_position.y=232
+	
+	print(name)
+	if (name=="Player2"):
+		global_position.x+=50
 	
 	#Test
 	#global_position.x=6783
