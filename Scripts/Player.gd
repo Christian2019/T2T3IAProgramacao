@@ -12,6 +12,7 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 var lives
+var invincible=false
 
 enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING}
 enum sides{RIGHT,LEFT}
@@ -139,6 +140,10 @@ func _process(delta: float) -> void:
 	insideScreen()
 
 func lowered():
+	if (invincible):
+		$AnimatedSprite.visible=!$AnimatedSprite.visible
+	else:
+		$AnimatedSprite.visible=true
 	if (state==states.IDLE):
 		if Input.is_action_pressed("Arrow_DOWN"):
 			state=states.LOWERED
@@ -214,6 +219,12 @@ func respawn(respawnPositionX,respawnPositionY):
 	global_position.y=respawnPositionY
 	state=states.IDLE
 	$AnimatedSprite.playing=true
+	invincible=true
+	timerCreator("removeInvincible",2,null,true)
+	
+func removeInvincible():
+	invincible=false
+	
 
 func removeClimbCD(footPosition):
 	removeWait()
