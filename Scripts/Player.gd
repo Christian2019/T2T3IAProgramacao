@@ -17,6 +17,7 @@ enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDL
 enum sides{RIGHT,LEFT}
 var state = states.IDLE
 var side= sides.RIGHT
+var inputsExtra=""
 
 #Ajuste de animacao
 var fix_Y_FALLING_INTO_THE_WATER=30
@@ -35,6 +36,9 @@ func _ready() -> void:
 	print(name)
 	if (name=="Player2"):
 		global_position.x+=50
+		inputsExtra="2"
+		scale.x=4.24
+		scale.y=2.69
 	
 	#Test
 	#global_position.x=6783
@@ -117,7 +121,7 @@ func fit(footPosition):
 
 func _process(delta: float) -> void:
 	
-	if Input.is_action_pressed("Escape"):
+	if Input.is_action_pressed("Escape"+inputsExtra):
 		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 	
 	animationController()
@@ -148,10 +152,10 @@ func lowered():
 	else:
 		$AnimatedSprite.visible=true
 	if (state==states.IDLE):
-		if Input.is_action_pressed("Arrow_DOWN"):
+		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
 			state=states.LOWERED
 	if (state==states.LOWERED):
-		if !Input.is_action_pressed("Arrow_DOWN") or gravity>=1:
+		if !Input.is_action_pressed("Arrow_DOWN"+inputsExtra) or gravity>=1:
 			state=states.IDLE
 
 func animationController():
@@ -256,20 +260,20 @@ func climb():
 func horizontal_Move():
 	#Dive
 	if (state == states.INTO_THE_WATER):
-		if Input.is_action_pressed("Arrow_DOWN"):
+		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
 			state=states.DIVE
 	if (state ==states.DIVE):
-		if !Input.is_action_pressed("Arrow_DOWN"):
+		if !Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
 			state=states.INTO_THE_WATER
 		return
 	
-	if Input.is_action_pressed("Arrow_RIGHT"):
+	if Input.is_action_pressed("Arrow_RIGHT"+inputsExtra):
 		position.x += speed*Global.Inverse_MAX_FPS
 		side=sides.RIGHT
 		if (state==states.IDLE):
 			state=states.RUNNING
 			
-	elif Input.is_action_pressed("Arrow_LEFT"):
+	elif Input.is_action_pressed("Arrow_LEFT"+inputsExtra):
 		position.x -= speed*Global.Inverse_MAX_FPS
 		side=sides.LEFT
 		if (state==states.IDLE):
@@ -285,8 +289,8 @@ func horizontal_Move():
 func jump():
 	if (onTheTile and !tileCollision(getFootPosition(),Tile_Water)):
 		#Drop
-		if Input.is_action_pressed("Arrow_DOWN"):
-			if Input.is_action_pressed("Jump"):
+		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
+			if Input.is_action_pressed("Jump"+inputsExtra):
 				state=states.DROP_FALLING
 				var footPosition= getFootPosition()
 				while(tileCollision(footPosition,Tile_Floor)):
@@ -296,7 +300,7 @@ func jump():
 					
 		else:
 			#Jump
-			if Input.is_action_pressed("Jump"):
+			if Input.is_action_pressed("Jump"+inputsExtra):
 				position.y-=1
 				gravity-=jumpForce
 				state=states.JUMP
