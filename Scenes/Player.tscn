@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Spritesheets/Player/player/lowered.png" type="Texture" id=3]
@@ -188,6 +188,9 @@ extents = Vector2( 12.5472, 6.48672 )
 [sub_resource type="RectangleShape2D" id=115]
 extents = Vector2( 6.95755, 6.69026 )
 
+[sub_resource type="RectangleShape2D" id=117]
+extents = Vector2( 5.07075, 7.24778 )
+
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 212, 445 )
 scale = Vector2( 4.24, 2.69048 )
@@ -210,17 +213,23 @@ autostart = true
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -5.575 )
 frames = SubResource( 91 )
-animation = "Drop_Falling"
+animation = "Into_The_Water"
+frame = 1
 playing = true
 
 [node name="LoweredBoxCollision" type="CollisionShape2D" parent="."]
 position = Vector2( -3.58491, 11.3186 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 114 )
 
 [node name="JumpBoxCollision" type="CollisionShape2D" parent="."]
 position = Vector2( -0.353779, -4.0885 )
 scale = Vector2( 0.999999, 1 )
 shape = SubResource( 115 )
+
+[node name="HeadOnTheWaterCollision" type="CollisionShape2D" parent="."]
+modulate = Color( 0.027451, 0.0431373, 0.427451, 1 )
+position = Vector2( -1.297, 2.478 )
+scale = Vector2( 1, 1 )
+shape = SubResource( 117 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
