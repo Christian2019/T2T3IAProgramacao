@@ -16,7 +16,6 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Fps="*res://Scripts/FPS.gd"
 Global="*res://Scripts/Global.gd"
 
 [display]

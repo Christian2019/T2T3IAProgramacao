@@ -14,8 +14,6 @@ func _physics_process(delta: float) -> void:
 	if (cameraClampX<playerPositionX-cameraExtendsX):
 		cameraClampX=playerPositionX-cameraExtendsX
 		global_position.x=playerPositionX
-		
-	if (global_position.x>-cameraExtendsX+FpsAjustPosition):
-		Fps.global_position.x=global_position.x-cameraExtendsX+FpsAjustPosition
+
 	#Limita extremos da fase	
 	global_position.x = clamp(position.x,0+cameraExtendsX,BackgroundWidth- cameraExtendsX)
