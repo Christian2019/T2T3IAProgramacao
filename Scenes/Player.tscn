@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Spritesheets/Player/player/lowered.png" type="Texture" id=3]
@@ -38,6 +38,16 @@ region = Rect2( 192, 0, 64, 64 )
 flags = 4
 atlas = ExtResource( 7 )
 region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=118]
+flags = 4
+atlas = ExtResource( 6 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=119]
+flags = 4
+atlas = ExtResource( 6 )
+region = Rect2( 128, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=116]
 flags = 4
@@ -146,6 +156,11 @@ animations = [ {
 "name": "Death",
 "speed": 10.0
 }, {
+"frames": [ SubResource( 118 ), SubResource( 119 ) ],
+"loop": true,
+"name": "Dive",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 116 ) ],
 "loop": true,
 "name": "Drop_Falling",
@@ -213,8 +228,7 @@ autostart = true
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -5.575 )
 frames = SubResource( 91 )
-animation = "Into_The_Water"
-frame = 1
+animation = "Dive"
 playing = true
 
 [node name="LoweredBoxCollision" type="CollisionShape2D" parent="."]

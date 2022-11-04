@@ -14,7 +14,7 @@ var inWater=false
 var lives
 var invincible=false
 
-enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING}
+enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING,DIVE}
 enum sides{RIGHT,LEFT}
 var state = states.IDLE
 var side= sides.RIGHT
@@ -178,6 +178,8 @@ func animationController():
 		$AnimatedSprite.animation="Idle"
 	elif (state==states.DROP_FALLING):
 		$AnimatedSprite.animation="Drop_Falling"
+	elif (state==states.DIVE):
+		$AnimatedSprite.animation="Dive"
 
 func death():
 	var dead = false
@@ -249,6 +251,15 @@ func climb():
 		timerCreator("removeClimbCD",0.1,[footPosition],true)
 
 func horizontal_Move():
+	#Dive
+	if (state == states.INTO_THE_WATER):
+		if Input.is_action_pressed("Arrow_DOWN"):
+			state=states.DIVE
+	if (state ==states.DIVE):
+		if !Input.is_action_pressed("Arrow_DOWN"):
+			state=states.INTO_THE_WATER
+		return
+	
 	if Input.is_action_pressed("Arrow_RIGHT"):
 		position.x += speed*Global.Inverse_MAX_FPS
 		side=sides.RIGHT
