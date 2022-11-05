@@ -268,7 +268,8 @@ func horizontal_Move():
 		return
 	
 	if Input.is_action_pressed("Arrow_RIGHT"+inputsExtra):
-		position.x += speed*Global.Inverse_MAX_FPS
+		if (inTwoPlayersLimiteSpace()):
+			position.x += speed*Global.Inverse_MAX_FPS
 		side=sides.RIGHT
 		if (state==states.IDLE):
 			state=states.RUNNING
@@ -286,6 +287,19 @@ func horizontal_Move():
 	climb()
 		
 
+func inTwoPlayersLimiteSpace():
+	if Global.players==1:
+		return true
+	var camera60percentwidth=get_parent().get_node("Camera2D").cameraExtendsX*1.2
+	if (name=="Player"):
+		if (global_position.x>get_parent().get_node("Player2").global_position.x):
+			if ((global_position.x-get_parent().get_node("Player2").global_position.x)>camera60percentwidth):
+				return false
+	else:
+		if (global_position.x>get_parent().get_node("Player").global_position.x):
+			if ((global_position.x-get_parent().get_node("Player").global_position.x)>camera60percentwidth):
+				return false
+	return true
 func jump():
 	if (onTheTile and !tileCollision(getFootPosition(),Tile_Water)):
 		#Drop
