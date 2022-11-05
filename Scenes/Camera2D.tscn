@@ -20,11 +20,13 @@ script = ExtResource( 3 )
 
 [node name="Lives" type="Node2D" parent="HUD"]
 
+[node name="Lives2" type="Node2D" parent="HUD"]
+
 [node name="FPS" type="Label" parent="."]
-margin_left = 353.0
-margin_top = -308.0
-margin_right = 529.0
-margin_bottom = -283.0
+margin_left = -108.0
+margin_top = -292.0
+margin_right = 68.0
+margin_bottom = -267.0
 custom_colors/font_color = Color( 0.886275, 0.121569, 0.121569, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "FPS: 999"
