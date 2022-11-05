@@ -1,6 +1,6 @@
 [gd_scene load_steps=56 format=2]
 
-[ext_resource path="res://Scenes/Gustavo/Bullet.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Gustavo/BulletPlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Gustavo/Laser.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/Gustavo/PlayerShoot.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Spritesheets/Player/death.png" type="Texture" id=4]
@@ -302,7 +302,6 @@ resource_name = "run"
 script = ExtResource( 3 )
 bullet = ExtResource( 1 )
 laser = ExtResource( 2 )
-normal_bullet_speed = 400
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 4 )

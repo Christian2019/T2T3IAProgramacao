@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Node2D
 
 export (PackedScene) var bullet
 export (PackedScene) var laser
@@ -34,7 +34,7 @@ func _ready():
 	animated_sprite_node = $AnimatedSprite
 	bullet_position_node = $BulletPosition
 	cool_down_timer_node = $CoolDownTimer
-	#bullet_type = 0
+	bullet_type = 0
 
 func _process(delta):
 	if Input.is_action_pressed("Escape"):

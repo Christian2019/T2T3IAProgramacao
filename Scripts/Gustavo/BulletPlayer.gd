@@ -7,7 +7,7 @@ var sprite
 var direction : Vector2
 var stop = false
 var hit_player = false
-var hit_enemy = true
+#var hit_enemy = true
 var axis
 
 var angle = PI / 2
@@ -77,17 +77,17 @@ func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
 func _on_Bullet_body_entered(body):
-	if hit_enemy:
-		if "Enemy" in body.name:
+	#if hit_enemy:
+		if body.is_in_group("Enemy"):
 			body.queue_free()
 			sprite.texture = bullet_type_sprite[4]
-			hit_enemy = false
+			#hit_enemy = false
 			stop = true
 			$Timer.start()
-		elif "Turret" in body.name:
+		elif body.is_in_group("Turret"):
 			body.loose_life()
 			sprite.texture = bullet_type_sprite[4]
-			hit_enemy = false
+			#hit_enemy = false
 			stop = true
 			$Timer.start()
 
