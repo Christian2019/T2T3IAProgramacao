@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends Area2D
 
 
 enum states {STAND,SHOOT,WAIT}
@@ -9,6 +9,8 @@ var player_node;
 var status:int 
 var bullet = preload("res://Scenes/Mateus/Bullet.tscn")
 # Called when the node enters the scene tree for the first time.
+
+signal killPlayer()
 func _ready(): 
 	status=states.WAIT  
 	pass # Replace with function body.
@@ -40,7 +42,15 @@ func _process(delta):
 		status=states.SHOOT
 		timer=3
 		shoot()
+		$StandingUp.visible=true
 	elif(timer<=0 and status == states.SHOOT):
 		timer=3
 		status=states.WAIT
 		print("WAIT") 
+		$StandingUp.visible=false
+
+
+func _on_InimigoArbusto_area_entered(area):
+	if(area.is_in_group("Player")):
+		emit_signal("killPlayer")
+	pass # Replace with function body.
