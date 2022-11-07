@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Scripts/Mateus/Ponte.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Spritesheets/PonteFimNomral.png" type="Texture" id=2]
@@ -57,29 +57,9 @@ flags = 4
 atlas = ExtResource( 10 )
 region = Rect2( 68, 0, 34, 34 )
 
-[sub_resource type="AtlasTexture" id=25]
-flags = 4
-atlas = ExtResource( 10 )
-region = Rect2( 102, 0, 34, 34 )
-
-[sub_resource type="AtlasTexture" id=26]
-flags = 4
-atlas = ExtResource( 10 )
-region = Rect2( 136, 0, 34, 34 )
-
-[sub_resource type="AtlasTexture" id=27]
-flags = 4
-atlas = ExtResource( 10 )
-region = Rect2( 170, 0, 34, 34 )
-
-[sub_resource type="AtlasTexture" id=28]
-flags = 4
-atlas = ExtResource( 10 )
-region = Rect2( 204, 0, 34, 34 )
-
 [sub_resource type="SpriteFrames" id=29]
 animations = [ {
-"frames": [ SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ) ],
+"frames": [ SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
 "loop": true,
 "name": "Explosion",
 "speed": 5.0
@@ -113,7 +93,7 @@ extents = Vector2( 100.5, 96 )
 
 [sub_resource type="SpriteFrames" id=30]
 animations = [ {
-"frames": [ SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ) ],
+"frames": [ SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
 "loop": true,
 "name": "Explosion",
 "speed": 5.0
