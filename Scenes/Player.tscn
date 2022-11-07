@@ -13,9 +13,6 @@
 [ext_resource path="res://Assets/Spritesheets/Player/run.png" type="Texture" id=11]
 [ext_resource path="res://Assets/Spritesheets/Player/lowered.png" type="Texture" id=12]
 
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 4.12736, 16.9115 )
-
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 4.12737, 0.650436 )
 
@@ -310,6 +307,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 4.12736, 16.9115 )
+
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 212, 445 )
 scale = Vector2( 4.24, 2.69048 )
@@ -317,9 +317,6 @@ script = ExtResource( 2 )
 speed = 265
 gravityForce = 13
 jumpForce = 8
-
-[node name="BodyBoxCollision" type="CollisionShape2D" parent="."]
-shape = SubResource( 5 )
 
 [node name="FootBoxCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 16.354 )
@@ -347,9 +344,17 @@ position = Vector2( -17.4528, -24.5309 )
 scale = Vector2( 1.17925, 1 )
 frames = SubResource( 88 )
 animation = "jump"
-frame = 3
+frame = 1
 playing = true
 centered = false
 flip_h = true
+
+[node name="Area2D" type="Area2D" parent="." groups=["Player"]]
+
+[node name="PlayerCol" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 5 )
+
+[node name="BodyBoxCollision" type="CollisionShape2D" parent="."]
+shape = SubResource( 5 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -1,9 +1,14 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/Background/background_jump_move_prototype3.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Prototypes/JumpMovePrototype.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Sounds/Contra (NES) Music - Jungle Theme.mp3" type="AudioStream" id=4]
+[ext_resource path="res://Scenes/Mateus/Enemies/Enemy_Bush.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Mateus/Enemies/StandShooter.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Mateus/Enemies/Enemy_Backpack.tscn" type="PackedScene" id=7]
+[ext_resource path="res://icon.png" type="Texture" id=8]
+[ext_resource path="res://Scenes/Mateus/Item/Gun_Type.tscn" type="PackedScene" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 145.781, 18.375 )
@@ -67,3 +72,26 @@ position = Vector2( 96.0001, 50 )
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
 autoplay = true
+
+[node name="Soldier" parent="." instance=ExtResource( 7 )]
+position = Vector2( 1037, 216 )
+scale = Vector2( 3.76, 3.16296 )
+
+[node name="InimigoArbusto" parent="." groups=["Player"] instance=ExtResource( 5 )]
+position = Vector2( 639, 249 )
+scale = Vector2( 2.68, 2.32 )
+player = NodePath("../Player")
+
+[node name="StandEnemy" parent="." instance=ExtResource( 6 )]
+position = Vector2( 626, 493 )
+scale = Vector2( 2.96, 2.92 )
+script = null
+
+[node name="Item" parent="." instance=ExtResource( 9 )]
+position = Vector2( 802, 424 )
+index = 1
+texture = ExtResource( 8 )
+
+[connection signal="killPlayer" from="Soldier" to="Player" method="_on_Soldier_killPlayer"]
+[connection signal="killPlayer" from="InimigoArbusto" to="Player" method="_on_InimigoArbusto_killPlayer"]
+[connection signal="get_gun" from="Item" to="Player" method="_on_Item_get_gun"]
