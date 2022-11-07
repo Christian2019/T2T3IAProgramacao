@@ -1,29 +1,29 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Assets/Spritesheets/Enemies/turreta.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Spritesheets/Gustavo/DefenseWallBoss/wall_cannon.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Gustavo/TurretLife.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/Gustavo/CannonShoot.gd" type="Script" id=3]
-[ext_resource path="res://Scenes/Gustavo/CannonBullet.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Gustavo/Bullets/CannonBullet.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 25.5, 25.5 )
+extents = Vector2( 6.5, 4.5 )
 
 [node name="Turret" type="KinematicBody2D" groups=["Turret"]]
 script = ExtResource( 2 )
 
 [node name="Turreta" type="Sprite" parent="."]
-scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 1 )
+hframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 2, 2 )
 shape = SubResource( 1 )
 
 [node name="ShootBullet" type="Node2D" parent="."]
+position = Vector2( -10, -3 )
 script = ExtResource( 3 )
 cannon_bullet = ExtResource( 4 )
 
 [node name="CoolDownTimer" type="Timer" parent="ShootBullet"]
-wait_time = 2.0
 
 [connection signal="timeout" from="ShootBullet/CoolDownTimer" to="ShootBullet" method="_on_CoolDownTimer_timeout"]

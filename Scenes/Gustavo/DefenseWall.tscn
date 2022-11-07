@@ -1,0 +1,102 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Scripts/Gustavo/TurretLife.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Spritesheets/Gustavo/DefenseWallBoss/wall.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Spritesheets/Gustavo/DefenseWallBoss/wall_cannon.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Spritesheets/Gustavo/DefenseWallBoss/wall_cannon2.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Gustavo/Bullets/CannonBullet.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/Gustavo/CannonShoot.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Spritesheets/Gustavo/DefenseWallBoss/door.png" type="Texture" id=7]
+[ext_resource path="res://Scripts/Gustavo/DefenseWall.gd" type="Script" id=8]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6.5, 4 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 12, 6 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 28, 33 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 28, 0, 28, 33 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 56, 0, 28, 33 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 12, 15 )
+
+[node name="DefenseWall" type="Node2D"]
+script = ExtResource( 8 )
+
+[node name="Wall" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Cannon1" type="KinematicBody2D" parent="." groups=["Turret"]]
+position = Vector2( -41, -5 )
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="Cannon1"]
+texture = ExtResource( 4 )
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cannon1"]
+position = Vector2( -5.5, -3 )
+shape = SubResource( 1 )
+
+[node name="ShootBullet" type="Node2D" parent="Cannon1"]
+position = Vector2( -10, -3 )
+script = ExtResource( 6 )
+cannon_bullet = ExtResource( 5 )
+
+[node name="Cannon2" type="KinematicBody2D" parent="." groups=["Turret"]]
+position = Vector2( -20, -5 )
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="Cannon2"]
+texture = ExtResource( 3 )
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cannon2"]
+position = Vector2( 0, -2 )
+shape = SubResource( 7 )
+
+[node name="ShootBullet" type="Node2D" parent="Cannon2"]
+position = Vector2( -10, -3 )
+script = ExtResource( 6 )
+cannon_bullet = ExtResource( 5 )
+
+[node name="Door" type="KinematicBody2D" parent="." groups=["Turret"]]
+position = Vector2( -36, 35 )
+script = ExtResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Door"]
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door"]
+shape = SubResource( 6 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( -16, 72 )
+
+[connection signal="tree_exited" from="Door" to="." method="_on_Door_tree_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

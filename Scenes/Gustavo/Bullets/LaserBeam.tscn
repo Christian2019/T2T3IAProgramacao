@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scripts/Gustavo/LaserBeam.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Spritesheets/Bullets/pop.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (7).wav" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (8).wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Spritesheets/Bullets/laser.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 3 )
+
+[node name="LaserBeam" type="Area2D"]
+script = ExtResource( 1 )
+pop_sprite = ExtResource( 2 )
+bullet_hit_audio_stream = [ ExtResource( 4 ), ExtResource( 3 ) ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 5 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+
+[node name="HitAudio" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_LaserBeam_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

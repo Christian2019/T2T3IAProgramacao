@@ -1,0 +1,49 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scripts/Gustavo/FlyingCapsule.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Spritesheets/Gustavo/Explosions/explosion.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Spritesheets/Gustavo/PowerUps/flying_capsule.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Gustavo/PowerUps/PickUp.tscn" type="PackedScene" id=4]
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 34, 34 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 34, 0, 34, 34 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 68, 0, 34, 34 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "explosion",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 12, 7 )
+
+[node name="FlyingCapsule" type="KinematicBody2D" groups=["Capsule"]]
+script = ExtResource( 1 )
+falcon = ExtResource( 4 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
