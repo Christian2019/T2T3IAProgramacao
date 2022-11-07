@@ -13,7 +13,8 @@ var inWater=false
 var lives
 var invincible=false
 
-enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING,DIVE}
+enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING,DIVE,AIMING_ON_WATER_DIAGONAL,
+AIMING_ON_WATER_UP,AIMING_ON_WATER_FRONT,LOOK_UP,RUNNING_AIMING_DOWN,RUNNING_AIMING_FRONT,RUNNING_AIMING_UP}
 enum sides{RIGHT,LEFT}
 var state = states.IDLE
 var side= sides.RIGHT
@@ -187,6 +188,22 @@ func animationController():
 		$AnimatedSprite.animation="Drop_Falling"
 	elif (state==states.DIVE):
 		$AnimatedSprite.animation="Dive"
+	elif (state==states.AIMING_ON_WATER_DIAGONAL):
+		$AnimatedSprite.animation="Aiming_on_water_Diagonal"
+	elif (state==states.AIMING_ON_WATER_UP):
+		$AnimatedSprite.animation="Aiming_on_water_Up"
+	elif (state==states.AIMING_ON_WATER_FRONT):
+		$AnimatedSprite.animation="Aiming_on_water_Front"
+	elif (state==states.LOOK_UP):
+		$AnimatedSprite.animation="Look_up"
+	elif (state==states.RUNNING_AIMING_DOWN):
+		$AnimatedSprite.animation="Running_aiming_down"
+	elif (state==states.RUNNING_AIMING_FRONT):
+		$AnimatedSprite.animation="Running_aiming_front"
+	elif (state==states.RUNNING_AIMING_UP):
+		$AnimatedSprite.animation="Running_aiming_up"
+		
+
 
 func death():
 	var dead = false
@@ -350,6 +367,10 @@ func timerCreator(functionName,time,parameters,create):
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
+		
+	
+	#SHOOT
+	
 
 func _on_Timer_timeout() -> void:
 	
