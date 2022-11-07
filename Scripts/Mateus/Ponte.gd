@@ -8,12 +8,23 @@ var partesVetor:Array;
 var destroy=false 
 # Called when the node enters the scene tree for the first time.
 func _ready(): 
+	get_node("Ponte0/AnimatedSprite").play("Normal")
+	get_node("Ponte1/AnimatedSprite2").play("default")
+	get_node("Ponte2/AnimatedSprite3").play("default")
+	get_node("Ponte3/AnimatedSprite").play("Normal")
 	pass # Replace with function body.
-func destroyBlock(index):
-	if(index==0 or index ==3):
+ 
+func destroyBlock(index):   
+	if(index==0 or index ==3):  
+		get_node("Ponte"+str(index)+"/Explosion").play("Explosion")  
+		yield(get_tree().create_timer(1.2),"timeout")
 		get_node("Ponte"+str(index)+"/AnimatedSprite").animation="Quebrado"
 		get_node("Ponte"+str(index)+"/CollisionShape2D").queue_free()
+		get_node("Ponte"+str(index)+"/Explosion").queue_free()
 	else:
+		get_node("Ponte"+str(index)+"/Explosion").play("Explosion")  
+		yield(get_tree().create_timer(1.2),"timeout")
+		timerCreator("play_explosion",1,[index],true)
 		get_node("Ponte"+str(index)).queue_free()
 
 func _physics_process(delta):  
@@ -46,3 +57,5 @@ func timerCreator(functionName,time,parameters,create):
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
+
+ 

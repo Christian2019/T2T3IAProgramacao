@@ -8,7 +8,7 @@ export var jumpForce=4
 var onTheTile=false
 var Tile_Floor
 var Tile_Water
-
+var Tile_Bridge
 
 func _ready() -> void:
 	screen_size= get_viewport_rect().size
@@ -16,7 +16,7 @@ func _ready() -> void:
 	
 func loadTiles():
 		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
-		Tile_Water= get_parent().get_node("Tiles/Water").get_children()
+		Tile_Water= get_parent().get_node("Tiles/Water").get_children() 
 
 func getFootPosition():
 		var center= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
@@ -142,3 +142,27 @@ func insideScreen():
 func _on_Timer_timeout() -> void:
 	pass
 
+
+
+func _on_InimigoArbusto_killPlayer():
+	print("KILL")
+	pass # Replace with function body.
+
+
+func _on_StandEnemy_killPlayer():
+	print("KILL")
+	pass # Replace with function body.
+
+
+
+func _on_Soldier_killPlayer():
+	print("KILL")
+	pass # Replace with function body.
+
+	pass # Replace with function body.
+
+
+func _on_Item_get_gun(index):
+	print("Get gun:",index)
+	get_parent().get_node("Item").queue_free()
+	pass # Replace with function body.
