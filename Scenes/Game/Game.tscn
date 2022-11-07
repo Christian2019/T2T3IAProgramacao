@@ -179,7 +179,6 @@ __meta__ = {
 position = Vector2( 5154, 331 )
 scale = Vector2( 2.98214, 2.98214 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="MainMusic" type="AudioStreamPlayer2D" parent="."]
