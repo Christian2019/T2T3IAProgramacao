@@ -36,12 +36,14 @@ func _process(delta: float) -> void:
 	if(actual_position==0):   
 		$FinalScreen.get_node("1Player").set("custom_colors/font_color", Color(1.0, 1.0, 1.0, 1.0))
 		$FinalScreen.get_node("2Player").set("custom_colors/font_color", Color(0.6,0.6,0.6,1.0))
+		Global.players=1
 
 	else:  
 		$FinalScreen.get_node("2Player").set("custom_colors/font_color", Color(1.0, 1.0, 1.0, 1.0))
 		$FinalScreen.get_node("1Player").set("custom_colors/font_color", Color(0.6,0.6,0.6,1.0))
+		Global.players=2
 	
-	
+	if ($FinalScreen.visible):
 		if(Input.is_action_pressed("Start")):
-			get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
+			get_tree().change_scene("res://Scenes/TelaTransicao.tscn")
 	
