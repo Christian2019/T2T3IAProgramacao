@@ -49,8 +49,17 @@ func _process(delta):
 		print("WAIT") 
 		$StandingUp.visible=false
 
-
+func die():  
+	$SpriteSoldadoArbusto.play("Explode")
+	yield(get_tree().create_timer(0.35),"timeout");  
+	self.queue_free()
+	
 func _on_InimigoArbusto_area_entered(area):
 	if(area.is_in_group("Player")):
 		emit_signal("killPlayer")
+	pass # Replace with function body.
+
+#Mudar para quando a bala entra no inimigo
+func _on_Button_pressed():
+	die()
 	pass # Replace with function body.

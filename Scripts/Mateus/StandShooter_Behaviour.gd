@@ -1,7 +1,7 @@
 extends Area2D
 
 
-enum states{SHOOT,STOP}
+enum states{SHOOT,STOP,DEAD}
 export(NodePath) var player;
 var state=states.STOP
 
@@ -26,8 +26,11 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:    
 	player_position=get_node(player).position      
 	player_=get_node(player)  
-	changeAnimation()
-	rotation_direction=rotation_dir()
+	if(state!=states.DEAD):
+		changeAnimation()
+		rotation_direction=rotation_dir()
+	else:
+		die()
 
 func rotation_dir():  
 	var angle=rad2deg((player_position-position).normalized().angle()) 
@@ -102,7 +105,10 @@ func timerDestroyer(timer,timer2):
 	remove_child(timer)
 	remove_child(timer2) 
  
-
+func die():  
+	$AnimatedSprite.play("Explode")
+	yield(get_tree().create_timer(0.35),"timeout");  
+	self.queue_free()
 
 func _on_StandEnemy_area_entered(area):
 	emit_signal("killPlayer")
@@ -115,8 +121,13 @@ func _on_ChangeState_timeout() -> void:
 			$AnimatedSprite.stop()
 			$AnimatedSprite.frame=0
 			$ChangeState.start() 
-	else:   
+	elif(state==states.STOP):   
 			state=states.SHOOT     
 			shoot_bullet()
 			timerCreator("shoot_bullet",1) 
 			timerCreator("shoot_bullet",2) 
+	 
+#Mudar para quando a bala entra aqui
+func _on_Button_pressed():
+	state=states.DEAD
+	pass # Replace with function body.

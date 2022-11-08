@@ -13,10 +13,10 @@ var state= actions.RUN
 onready var target := position # alvo inicial é a própria posição
 onready var player := $Animation
 var rng = RandomNumberGenerator.new() 
-enum actions{RUN,JUMP,TURN} 
+enum actions{RUN,JUMP,TURN,DEAD} 
 var isJumping=false 
 var run:Vector2 
-
+var dead=false
 
 signal killPlayer()
 
@@ -50,7 +50,7 @@ func changeState():
 	if(state==actions.RUN and not $RayCast2D.is_colliding()):
 		rng.randomize()
 		var rand_chance=rng.randi_range(0,10) 
-		if(rand_chance >= 0 and rand_chance<=2):
+		if(rand_chance >= 0 and rand_chance<=10):
 			state=actions.TURN
 		else:
 			state=actions.JUMP
@@ -67,26 +67,42 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta): 
 	changeState()  
+	
 	if(state==actions.RUN):  
 		run_left(Fps.MAX_FPS) 
 	elif(state==actions.TURN):      
 		run_right(Fps.MAX_FPS) 
 	elif(state==actions.JUMP):
 		jump(Fps.MAX_FPS)
-		
+	elif(state==actions.DEAD):
+		die()
 	if (velocity.y>0):
 		isJumping=false
-	if (!$RayCast2D.is_colliding() and !$RayCast2D2.is_colliding()):	
+	if (!$RayCast2D.is_colliding() and !$RayCast2D2.is_colliding() and state!=actions.DEAD):	
 		velocity.y += gravity * Fps.MAX_FPS
 		$Animation.play("Jump")
-	elif(!isJumping): 
+	elif(!isJumping and state!=actions.DEAD): 
 		$Animation.play("Run")
-		velocity.y=0
-		
+		velocity.y=0 
 	velocity = move_and_slide(velocity, Vector2.UP)
 
+func die(): 
+	jump(Fps.MAX_FPS)
+	velocity.y += gravity * Fps.MAX_FPS
+	velocity.x=0
+	yield(get_tree().create_timer(0.5),"timeout") 
+	velocity.y=0
+	$Animation.play("Explode")
+	yield(get_tree().create_timer(0.35),"timeout");  
+	self.queue_free()
+	
 
 func _on_DeathZone_area_entered(area):
 	if(area.is_in_group("Player")):
 		emit_signal("killPlayer")
+	pass # Replace with function body.
+
+#MUDA PRA QUANDO A BALA PASSAR POR ELE
+func _on_Button_pressed():
+	state=actions.DEAD 
 	pass # Replace with function body.
