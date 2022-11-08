@@ -424,3 +424,5 @@ position = Vector2( 0, -5.575 )
 frames = SubResource( 152 )
 animation = "Lowered_shoot"
 playing = true
+
+[node name="BulletPosition" type="Position2D" parent="."]

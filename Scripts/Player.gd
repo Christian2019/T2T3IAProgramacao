@@ -13,6 +13,27 @@ var inWater=false
 var lives
 var invincible=false
 
+#Shoot
+var bullet = preload("res://Scenes/BulletPlayer.tscn")
+var laser = preload("res://Scenes/Laser.tscn")
+var bullet_type = 0
+# 0->normal 1->machinegun 2->spread 3->flamethrower 4->laser
+var facing_right = true
+var is_jumping = false
+var is_shooting = false
+
+var can_shoot = true
+
+var bullet_rotation := 0.0
+var bullet_adjacent_1 := 0.0
+var bullet_adjacent_2 := 0.0
+var bullet_adjacent_3 := 0.0
+var bullet_adjacent_4 := 0.0
+
+var bullet_position_node
+var shoot_audio_node
+export (Array, AudioStream) var gun_shoot_audio
+
 enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING,DIVE,AIMING_ON_WATER_DIAGONAL,
 AIMING_ON_WATER_UP,AIMING_ON_WATER_FRONT}
 enum sides{RIGHT,LEFT}
@@ -23,11 +44,13 @@ var inputsExtra=""
 #Ajuste de animacao
 var fix_Y_FALLING_INTO_THE_WATER=30
 
-
-
 func _ready() -> void:
 	screen_size= get_viewport_rect().size
 	loadTiles()
+	
+	#Shoot
+	bullet_position_node = $BulletPosition
+	shoot_audio_node = $ShootAudio
 	
 	#Start
 	lives = 3
@@ -152,11 +175,15 @@ func _process(delta: float) -> void:
 	
 	lowered()
 	
+	if (state!=states.DIVE and Input.is_action_pressed("Shoot"+inputsExtra)):
+		shoot()
+	
 	death()
 	
 	
 	#Mantem o personagem dentro da tela
 	insideScreen()
+
 
 func lowered():
 	if (invincible):
@@ -195,14 +222,28 @@ func animationController():
 		else:
 			$AnimatedSprite.animation="Lowered"
 	elif (state==states.RUNNING):
+		var frame = $AnimatedSprite.frame
+		var changeFrame=false
 		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra) :
+			if ($AnimatedSprite.animation!="Running_aiming_down"):
+				changeFrame=true				
 			$AnimatedSprite.animation="Running_aiming_down"
+			
 		elif Input.is_action_pressed("Arrow_UP"+inputsExtra):
+			if ($AnimatedSprite.animation!="Running_aiming_up"):
+				changeFrame=true	
 			$AnimatedSprite.animation="Running_aiming_up"
 		elif Input.is_action_pressed("Shoot"+inputsExtra):
+			if ($AnimatedSprite.animation!="Running_aiming_front"):
+				changeFrame=true	
 			$AnimatedSprite.animation="Running_aiming_front"
 		else:
+			if ($AnimatedSprite.animation!="Running"):
+				changeFrame=true	
 			$AnimatedSprite.animation="Running"
+		if (changeFrame):
+			$AnimatedSprite.frame=frame
+	
 	
 	elif (state==states.IDLE):
 		if Input.is_action_pressed("Arrow_UP"+inputsExtra) :
@@ -396,6 +437,220 @@ func timerCreator(functionName,time,parameters,create):
 		
 	
 	#SHOOT
+	
+func shootCD():
+	can_shoot = true
+	
+func shoot():
+	shooting_directions()
+	if bullet_type == 1 and Input.is_action_pressed("Shoot"+inputsExtra):
+		is_shooting = true
+		if can_shoot:
+			bullet_shoot(bullet_rotation)
+			timerCreator("shootCD",0.2,null,true)
+			can_shoot = false
+	elif Input.is_action_just_pressed("Shoot"+inputsExtra):
+		is_shooting = true
+		if can_shoot:
+			if bullet_type == 4:
+				laser_shoot()
+			else:
+				bullet_shoot(bullet_rotation)
+			
+				if bullet_type == 2:
+					spread_bullet()
+				#cool_down_timer_node.start()
+			
+			#can_shoot = false
+	else:
+		is_shooting = false
+
+func bullet_shoot(dir):
+	var bullet_instance = bullet.instance()
+	get_parent().add_child(bullet_instance)
+	bullet_instance.global_position = bullet_position_node.global_position
+	bullet_instance.set_scale(Vector2(2,2))
+	
+	bullet_instance.set_bullet(bullet_position_node.global_position, 
+		bullet_type, dir, facing_right)
+	shoot_audio()
+
+func shoot_audio():
+	if shoot_audio_node.is_playing():
+		shoot_audio_node.stop()
+	
+	var audio
+	match bullet_type:
+		0:
+			audio = gun_shoot_audio[bullet_type]
+		1:
+			audio = gun_shoot_audio[bullet_type]
+		2:
+			audio = gun_shoot_audio[bullet_type]
+		3:
+			audio = gun_shoot_audio[bullet_type]
+		4:
+			audio = gun_shoot_audio[bullet_type]
+	
+	shoot_audio_node.set_stream(audio)
+	shoot_audio_node.play()
+
+func spread_bullet():
+	bullet_shoot(bullet_adjacent_1)
+	bullet_shoot(bullet_adjacent_2)
+	bullet_shoot(bullet_adjacent_3)
+	bullet_shoot(bullet_adjacent_4)
+
+func laser_shoot():
+	var laser_instance = laser.instance()
+	get_parent().add_child(laser_instance)
+	laser_instance.global_position = bullet_position_node.global_position
+	laser_instance.set_scale(Vector2(2,2))
+	laser_instance.set_rotation(bullet_rotation)
+
+func shooting_directions():
+	match $AnimatedSprite.animation:
+		"Look_up_shoot":
+			bullet_position_node.position = Vector2(4.481, -28.248)
+			if ($AnimatedSprite.flip_h):
+				bullet_position_node.position = Vector2(-4.481, -28.248)
+			bullet_rotation = -90
+			bullet_adjacent_1 = -100
+			bullet_adjacent_2 = -95
+			bullet_adjacent_3 = -85
+			bullet_adjacent_4 = -80
+
+		"Running_aiming_up":
+			if (!$AnimatedSprite.flip_h):
+				bullet_position_node.position = Vector2(10.613, -15.611)
+				bullet_rotation = -30
+				bullet_adjacent_1 = -55
+				bullet_adjacent_2 = -50
+				bullet_adjacent_3 = -40
+				bullet_adjacent_4 = -35
+			else:
+				bullet_position_node.position = Vector2(-10.377, -16.354)
+				bullet_rotation = -150
+				bullet_adjacent_1 = -145
+				bullet_adjacent_2 = -140
+				bullet_adjacent_3 = -130
+				bullet_adjacent_4 = -125
+	
+		"Running_aiming_front":
+			if (!$AnimatedSprite.flip_h):
+				bullet_position_node.position = Vector2(12, -1)
+				bullet_rotation = 0
+				bullet_adjacent_1 = 10
+				bullet_adjacent_2 = 5
+				bullet_adjacent_3 = -5
+				bullet_adjacent_4 = -10
+			else:
+				bullet_position_node.position = Vector2(-12, -1)
+				bullet_rotation = 180
+				bullet_adjacent_1 = 190
+				bullet_adjacent_2 = 185
+				bullet_adjacent_3 = 175
+				bullet_adjacent_4 = 170
+		"Jump":
+			if Input.is_action_just_pressed("Arrow_DOWN"+inputsExtra):
+				bullet_position_node.position = Vector2(0, 20)
+				bullet_rotation = 90
+				bullet_adjacent_1 = 100
+				bullet_adjacent_2 = 95
+				bullet_adjacent_3 = 85
+				bullet_adjacent_4 = 80
+			else:
+				if (!$AnimatedSprite.flip_h):
+					bullet_position_node.position = Vector2(12, -1)
+					bullet_rotation = 0
+					bullet_adjacent_1 = 10
+					bullet_adjacent_2 = 5
+					bullet_adjacent_3 = -5
+					bullet_adjacent_4 = -10
+				else:
+					bullet_position_node.position = Vector2(-12, -1)
+					bullet_rotation = 180
+					bullet_adjacent_1 = 190
+					bullet_adjacent_2 = 185
+					bullet_adjacent_3 = 175
+					bullet_adjacent_4 = 170
+
+		"Running_aiming_down":
+			if (!$AnimatedSprite.flip_h):
+				bullet_position_node.position = Vector2(10, 7)
+				bullet_rotation = 45
+				bullet_adjacent_1 = 55
+				bullet_adjacent_2 = 50
+				bullet_adjacent_3 = 40
+				bullet_adjacent_4 = 35
+			else:
+				bullet_position_node.position = Vector2(-10, 7)
+				bullet_rotation = 135
+				bullet_adjacent_1 = 145
+				bullet_adjacent_2 = 140
+				bullet_adjacent_3 = 130
+				bullet_adjacent_4 = 125
+					
+		"Lowered_shoot":
+			if (!$AnimatedSprite.flip_h):
+				bullet_position_node.position = Vector2(17, 13)
+				bullet_rotation = 0
+				bullet_adjacent_1 = 10
+				bullet_adjacent_2 = 5
+				bullet_adjacent_3 = -5
+				bullet_adjacent_4 = -10
+			else:
+				bullet_position_node.position = Vector2(-17, 13)
+				bullet_rotation = 180
+				bullet_adjacent_1 = 190
+				bullet_adjacent_2 = 185
+				bullet_adjacent_3 = 175
+				bullet_adjacent_4 = 170
+		"Aiming_on_water_Front":
+			if (!$AnimatedSprite.flip_h):
+				bullet_position_node.position = Vector2(12, -1)
+				bullet_rotation = 0
+				bullet_adjacent_1 = 10
+				bullet_adjacent_2 = 5
+				bullet_adjacent_3 = -5
+				bullet_adjacent_4 = -10
+			else:
+				bullet_position_node.position = Vector2(-12, -1)
+				bullet_rotation = 180
+				bullet_adjacent_1 = 190
+				bullet_adjacent_2 = 185
+				bullet_adjacent_3 = 175
+				bullet_adjacent_4 = 170
+		"Aiming_on_water_Up":
+			if (!$AnimatedSprite.flip_h):
+				bullet_position_node.position = Vector2(8, -14)
+				bullet_rotation = -45
+				bullet_adjacent_1 = -55
+				bullet_adjacent_2 = -50
+				bullet_adjacent_3 = -40
+				bullet_adjacent_4 = -35
+			else:
+				bullet_position_node.position = Vector2(-8, -14)
+				bullet_rotation = -135
+				bullet_adjacent_1 = -145
+				bullet_adjacent_2 = -140
+				bullet_adjacent_3 = -130
+				bullet_adjacent_4 = -125
+		"Aiming_on_water_Diagonal":
+			if (!$AnimatedSprite.flip_h):
+				bullet_position_node.position = Vector2(8, -14)
+				bullet_rotation = -45
+				bullet_adjacent_1 = -55
+				bullet_adjacent_2 = -50
+				bullet_adjacent_3 = -40
+				bullet_adjacent_4 = -35
+			else:
+				bullet_position_node.position = Vector2(-8, -14)
+				bullet_rotation = -135
+				bullet_adjacent_1 = -145
+				bullet_adjacent_2 = -140
+				bullet_adjacent_3 = -130
+				bullet_adjacent_4 = -125
 	
 
 func _on_Timer_timeout() -> void:
