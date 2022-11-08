@@ -83,19 +83,7 @@ func radius_position(dir):
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
-func _on_Bullet_body_entered(body):
 	
-	if body.is_in_group("Capsule"):
-		body.explode()
-		pop_bullet()
-	
-	if body.is_in_group("Enemy"):
-		body.queue_free() #chamar função animação de morte do inimigo
-		pop_bullet()
-	
-	elif body.is_in_group("Turret"):
-		body.loose_life()
-		pop_bullet()
 
 func pop_bullet():
 	$CollisionShape2D.queue_free()
@@ -114,3 +102,28 @@ func _on_Timer_timeout():
 
 func _on_HitAudio_finished():
 	queue_free()
+
+
+func _on_BulletPlayer_area_entered(area: Area2D) -> void:
+	if (area.get_parent().is_in_group("Enemy")):
+		var enemy = area.get_parent()
+		enemy.life-=1
+		pop_bullet()
+		if (enemy.life<=0):
+			enemy.destroy()
+			
+			# disconnect(signal: String, target: Object, ~~)
+
+	"""		
+	if area.is_in_group("Capsule"):
+		area.explode()
+		
+	
+	if area.is_in_group("Enemy"):
+		area.queue_free() #chamar função animação de morte do inimigo
+		pop_bullet()
+	
+	elif area.is_in_group("Turret"):
+		area.loose_life()
+		pop_bullet()
+	"""

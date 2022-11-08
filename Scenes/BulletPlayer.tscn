@@ -33,7 +33,7 @@ wait_time = 0.2
 
 [node name="HitAudio" type="AudioStreamPlayer2D" parent="."]
 
-[connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
+[connection signal="area_entered" from="." to="." method="_on_BulletPlayer_area_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="finished" from="HitAudio" to="." method="_on_HitAudio_finished"]

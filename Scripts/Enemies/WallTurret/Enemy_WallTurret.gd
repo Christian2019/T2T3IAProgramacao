@@ -11,9 +11,9 @@ var shoot_cd=false
 var extra_shoot_cd=true
 var extra_shoot_cd_time=1
 var RotationCD=false
-
 var firstTime=true
-
+var life =3
+var stop=false
 
 func _ready() -> void:
 	player = get_parent().get_parent().get_node("Player")
@@ -21,7 +21,8 @@ func _ready() -> void:
 	 
 	
 func _physics_process(delta: float) -> void:
-	
+	if (stop):
+		return
 			
 	if (Global.players==2):
 		if (firstTime):
@@ -34,7 +35,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			player = player1
 		
-
+	
 	drawLine()
 	chageState()
 
@@ -51,7 +52,6 @@ func drawLine():
 func chageState():
 	if (state_in_process):
 		return
-		
 	match state:
 		"Idle":
 			f_idle()
@@ -172,6 +172,14 @@ func fire():
 		newbullet.position.y+=bulletDistanceFromCenter*sin(deg2rad($Cannon.rotation_degrees))
 		get_tree().current_scene.add_child(newbullet)
 	
+func destroy():
+	if (!stop):
+		stop=true
+		$Explosion.visible=true
+		$Structure.visible=false
+		$Cannon.visible=false
+		timerCreator("queue_free",2,null,true)
+								
 
 func _on_Transition_timeout() -> void:
 	state_in_process=false
@@ -188,4 +196,24 @@ func _on_ExtraBulletCD_timeout() -> void:
 func _on_Teste_timeout() -> void:
 	pass
 
-
+func timerCreator(functionName,time,parameters,create):
+	if (create):
+		var timer = Timer.new()
+		if (parameters==null):
+			timer.connect("timeout",self,functionName)
+		else:
+			timer.connect("timeout",self,functionName,parameters)
+		timer.set_wait_time(time)
+		add_child(timer)
+		timer.one_shot=true
+		timer.start()
+	
+		var timer2 = Timer.new()
+		timer2.connect("timeout",self,"timerCreator",["",0,[timer,timer2],false])
+		timer2.set_wait_time(time+1)
+		add_child(timer2)
+		timer2.one_shot=true
+		timer2.start()
+	else:
+		remove_child(parameters[0])
+		remove_child(parameters[1])

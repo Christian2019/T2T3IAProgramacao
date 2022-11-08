@@ -22,7 +22,7 @@ var animationsPlayer2= preload("res://Scenes/AnimatedSpritePlayer2.tscn")
 #Shoot
 var bullet = preload("res://Scenes/BulletPlayer.tscn")
 var laser = preload("res://Scenes/Laser.tscn")
-var bullet_type = 0
+var bullet_type = 2
 # 0->normal 1->machinegun 2->spread 3->flamethrower 4->laser
 
 var is_jumping = false
@@ -451,7 +451,7 @@ func shoot():
 	shoot_Animation=true
 	$ShootAnimation.start()
 	shooting_directions()
-	print($AnimatedSprite.animation)
+	#rint($AnimatedSprite.animation)
 	if bullet_type == 1 and Input.is_action_pressed("Shoot"+inputsExtra):
 		is_shooting = true
 		if can_shoot:
