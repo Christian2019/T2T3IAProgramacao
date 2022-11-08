@@ -13,6 +13,9 @@ var inWater=false
 var lives
 var invincible=false
 
+var animationsPlayer1= preload("res://Scenes/AnimatedSpritePlayer1.tscn")
+var animationsPlayer2= preload("res://Scenes/AnimatedSpritePlayer2.tscn")
+
 #Shoot
 var bullet = preload("res://Scenes/BulletPlayer.tscn")
 var laser = preload("res://Scenes/Laser.tscn")
@@ -23,6 +26,8 @@ var is_jumping = false
 var is_shooting = false
 
 var can_shoot = true
+var shoot_Animation=false
+
 
 var bullet_rotation := 0.0
 var bullet_adjacent_1 := 0.0
@@ -63,6 +68,9 @@ func _ready() -> void:
 		inputsExtra="2"
 		scale.x=4.24
 		scale.y=2.69
+		add_child(animationsPlayer2.instance())
+	else:
+		add_child(animationsPlayer1.instance())
 	
 	#Test
 	#global_position.x=6783
@@ -222,29 +230,15 @@ func animationController():
 		else:
 			$AnimatedSprite.animation="Lowered"
 	elif (state==states.RUNNING):
-		var frame = $AnimatedSprite.frame
-		var changeFrame=false
 		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra) :
-			if ($AnimatedSprite.animation!="Running_aiming_down"):
-				changeFrame=true				
 			$AnimatedSprite.animation="Running_aiming_down"
-			
 		elif Input.is_action_pressed("Arrow_UP"+inputsExtra):
-			if ($AnimatedSprite.animation!="Running_aiming_up"):
-				changeFrame=true	
 			$AnimatedSprite.animation="Running_aiming_up"
-		elif Input.is_action_pressed("Shoot"+inputsExtra):
-			if ($AnimatedSprite.animation!="Running_aiming_front"):
-				changeFrame=true	
+		elif shoot_Animation:
 			$AnimatedSprite.animation="Running_aiming_front"
 		else:
-			if ($AnimatedSprite.animation!="Running"):
-				changeFrame=true	
 			$AnimatedSprite.animation="Running"
-		if (changeFrame):
-			$AnimatedSprite.frame=frame
-	
-	
+
 	elif (state==states.IDLE):
 		if Input.is_action_pressed("Arrow_UP"+inputsExtra) :
 			if Input.is_action_just_pressed("Shoot"+inputsExtra):
@@ -442,6 +436,8 @@ func shootCD():
 	can_shoot = true
 	
 func shoot():
+	shoot_Animation=true
+	$ShootAnimation.start()
 	shooting_directions()
 	if bullet_type == 1 and Input.is_action_pressed("Shoot"+inputsExtra):
 		is_shooting = true
@@ -657,3 +653,7 @@ func _on_Timer_timeout() -> void:
 	
 	pass
 
+
+
+func _on_ShootAnimation_timeout() -> void:
+	shoot_Animation=false
