@@ -1,27 +1,45 @@
 extends Node2D
 
 export var DetectionDistance = 450
+var player1
+var player2
 var player
 var state = "Idle"
 var state_in_process=false
-var bullet = preload("res://Scenes/Enemies/WallTurret/Bullet.tscn")
+var bullet = preload("res://Scenes/BulletEnemy.tscn")
 var shoot_cd=false
 var extra_shoot_cd=true
 var extra_shoot_cd_time=1
 var RotationCD=false
 
+var firstTime=true
 
 
 func _ready() -> void:
-	player = get_parent().get_node("Player")
-	pass 
+	player = get_parent().get_parent().get_node("Player")
+	
+	 
 	
 func _physics_process(delta: float) -> void:
+	
+			
+	if (Global.players==2):
+		if (firstTime):
+			firstTime=false
+			player1 = get_parent().get_parent().get_node("Player")
+			player2 = get_parent().get_parent().get_node("Player2")
+			
+		if (global_position.distance_to(player2.global_position)<global_position.distance_to(player1.global_position)):
+			 player = player2
+		else:
+			player = player1
+		
+
 	drawLine()
 	chageState()
 
 func drawLine():
-	var linha = get_parent().get_node("Line2D")
+	var linha =	get_parent().get_parent().get_node("Line2D")
 	if (position.distance_to(player.position)<DetectionDistance):
 		linha.default_color= Color.red
 	else:

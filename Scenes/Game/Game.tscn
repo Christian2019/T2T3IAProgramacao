@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=61 format=2]
 
 [ext_resource path="res://Assets/Background/jungleBackground/background2.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Background/jungleBackground/background.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Scenes/Camera2D.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (18).wav" type="AudioStream" id=6]
 [ext_resource path="res://Scripts/Game/Game.gd" type="Script" id=7]
+[ext_resource path="res://Scenes/Enemy_WallTurret.tscn" type="PackedScene" id=8]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -399,7 +400,7 @@ position = Vector2( 7932, 657.5 )
 shape = SubResource( 29 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 6783, 222 )
+position = Vector2( 3632, 259 )
 
 [node name="Camera2D" parent="." instance=ExtResource( 5 )]
 
@@ -409,3 +410,11 @@ position = Vector2( 6783, 222 )
 stream = ExtResource( 6 )
 volume_db = -2.477
 max_distance = 20000.0
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Enemy_WallTurret" parent="Enemies" instance=ExtResource( 8 )]
+position = Vector2( 3768, 448 )
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false

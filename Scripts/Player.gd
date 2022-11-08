@@ -12,6 +12,9 @@ var wait=false
 var inWater=false
 var lives
 var invincible=false
+var dead = false
+
+var contactCollision
 
 var animationsPlayer1= preload("res://Scenes/AnimatedSpritePlayer1.tscn")
 var animationsPlayer2= preload("res://Scenes/AnimatedSpritePlayer2.tscn")
@@ -59,8 +62,8 @@ func _ready() -> void:
 	
 	#Start
 	lives = 3
-	global_position.x=255
-	global_position.y=232
+	#global_position.x=255
+	#global_position.y=232
 	
 	print(name)
 	if (name=="Player2"):
@@ -89,8 +92,8 @@ func getFootPosition():
 		return {"center":center,"extents":extents}
 
 func getBodyPosition():
-		var center= {"x":(position.x+$BodyBoxCollision.position.x*scale.x),"y":(position.y+$BodyBoxCollision.position.y*scale.y)}
-		var extents= {"x":$BodyBoxCollision.shape.extents.x*scale.x,"y":$BodyBoxCollision.shape.extents.y*scale.y}
+		var center= {"x":(position.x+$BodyBoxCollision.get_children()[0].position.x*scale.x),"y":(position.y+$BodyBoxCollision.get_children()[0].position.y*scale.y)}
+		var extents= {"x":$BodyBoxCollision.get_children()[0].shape.extents.x*scale.x,"y":$BodyBoxCollision.get_children()[0].shape.extents.y*scale.y}
 		return {"center":center,"extents":extents}
 	
 func gravityF():
@@ -201,6 +204,7 @@ func lowered():
 			state=states.IDLE
 
 func animationController():
+	contactCollision=$BodyBoxCollision.get_children()[0]
 	if (side==sides.LEFT):
 		$AnimatedSprite.flip_h=true
 	else:
@@ -216,6 +220,7 @@ func animationController():
 			state=states.INTO_THE_WATER
 			
 	elif (state==states.INTO_THE_WATER):
+		contactCollision=$HeadOnTheWaterCollision.get_children()[0]
 		if Input.is_action_pressed("Arrow_UP"+inputsExtra) and (Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or Input.is_action_pressed("Arrow_LEFT"+inputsExtra)):
 			$AnimatedSprite.animation="Aiming_on_water_Diagonal"
 		elif Input.is_action_pressed("Arrow_UP"+inputsExtra) :
@@ -226,12 +231,16 @@ func animationController():
 			$AnimatedSprite.animation="Into_The_Water"
 
 	elif (state==states.JUMP):
+		contactCollision=$JumpBoxCollision.get_children()[0]
 		$AnimatedSprite.animation="Jump"
+		
 	elif (state==states.LOWERED):
+		contactCollision=$LoweredBoxCollision.get_children()[0]
 		if Input.is_action_just_pressed("Shoot"+inputsExtra):
 			$AnimatedSprite.animation="Lowered_shoot"
 		else:
 			$AnimatedSprite.animation="Lowered"
+			
 	elif (state==states.RUNNING):
 		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra) :
 			$AnimatedSprite.animation="Running_aiming_down"
@@ -258,6 +267,7 @@ func animationController():
 		$AnimatedSprite.animation="Drop_Falling"
 	elif (state==states.DIVE):
 		$AnimatedSprite.animation="Dive"
+		contactCollision=null
 	
 
 	
@@ -265,7 +275,7 @@ func animationController():
 
 
 func death():
-	var dead = false
+	
 	#Morte por queda
 	if (tileCollision(getBodyPosition(),Tile_DeathZone)):
 		dead=true
@@ -273,7 +283,10 @@ func death():
 	#Morte por colisao com bala
 	#Morte por colisao com inimigo
 	
-	if (dead):
+	if (dead): 
+		dead=false
+		if (state==states.INTO_THE_WATER):
+			$AnimatedSprite.global_position.y-=fix_Y_FALLING_INTO_THE_WATER
 		if (lives>0):
 			lives-=1
 		state=states.DEATH
@@ -293,7 +306,7 @@ func death():
 					if (tile.global_position.x-tile.shape.extents.x*tile.scale.x<respawnPositionX and
 					tile.global_position.x+tile.shape.extents.x*tile.scale.x>respawnPositionX ):
 						canDrop=true
-						respawnPositionX+=$BodyBoxCollision.shape.extents.x*$BodyBoxCollision.scale.x+20
+						respawnPositionX+=$BodyBoxCollision.get_children()[0].shape.extents.x*$BodyBoxCollision.get_children()[0].scale.x+20
 						break
 				respawnPositionX+=1
 		timerCreator("respawn",1,[respawnPositionX,respawnPositionY],true)
@@ -396,10 +409,11 @@ func jump():
 				state=states.JUMP
 
 func insideScreen():
-	var leftWidth= $BodyBoxCollision.shape.extents.x*scale.x
-	var rightWidth =$BodyBoxCollision.shape.extents.x*scale.x
-	var upHeight= $BodyBoxCollision.shape.extents.y*scale.y
-	var downHeight = $BodyBoxCollision.shape.extents.y*scale.y
+	var leftWidth= $BodyBoxCollision.get_children()[0].shape.extents.x*scale.x
+	var rightWidth =$BodyBoxCollision.get_children()[0].shape.extents.x*scale.x
+	var upHeight= $BodyBoxCollision.get_children()[0].shape.extents.y*scale.y
+	var downHeight = $BodyBoxCollision.get_children()[0].shape.extents.y*scale.y
+	
 	
 	position.x = clamp(position.x,get_parent().get_node("Camera2D").cameraClampX+leftWidth,10307-rightWidth)
 	position.y = clamp(position.y,0+upHeight,665-downHeight)
@@ -466,6 +480,7 @@ func shoot():
 
 func bullet_shoot(dir):
 	var bullet_instance = bullet.instance()
+	bullet_instance.player=name
 	get_parent().add_child(bullet_instance)
 	bullet_instance.global_position = bullet_position_node.global_position
 	bullet_instance.set_scale(Vector2(2,2))

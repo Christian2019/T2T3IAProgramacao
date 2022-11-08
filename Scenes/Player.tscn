@@ -4,11 +4,11 @@
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (1).wav" type="AudioStream" id=12]
 
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 4.12736, 16.9115 )
-
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 4.12737, 0.650436 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 4.12736, 16.9115 )
 
 [sub_resource type="RectangleShape2D" id=114]
 extents = Vector2( 12.5472, 6.48672 )
@@ -19,14 +19,11 @@ extents = Vector2( 6.95755, 6.69026 )
 [sub_resource type="RectangleShape2D" id=117]
 extents = Vector2( 5.07075, 7.24778 )
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="KinematicBody2D" groups=["Player"]]
 position = Vector2( 212, 445 )
 scale = Vector2( 4.24, 2.69048 )
 script = ExtResource( 2 )
 gun_shoot_audio = [ ExtResource( 12 ), null, null, null, null ]
-
-[node name="BodyBoxCollision" type="CollisionShape2D" parent="."]
-shape = SubResource( 5 )
 
 [node name="FootBoxCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 16.354 )
@@ -35,20 +32,6 @@ shape = SubResource( 4 )
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
-
-[node name="LoweredBoxCollision" type="CollisionShape2D" parent="."]
-position = Vector2( -3.58491, 11.3186 )
-shape = SubResource( 114 )
-
-[node name="JumpBoxCollision" type="CollisionShape2D" parent="."]
-position = Vector2( -0.353779, -4.0885 )
-scale = Vector2( 0.999999, 1 )
-shape = SubResource( 115 )
-
-[node name="HeadOnTheWaterCollision" type="CollisionShape2D" parent="."]
-modulate = Color( 0.027451, 0.0431373, 0.427451, 1 )
-position = Vector2( -1.297, 2.478 )
-shape = SubResource( 117 )
 
 [node name="BulletPosition" type="Position2D" parent="."]
 position = Vector2( 9.19811, -6.69025 )
@@ -61,8 +44,36 @@ autostart = true
 
 [node name="AnimatedSprite" parent="." instance=ExtResource( 1 )]
 animation = "Jump"
-frame = 2
+frame = 3
 flip_h = false
+
+[node name="BodyBoxCollision" type="Area2D" parent="."]
+
+[node name="BodyBoxCollision" type="CollisionShape2D" parent="BodyBoxCollision"]
+scale = Vector2( 1, 1 )
+shape = SubResource( 5 )
+
+[node name="LoweredBoxCollision" type="Area2D" parent="."]
+
+[node name="LoweredBoxCollision" type="CollisionShape2D" parent="LoweredBoxCollision"]
+position = Vector2( -3.58491, 11.3186 )
+scale = Vector2( 1, 1 )
+shape = SubResource( 114 )
+
+[node name="JumpBoxCollision" type="Area2D" parent="."]
+
+[node name="JumpBoxCollision" type="CollisionShape2D" parent="JumpBoxCollision"]
+position = Vector2( -0.353783, -4.0885 )
+scale = Vector2( 0.999999, 1 )
+shape = SubResource( 115 )
+
+[node name="HeadOnTheWaterCollision" type="Area2D" parent="."]
+
+[node name="HeadOnTheWaterCollision" type="CollisionShape2D" parent="HeadOnTheWaterCollision"]
+modulate = Color( 0.027451, 0.0431373, 0.427451, 1 )
+position = Vector2( -1.297, 2.478 )
+scale = Vector2( 1, 1 )
+shape = SubResource( 117 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="ShootAnimation" to="." method="_on_ShootAnimation_timeout"]

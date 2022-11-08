@@ -13,6 +13,7 @@ var timer_node
 var direction : Vector2
 var stop = false
 
+var player
 var normal_speed = 1000
 var flame_bullet_speed = 350
 var angular_speed = 4
