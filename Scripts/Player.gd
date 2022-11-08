@@ -21,7 +21,7 @@ var bullet = preload("res://Scenes/BulletPlayer.tscn")
 var laser = preload("res://Scenes/Laser.tscn")
 var bullet_type = 0
 # 0->normal 1->machinegun 2->spread 3->flamethrower 4->laser
-var facing_right = true
+
 var is_jumping = false
 var is_shooting = false
 
@@ -154,7 +154,11 @@ func fit(footPosition):
 	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 
 func _process(delta: float) -> void:
-
+	if Input.is_action_just_pressed("ChangeBullet"):
+		bullet_type+=1
+		if (bullet_type>4):
+			bullet_type=0
+		print(bullet_type)
 	if Input.is_action_pressed("Escape"+inputsExtra):
 		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 	
@@ -245,7 +249,7 @@ func animationController():
 			else:
 				$AnimatedSprite.animation="Look_up"
 		else:
-			if Input.is_action_just_pressed("Shoot"+inputsExtra):
+			if Input.is_action_just_pressed("Shoot"+inputsExtra) and can_shoot:
 				$AnimatedSprite.animation="Idle_shoot"
 			else:
 				$AnimatedSprite.animation="Idle"
@@ -433,6 +437,7 @@ func shoot():
 	shoot_Animation=true
 	$ShootAnimation.start()
 	shooting_directions()
+	print($AnimatedSprite.animation)
 	if bullet_type == 1 and Input.is_action_pressed("Shoot"+inputsExtra):
 		is_shooting = true
 		if can_shoot:
@@ -446,12 +451,16 @@ func shoot():
 				laser_shoot()
 			else:
 				bullet_shoot(bullet_rotation)
+				if (bullet_type==3):
+					var b = bullet_rotation
+					timerCreator("bullet_shoot",0.1,[b],true)
 			
 				if bullet_type == 2:
 					spread_bullet()
 				#cool_down_timer_node.start()
 			
-			#can_shoot = false
+			can_shoot = false
+			timerCreator("shootCD",0.5,null,true)
 	else:
 		is_shooting = false
 
@@ -462,7 +471,7 @@ func bullet_shoot(dir):
 	bullet_instance.set_scale(Vector2(2,2))
 	
 	bullet_instance.set_bullet(bullet_position_node.global_position, 
-		bullet_type, dir, facing_right)
+		bullet_type, dir, !$AnimatedSprite.flip_h)
 	shoot_audio()
 
 func shoot_audio():
@@ -504,10 +513,10 @@ func bulletInfo(bulletPosition,bulletRotation):
 		if ($AnimatedSprite.flip_h):
 			bullet_position_node.position=Vector2(-bulletPosition.x, bulletPosition.y)
 			bullet_rotation=180-bulletRotation
-		bullet_adjacent_1 = bulletRotation-10
-		bullet_adjacent_2 = bulletRotation-5
-		bullet_adjacent_3 = bulletRotation+5
-		bullet_adjacent_4 = bulletRotation+10
+		bullet_adjacent_1 = bullet_rotation-10
+		bullet_adjacent_2 = bullet_rotation-5
+		bullet_adjacent_3 = bullet_rotation+5
+		bullet_adjacent_4 = bullet_rotation+10
 		
 func shooting_directions():
 	
@@ -521,13 +530,13 @@ func shooting_directions():
 		bulletInfo(Vector2(13, 6),27)
 	elif ($AnimatedSprite.animation=="Lowered_shoot"):
 		bulletInfo(Vector2(17, 10),0)
-	elif ($AnimatedSprite.animation=="Aiming_on_water_Front"):
+	elif ($AnimatedSprite.animation=="Aiming_on_water_Front" or $AnimatedSprite.animation=="Into_The_Water" ):
 		bulletInfo(Vector2(17, 6),0)
 	elif ($AnimatedSprite.animation=="Aiming_on_water_Up"):
 		bulletInfo(Vector2(5, -18),-90)
 	elif ($AnimatedSprite.animation=="Aiming_on_water_Diagonal"):
 		bulletInfo(Vector2(11, -7),-32)
-	elif ($AnimatedSprite.animation=="Idle"):
+	elif ($AnimatedSprite.animation=="Idle" or $AnimatedSprite.animation=="Idle_shoot" ):
 		bulletInfo(Vector2(17, -4.832),0)
 	elif ($AnimatedSprite.animation=="Jump"):
 		if Input.is_action_pressed("Arrow_UP"+inputsExtra) and (Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or Input.is_action_pressed("Arrow_LEFT"+inputsExtra)):

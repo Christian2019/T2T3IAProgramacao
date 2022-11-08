@@ -2,7 +2,7 @@ extends Area2D
 
 export (Texture) var pop_sprite
 var sprite
-var speed = 400
+var speed = 800
 var stop = false
 var direction := Vector2(1,0)
 

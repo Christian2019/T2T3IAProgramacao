@@ -14,8 +14,8 @@ var direction : Vector2
 var stop = false
 
 var normal_speed = 1000
-var flame_bullet_speed = 250
-var angular_speed = 5
+var flame_bullet_speed = 350
+var angular_speed = 4
 var angle = PI / 2
 var radius = 50
 var going_right = true

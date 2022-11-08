@@ -61,6 +61,7 @@ autostart = true
 
 [node name="AnimatedSprite" parent="." instance=ExtResource( 1 )]
 animation = "Jump"
+frame = 2
 flip_h = false
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
