@@ -14,7 +14,7 @@ var lives
 var invincible=false
 
 enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING,DIVE,AIMING_ON_WATER_DIAGONAL,
-AIMING_ON_WATER_UP,AIMING_ON_WATER_FRONT,LOOK_UP,RUNNING_AIMING_DOWN,RUNNING_AIMING_FRONT,RUNNING_AIMING_UP}
+AIMING_ON_WATER_UP,AIMING_ON_WATER_FRONT}
 enum sides{RIGHT,LEFT}
 var state = states.IDLE
 var side= sides.RIGHT
@@ -76,6 +76,17 @@ func gravityF():
 					$AnimatedSprite.global_position.y+=fix_Y_FALLING_INTO_THE_WATER
 				elif(!tileCollision(footPosition,Tile_Water)):
 					state=states.IDLE
+				elif(tileCollision(footPosition,Tile_Water)):
+					if Input.is_action_pressed("Shoot"+inputsExtra):
+						if Input.is_action_pressed("Arrow_UP"+inputsExtra):
+							if Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or Input.is_action_pressed("Arrow_LEFT"+inputsExtra) :
+								state=states.AIMING_ON_WATER_DIAGONAL
+							else:
+								state=states.AIMING_ON_WATER_UP
+						else:
+							state=states.AIMING_ON_WATER_FRONT
+					else:
+						state=states.INTO_THE_WATER
 				gravity =0
 				fit(footPosition)
 				onTheTile=true
@@ -179,11 +190,32 @@ func animationController():
 	elif (state==states.JUMP):
 		$AnimatedSprite.animation="Jump"
 	elif (state==states.LOWERED):
-		$AnimatedSprite.animation="Lowered"
+		if Input.is_action_just_pressed("Shoot"+inputsExtra):
+			$AnimatedSprite.animation="Lowered_shoot"
+		else:
+			$AnimatedSprite.animation="Lowered"
 	elif (state==states.RUNNING):
-		$AnimatedSprite.animation="Running"
+		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra) :
+			$AnimatedSprite.animation="Running_aiming_down"
+		elif Input.is_action_pressed("Arrow_UP"+inputsExtra):
+			$AnimatedSprite.animation="Running_aiming_up"
+		elif Input.is_action_pressed("Shoot"+inputsExtra):
+			$AnimatedSprite.animation="Running_aiming_front"
+		else:
+			$AnimatedSprite.animation="Running"
+	
 	elif (state==states.IDLE):
-		$AnimatedSprite.animation="Idle"
+		if Input.is_action_pressed("Arrow_UP"+inputsExtra) :
+			if Input.is_action_just_pressed("Shoot"+inputsExtra):
+				$AnimatedSprite.animation="Look_up_shoot"
+			else:
+				$AnimatedSprite.animation="Look_up"
+		else:
+			if Input.is_action_just_pressed("Shoot"+inputsExtra):
+				$AnimatedSprite.animation="Idle_shoot"
+			else:
+				$AnimatedSprite.animation="Idle"
+			
 	elif (state==states.DROP_FALLING):
 		$AnimatedSprite.animation="Drop_Falling"
 	elif (state==states.DIVE):
@@ -194,14 +226,8 @@ func animationController():
 		$AnimatedSprite.animation="Aiming_on_water_Up"
 	elif (state==states.AIMING_ON_WATER_FRONT):
 		$AnimatedSprite.animation="Aiming_on_water_Front"
-	elif (state==states.LOOK_UP):
-		$AnimatedSprite.animation="Look_up"
-	elif (state==states.RUNNING_AIMING_DOWN):
-		$AnimatedSprite.animation="Running_aiming_down"
-	elif (state==states.RUNNING_AIMING_FRONT):
-		$AnimatedSprite.animation="Running_aiming_front"
-	elif (state==states.RUNNING_AIMING_UP):
-		$AnimatedSprite.animation="Running_aiming_up"
+
+	
 		
 
 

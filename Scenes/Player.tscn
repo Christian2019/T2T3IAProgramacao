@@ -321,9 +321,14 @@ animations = [ {
 "name": "Falling_Into_The_Water",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 89 ), SubResource( 90 ) ],
+"frames": [ SubResource( 89 ) ],
 "loop": true,
 "name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 90 ) ],
+"loop": true,
+"name": "Idle_shoot",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 100 ), SubResource( 101 ) ],
@@ -336,15 +341,25 @@ animations = [ {
 "name": "Jump",
 "speed": 15.0
 }, {
-"frames": [ SubResource( 128 ), SubResource( 129 ) ],
+"frames": [ SubResource( 128 ) ],
 "loop": true,
 "name": "Look_up",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 106 ), SubResource( 107 ) ],
+"frames": [ SubResource( 129 ) ],
+"loop": true,
+"name": "Look_up_shoot",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 106 ) ],
 "loop": true,
 "name": "Lowered",
 "speed": 9.0
+}, {
+"frames": [ SubResource( 107 ) ],
+"loop": true,
+"name": "Lowered_shoot",
+"speed": 5.0
 }, {
 "frames": [ SubResource( 108 ), SubResource( 109 ), SubResource( 110 ), SubResource( 111 ), SubResource( 112 ), SubResource( 113 ) ],
 "loop": true,
@@ -395,8 +410,7 @@ autostart = true
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -5.575 )
 frames = SubResource( 91 )
-animation = "Aiming_on_water_Up"
-frame = 1
+animation = "Lowered_shoot"
 playing = true
 
 [node name="LoweredBoxCollision" type="CollisionShape2D" parent="."]
