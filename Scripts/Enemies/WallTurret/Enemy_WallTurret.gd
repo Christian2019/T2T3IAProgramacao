@@ -16,7 +16,7 @@ var life =3
 var stop=false
 
 func _ready() -> void:
-	player = get_parent().get_parent().get_node("Player")
+	player = Global.MainScene.get_node("Player")
 	
 	 
 	
@@ -27,8 +27,8 @@ func _physics_process(delta: float) -> void:
 	if (Global.players==2):
 		if (firstTime):
 			firstTime=false
-			player1 = get_parent().get_parent().get_node("Player")
-			player2 = get_parent().get_parent().get_node("Player2")
+			player1 = Global.MainScene.get_node("Player")
+			player2 = Global.MainScene.get_node("Player2")
 			
 		if (global_position.distance_to(player2.global_position)<global_position.distance_to(player1.global_position)):
 			 player = player2
@@ -40,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	chageState()
 
 func drawLine():
-	var linha =	get_parent().get_parent().get_node("Line2D")
+	var linha =	Global.MainScene.get_node("Line2D")
 	if (position.distance_to(player.position)<DetectionDistance):
 		linha.default_color= Color.red
 	else:

@@ -183,7 +183,6 @@ position = Vector2( 5154, 331 )
 scale = Vector2( 2.98214, 2.98214 )
 z_index = -3
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="MainMusic" type="AudioStreamPlayer2D" parent="."]
@@ -405,7 +404,7 @@ position = Vector2( 7932, 657.5 )
 shape = SubResource( 29 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 182, 278 )
+position = Vector2( 7204, 275 )
 
 [node name="Camera2D" parent="." instance=ExtResource( 5 )]
 position = Vector2( 499, 344 )
@@ -420,27 +419,105 @@ max_distance = 20000.0
 [node name="Enemies" type="Node2D" parent="."]
 z_index = -1
 
-[node name="Enemy_WallTurret" parent="Enemies" instance=ExtResource( 8 )]
-position = Vector2( 3768, 448 )
+[node name="SoldierRespawns" type="Node2D" parent="Enemies"]
 
-[node name="Enemy_WallTurret2" parent="Enemies" instance=ExtResource( 8 )]
-position = Vector2( 4917, 353 )
-
-[node name="Enemy_WallTurret3" parent="Enemies" instance=ExtResource( 8 )]
-position = Vector2( 5489, 354 )
-
-[node name="Enemy_WallTurret4" parent="Enemies" instance=ExtResource( 8 )]
-position = Vector2( 9305, 546 )
-
-[node name="Enemy_WallTurret5" parent="Enemies" instance=ExtResource( 8 )]
-position = Vector2( 9687, 546 )
-
-[node name="SoldierRespawn" type="Node2D" parent="Enemies"]
+[node name="SoldierRespawn" type="Node2D" parent="Enemies/SoldierRespawns"]
 position = Vector2( 1293, 249 )
 script = ExtResource( 10 )
 
-[node name="Soldier" parent="Enemies/SoldierRespawn" instance=ExtResource( 9 )]
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn/Soldiers" instance=ExtResource( 9 )]
 scale = Vector2( 3, 3 )
+
+[node name="SoldierRespawn3" type="Node2D" parent="Enemies/SoldierRespawns"]
+position = Vector2( 2539, 257 )
+script = ExtResource( 10 )
+
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn3"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn3/Soldiers" instance=ExtResource( 9 )]
+scale = Vector2( 3, 3 )
+
+[node name="SoldierRespawn4" type="Node2D" parent="Enemies/SoldierRespawns"]
+position = Vector2( 3932, 248 )
+script = ExtResource( 10 )
+
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn4"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn4/Soldiers" instance=ExtResource( 9 )]
+scale = Vector2( 3, 3 )
+
+[node name="SoldierRespawn5" type="Node2D" parent="Enemies/SoldierRespawns"]
+position = Vector2( 5035, 335 )
+script = ExtResource( 10 )
+
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn5"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn5/Soldiers" instance=ExtResource( 9 )]
+scale = Vector2( 3, 3 )
+
+[node name="SoldierRespawn6" type="Node2D" parent="Enemies/SoldierRespawns"]
+position = Vector2( 5065, 159 )
+script = ExtResource( 10 )
+
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn6"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn6/Soldiers" instance=ExtResource( 9 )]
+scale = Vector2( 3, 3 )
+
+[node name="SoldierRespawn7" type="Node2D" parent="Enemies/SoldierRespawns"]
+position = Vector2( 5381, 538 )
+script = ExtResource( 10 )
+
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn7"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn7/Soldiers" instance=ExtResource( 9 )]
+scale = Vector2( 3, 3 )
+
+[node name="SoldierRespawn9" type="Node2D" parent="Enemies/SoldierRespawns"]
+position = Vector2( 6742, 348 )
+script = ExtResource( 10 )
+
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn9"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn9/Soldiers" instance=ExtResource( 9 )]
+scale = Vector2( 3, 3 )
+
+[node name="SoldierRespawn10" type="Node2D" parent="Enemies/SoldierRespawns"]
+position = Vector2( 8340, 352 )
+script = ExtResource( 10 )
+
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn10"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn10/Soldiers" instance=ExtResource( 9 )]
+scale = Vector2( 3, 3 )
+
+[node name="SoldierRespawn11" type="Node2D" parent="Enemies/SoldierRespawns"]
+position = Vector2( 9606, 535 )
+script = ExtResource( 10 )
+
+[node name="Soldiers" type="Node2D" parent="Enemies/SoldierRespawns/SoldierRespawn11"]
+
+[node name="Soldier" parent="Enemies/SoldierRespawns/SoldierRespawn11/Soldiers" instance=ExtResource( 9 )]
+scale = Vector2( 3, 3 )
+
+[node name="WallTurrets" type="Node2D" parent="Enemies"]
+
+[node name="Enemy_WallTurret" parent="Enemies/WallTurrets" instance=ExtResource( 8 )]
+position = Vector2( 3768, 448 )
+
+[node name="Enemy_WallTurret2" parent="Enemies/WallTurrets" instance=ExtResource( 8 )]
+position = Vector2( 4917, 353 )
+
+[node name="Enemy_WallTurret3" parent="Enemies/WallTurrets" instance=ExtResource( 8 )]
+position = Vector2( 5489, 354 )
+
+[node name="Enemy_WallTurret4" parent="Enemies/WallTurrets" instance=ExtResource( 8 )]
+position = Vector2( 9305, 546 )
+
+[node name="Enemy_WallTurret5" parent="Enemies/WallTurrets" instance=ExtResource( 8 )]
+position = Vector2( 9687, 546 )
 
 [node name="Line2D" type="Line2D" parent="."]
 visible = false

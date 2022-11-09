@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Assets/Spritesheets/Enemies/Runner.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Enemy_Backpack_Behaviour.gd" type="Script" id=2]
@@ -77,11 +77,20 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 8.5, 0.5 )
-
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 9, 14.5 )
+
+[sub_resource type="RectangleShape2D" id=16]
+extents = Vector2( 1, 1 )
+
+[sub_resource type="RectangleShape2D" id=17]
+extents = Vector2( 1, 1 )
+
+[sub_resource type="RectangleShape2D" id=18]
+extents = Vector2( 8.5, 0.5 )
+
+[sub_resource type="RectangleShape2D" id=19]
+extents = Vector2( 9, 0.5 )
 
 [node name="Soldier" type="KinematicBody2D" groups=["Enemy"]]
 script = ExtResource( 2 )
@@ -89,29 +98,10 @@ script = ExtResource( 2 )
 [node name="Animation" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "Run"
-frame = 5
+frame = 3
 speed_scale = 2.0
 playing = true
 flip_h = true
-
-[node name="Enemycollision" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 22 )
-shape = SubResource( 3 )
-disabled = true
-
-[node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2( -10, 23 )
-enabled = true
-cast_to = Vector2( 0, 3 )
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="RayCast2D2" type="RayCast2D" parent="."]
-position = Vector2( 10, 23 )
-enabled = true
-cast_to = Vector2( 0, 3 )
-collide_with_areas = true
-collide_with_bodies = false
 
 [node name="SoldierColision" type="Area2D" parent="."]
 
@@ -123,5 +113,39 @@ shape = SubResource( 4 )
 wait_time = 5.0
 autostart = true
 
+[node name="RightFoot" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="RightFoot"]
+position = Vector2( -9, 24 )
+shape = SubResource( 16 )
+
+[node name="LeftFoot" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftFoot"]
+position = Vector2( 9, 24 )
+shape = SubResource( 17 )
+
+[node name="FootPoint" type="Node2D" parent="."]
+position = Vector2( 0, 23 )
+
+[node name="Enemycollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 22 )
+shape = SubResource( 18 )
+disabled = true
+
+[node name="FootCollision" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FootCollision"]
+position = Vector2( 0, 22.5 )
+shape = SubResource( 19 )
+
 [connection signal="area_entered" from="SoldierColision" to="." method="_on_SoldierColision_area_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="area_entered" from="RightFoot" to="." method="_on_RightFoot_area_entered"]
+[connection signal="area_exited" from="RightFoot" to="." method="_on_RightFoot_area_exited"]
+[connection signal="area_entered" from="LeftFoot" to="." method="_on_LeftFoot_area_entered"]
+[connection signal="area_exited" from="LeftFoot" to="." method="_on_LeftFoot_area_exited"]
+[connection signal="area_entered" from="FootCollision" to="." method="_on_FootCollision_area_entered"]
+[connection signal="area_exited" from="FootCollision" to="." method="_on_FootCollision_area_exited"]
+[connection signal="area_shape_entered" from="FootCollision" to="." method="_on_FootCollision_area_shape_entered"]
+[connection signal="area_shape_exited" from="FootCollision" to="." method="_on_FootCollision_area_shape_exited"]

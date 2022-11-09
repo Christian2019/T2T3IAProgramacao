@@ -7,43 +7,46 @@ func _ready() -> void:
 	pass 
 
 func _process(delta: float) -> void:
-	if (get_children().size()<3 and playersCondition()):
+	if ($Soldiers.get_children().size()<3 and playersCondition()):
 		if (!creating):
 			creating=true
-			timerCreator("done",0.5,null,true)
+			
+			timerCreator("done",1,null,true)
 			
 
 func playersCondition():
-	var cameraPosition =get_parent().get_parent().get_node("Camera2D").global_position
-	var cameraExt = get_parent().get_parent().get_node("Camera2D").cameraExtendsX
-	if (global_position.x<cameraPosition.x-cameraExt or global_position.x>cameraPosition.x+cameraExt ):
+	var camera =Global.MainScene.get_node("Camera2D")
+	var cameraWidth = camera.cameraExtendsX*2
+	var distanceToCamera = global_position.distance_to(camera.global_position)
+	var minDistanceX = cameraWidth/2
+	var maxDistanceX = cameraWidth
+
+	if (distanceToCamera>minDistanceX and distanceToCamera<maxDistanceX ):
 		return true
 	return false
-	"""
-	var minDistance = get_parent().get_parent().get_node("Camera2D").cameraExtendsX
-	var maxDistance = minDistance*2
-	#print (global_position.distance_to(get_parent().get_parent().get_node("Player").global_position))
-	if(Global.players==2):
-		if (global_position.distance_to(get_parent().get_parent().get_node("Player").global_position)>minDistance and
-		global_position.distance_to(get_parent().get_parent().get_node("Player2").global_position)>minDistance):
-			if (global_position.distance_to(get_parent().get_parent().get_node("Player").global_position)<maxDistance and
-		global_position.distance_to(get_parent().get_parent().get_node("Player2").global_position)<maxDistance):
-				#print("entrou")
-				return true
-	else:
-		if (global_position.distance_to(get_parent().get_parent().get_node("Player").global_position)>minDistance):
-			if (global_position.distance_to(get_parent().get_parent().get_node("Player").global_position)<maxDistance):
-				#print("entrou")
-				return true
-	return false
-	"""
+	
 func done():
 	creating=false
+	
+	var n = 3-$Soldiers.get_children().size()
+	
+	for index in range(0,n,1):
+		var time=float(intRandom(1,10))/10
+		timerCreator("create",time,null,true)
+	
+	
+func create():
+	
 	var e = Enemy_Backpack.instance()
 	e.scale.x=3
 	e.scale.y=3
-	add_child(e)
-	
+	$Soldiers.add_child(e)
+
+#Sorteia um número inteiro >= ao minV e < maxV	
+func intRandom(minV,maxV):
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	return int (rng.randf_range(minV, maxV))
 	
 func timerCreator(functionName,time,parameters,create):
 	if (create):
