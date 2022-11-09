@@ -8,20 +8,23 @@ var timer=3
 var player_node;
 var status:int 
 var bullet = preload("res://Scenes/Mateus/Bullet.tscn")
+
+var is_up=false
 # Called when the node enters the scene tree for the first time.
 
 signal killPlayer()
 func _ready(): 
 	status=states.WAIT  
+	$StandingUp.disabled=true
 	pass # Replace with function body.
 
 func shoot(): 
 	player_node=get_node(player) 
 	var distance=position.x-player_node.position.x;
-	if(distance >= 0): 
+	if(distance >= 0):  
 		shoot_bullet(-180)
-	elif(distance < 0): 
-		shoot_bullet(360)
+	elif(distance < 0):  
+		shoot_bullet(0)
 	return 
 
 func shoot_bullet(dir):
@@ -34,20 +37,47 @@ func shoot_bullet(dir):
 	get_tree().current_scene.add_child(newbullet)
 	
 func stand():
-	print("STAND")
-	 
+	if(is_up==false):
+		$SpriteSoldadoArbusto.play("Levanta")
+		yield(get_tree().create_timer(0.35),"timeout"); 
+		$SpriteSoldadoArbusto.stop()
+		$SpriteSoldadoArbusto.animation="Levanta"
+		$SpriteSoldadoArbusto.frame=2 
+		is_up=true
+
+func lower(): 
+		$SpriteSoldadoArbusto.play("Abaixa")
+		yield(get_tree().create_timer(0.35),"timeout"); 
+		$SpriteSoldadoArbusto.play("default") 
+		$StandingUp.disabled=true   
+		is_up=false 
+	
 func _process(delta):
 	timer-=Fps.MAX_FPS
-	if(timer<=0 and status==states.WAIT):
-		status=states.SHOOT
-		timer=3
-		shoot()
-		$StandingUp.visible=true
+	player_node=get_node(player) 
+	var distance=position.x-player_node.position.x;
+	
+	if(distance >= 0):  
+		$SpriteSoldadoArbusto.flip_h=true
+	elif(distance < 0):   
+		$SpriteSoldadoArbusto.flip_h=false
+		
+	 
+	if(timer<=0 and status==states.WAIT):  
+		stand()    
+		$StandingUp.disabled=false
+		yield(get_tree().create_timer(0.5),"timeout");  
+		shoot()     
+		status=states.SHOOT 
+		timer=3 
 	elif(timer<=0 and status == states.SHOOT):
-		timer=3
-		status=states.WAIT
-		print("WAIT") 
-		$StandingUp.visible=false
+		
+		if(is_up):
+			lower()
+		$StandingUp.disabled=true
+		timer=3 
+		status=states.WAIT   
+		
 
 func die():  
 	$SpriteSoldadoArbusto.play("Explode")
