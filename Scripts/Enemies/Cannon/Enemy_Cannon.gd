@@ -9,7 +9,7 @@ var shoot_cd=false
 var RotationCD=false
 
 func _ready() -> void:
-	player = get_parent().get_node("Player")
+	player = Global.MainScene.get_node("Player")
 	pass 
 	
 func _physics_process(delta: float) -> void:
@@ -18,7 +18,7 @@ func _physics_process(delta: float) -> void:
 	fire()
 
 func drawLine():
-	var linha = get_parent().get_node("Line2D")
+	var linha = Global.MainScene.get_node("Line2D")
 	if (position.distance_to(player.position)<DetectionDistance):
 		linha.default_color= Color.red
 	else:
