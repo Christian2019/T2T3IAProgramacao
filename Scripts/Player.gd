@@ -11,7 +11,7 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 var lives
-var invincible=false
+var invincible=true
 var dead = false
 
 var contactCollision
@@ -283,8 +283,10 @@ func death():
 	#Morte por colisao com bala
 	#Morte por colisao com inimigo
 	
-	if (dead): 
+	if (dead):
 		dead=false
+		if invincible:
+			return
 		if (state==states.INTO_THE_WATER):
 			$AnimatedSprite.global_position.y-=fix_Y_FALLING_INTO_THE_WATER
 		if (lives>0):

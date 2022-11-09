@@ -43,7 +43,7 @@ wait_time = 0.3
 autostart = true
 
 [node name="AnimatedSprite" parent="." instance=ExtResource( 1 )]
-animation = "Jump"
+animation = "Idle"
 flip_h = false
 
 [node name="BodyBoxCollision" type="Area2D" parent="."]
