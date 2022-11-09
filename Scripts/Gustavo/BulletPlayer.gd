@@ -113,3 +113,12 @@ func _on_Timer_timeout():
 
 func _on_HitAudio_finished():
 	queue_free()
+
+
+func _on_BulletPlayer_area_entered(area):
+	if area.is_in_group("Capsule"):
+		area.explode()
+		pop_bullet()
+	if area.is_in_group("Turret"):
+		area.loose_life()
+		pop_bullet()

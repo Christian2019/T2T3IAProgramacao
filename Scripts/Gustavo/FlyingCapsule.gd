@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Area2D
 
 export (PackedScene) var falcon
 export var falcon_index = 0
@@ -11,12 +11,12 @@ var radius = 5
 var stop = false
 
 func _process(delta):
-	if stop:
-		return
-	
 	move()
 
 func move():
+	if stop:
+		return
+	
 	var horizontal_speed = max_speed * Fps.MAX_FPS
 	position.x += horizontal_speed
 	
@@ -25,10 +25,10 @@ func move():
 	position.y += dy
 
 func explode():
+	stop = true
 	$AnimatedSprite.play("explosion")
 	$CollisionShape2D.queue_free()
 	falcon()
-	print("certo mizeravi")
 
 func falcon():
 	var falcon_instance = falcon.instance()
@@ -40,4 +40,5 @@ func falcon():
 	
 
 func _on_AnimatedSprite_animation_finished():
-	queue_free()
+	if $AnimatedSprite.animation == "explosion":
+		queue_free()

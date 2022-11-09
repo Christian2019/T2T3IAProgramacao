@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/Gustavo/FlyingCapsule.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Spritesheets/Gustavo/Explosions/explosion.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Spritesheets/Gustavo/PowerUps/flying_capsule.png" type="Texture" id=3]
-[ext_resource path="res://Scenes/Gustavo/PowerUps/PickUp.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Gustavo/PowerUps/FalconPickUp.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
@@ -36,7 +36,7 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 12, 7 )
 
-[node name="FlyingCapsule" type="KinematicBody2D" groups=["Capsule"]]
+[node name="FlyingCapsule" type="Area2D" groups=["Capsule"]]
 script = ExtResource( 1 )
 falcon = ExtResource( 4 )
 

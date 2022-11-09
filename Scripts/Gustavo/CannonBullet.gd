@@ -18,7 +18,7 @@ func _process(delta):
 	gravity()
 	horizontal_velocity()
 	
-	if position.y > 72:
+	if position.y > get_parent().get_node("Position2D").position.y:
 		explode()
 
 func gravity():
@@ -43,4 +43,10 @@ func _on_AnimatedSprite_animation_finished():
 func _on_CannonBullet_body_entered(body):
 	if body.is_in_group("Player"):
 		explode()
+		
+		#chamar morte do player
 		print("F")
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	queue_free()

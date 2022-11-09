@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=2]
+[gd_scene load_steps=58 format=2]
 
 [ext_resource path="res://Scenes/Gustavo/Bullets/BulletPlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Gustavo/Bullets/Laser.tscn" type="PackedScene" id=2]
@@ -14,36 +14,27 @@
 [ext_resource path="res://Assets/Spritesheets/Player/run_n_shoot_up.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Spritesheets/Player/run.png" type="Texture" id=13]
 [ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (1).wav" type="AudioStream" id=14]
-[ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (2).wav" type="AudioStream" id=15]
-[ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (3).wav" type="AudioStream" id=16]
-[ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (4).wav" type="AudioStream" id=17]
-[ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (5).wav" type="AudioStream" id=18]
 
 [sub_resource type="RectangleShape2D" id=88]
 extents = Vector2( 10, 17 )
 
 [sub_resource type="AtlasTexture" id=49]
-flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=50]
-flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 96, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=51]
-flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 64, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=52]
-flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 32, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=53]
-flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 128, 0, 32, 42 )
 
@@ -63,87 +54,70 @@ atlas = ExtResource( 7 )
 region = Rect2( 64, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=57]
-flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 0, 0, 24, 42 )
 
 [sub_resource type="AtlasTexture" id=58]
-flags = 4
 atlas = ExtResource( 10 )
 region = Rect2( 0, 0, 24, 42 )
 
 [sub_resource type="AtlasTexture" id=59]
-flags = 4
 atlas = ExtResource( 8 )
 region = Rect2( 0, 0, 49, 42 )
 
 [sub_resource type="AtlasTexture" id=60]
-flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 24, 0, 24, 42 )
 
 [sub_resource type="AtlasTexture" id=61]
-flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 0, 0, 24, 42 )
 
 [sub_resource type="AtlasTexture" id=62]
-flags = 4
 atlas = ExtResource( 10 )
 region = Rect2( 24, 0, 24, 42 )
 
 [sub_resource type="AtlasTexture" id=63]
-flags = 4
 atlas = ExtResource( 10 )
 region = Rect2( 0, 0, 24, 42 )
 
 [sub_resource type="AtlasTexture" id=64]
-flags = 4
 atlas = ExtResource( 9 )
 region = Rect2( 0, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=65]
-flags = 4
 atlas = ExtResource( 9 )
 region = Rect2( 32, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=66]
-flags = 4
 atlas = ExtResource( 9 )
 region = Rect2( 64, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=67]
-flags = 4
 atlas = ExtResource( 9 )
 region = Rect2( 96, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=68]
-flags = 4
 atlas = ExtResource( 13 )
 region = Rect2( 0, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=69]
-flags = 4
 atlas = ExtResource( 13 )
 region = Rect2( 32, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=70]
-flags = 4
 atlas = ExtResource( 13 )
 region = Rect2( 64, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=71]
-flags = 4
 atlas = ExtResource( 13 )
 region = Rect2( 96, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=72]
-flags = 4
 atlas = ExtResource( 13 )
 region = Rect2( 128, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=73]
-flags = 4
 atlas = ExtResource( 13 )
 region = Rect2( 160, 0, 32, 42 )
 
@@ -158,47 +132,38 @@ atlas = ExtResource( 7 )
 region = Rect2( 128, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=76]
-flags = 4
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=77]
-flags = 4
 atlas = ExtResource( 5 )
 region = Rect2( 32, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=78]
-flags = 4
 atlas = ExtResource( 5 )
 region = Rect2( 64, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=82]
-flags = 4
 atlas = ExtResource( 11 )
 region = Rect2( 0, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=83]
-flags = 4
 atlas = ExtResource( 11 )
 region = Rect2( 32, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=84]
-flags = 4
 atlas = ExtResource( 11 )
 region = Rect2( 64, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=85]
-flags = 4
 atlas = ExtResource( 12 )
 region = Rect2( 0, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=86]
-flags = 4
 atlas = ExtResource( 12 )
 region = Rect2( 32, 0, 32, 42 )
 
 [sub_resource type="AtlasTexture" id=87]
-flags = 4
 atlas = ExtResource( 12 )
 region = Rect2( 64, 0, 32, 42 )
 
@@ -303,11 +268,14 @@ animations = [ {
 [sub_resource type="Animation" id=3]
 resource_name = "run"
 
+[sub_resource type="RectangleShape2D" id=89]
+extents = Vector2( 4, 1 )
+
 [node name="Player1Animations" type="KinematicBody2D" groups=["Player"]]
 script = ExtResource( 3 )
 bullet = ExtResource( 1 )
 laser = ExtResource( 2 )
-gun_shoot_audio = [ ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ) ]
+gun_shoot_audio = [ ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ) ]
 
 [node name="BulletPosition" type="Position2D" parent="."]
 position = Vector2( 12, -1 )
@@ -328,5 +296,9 @@ anims/run = SubResource( 3 )
 
 [node name="ShootAudio" type="AudioStreamPlayer2D" parent="."]
 autoplay = true
+
+[node name="FootBoxCollision" type="CollisionShape2D" parent="."]
+position = Vector2( -3, 20.1 )
+shape = SubResource( 89 )
 
 [connection signal="timeout" from="CoolDownTimer" to="." method="_on_CoolDownTimer_timeout"]

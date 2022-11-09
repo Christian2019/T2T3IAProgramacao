@@ -18,6 +18,14 @@ var bullet_adjacent_2 := 0.0
 var bullet_adjacent_3 := 0.0
 var bullet_adjacent_4 := 0.0
 
+export var gravityForce = 6
+var vertical_force = 0
+var jump_force = 6
+var speed = 200
+
+var Tile_Floor
+var onTheTile
+
 var animated_sprite_node
 var bullet_position_node
 var cool_down_timer_node
@@ -29,14 +37,85 @@ func _ready():
 	cool_down_timer_node = $CoolDownTimer
 	shoot_audio_node = $ShootAudio
 	bullet_type = 0
+	Tile_Floor = get_parent().get_node("Tiles/Floor").get_children()
 
 func _process(delta):
 	if Input.is_action_pressed("Escape"):
 		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
+	gravity()
 	move()
 	jump()
 	change_shoot()
 	shoot()
+
+
+func getGroundBoxPosition():
+		var center= {"x":(position.x+$FootBoxCollision.position.x*scale.x),"y":(position.y+$FootBoxCollision.position.y*scale.y)}
+		var extents= {"x":$FootBoxCollision.shape.extents.x*scale.x,"y":$FootBoxCollision.shape.extents.y*scale.y}
+		return {"center":center,"extents":extents}
+
+func gravity():
+	if (vertical_force>=0):
+		var groundPosition= getGroundBoxPosition()
+		for index in vertical_force:
+			groundPosition.center.y+=1
+			if (tileCollision(groundPosition,Tile_Floor)):
+				vertical_force = 0
+				fit(groundPosition)
+				onTheTile=true
+				return
+	onTheTile=false
+	
+	position.y += vertical_force
+	vertical_force += gravityForce * Fps.MAX_FPS
+
+func tileCollision(objectCollisionShape,tileColissionShapes):
+	var center
+	var extents
+	for index in range(tileColissionShapes.size()):
+		center= {"x":tileColissionShapes[index].position.x,"y":tileColissionShapes[index].position.y}
+		extents={"x":tileColissionShapes[index].shape.extents.x,"y":tileColissionShapes[index].shape.extents.y}
+		if squareCollision(objectCollisionShape.center,objectCollisionShape.extents,center,extents):
+			return true
+	return false
+
+func fit(footPosition):
+	footPosition.center.y-=1
+	while(tileCollision(footPosition,Tile_Floor)):
+		footPosition.center.y-=1
+	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
+
+func squareCollision(centerA,extentsA,centerB,extentsB):
+	if (insideInterval((centerA.x-extentsA.x),(centerB.x-extentsB.x),(centerB.x+extentsB.x)) or 
+	insideInterval((centerA.x+extentsA.x) ,(centerB.x-extentsB.x),(centerB.x+extentsB.x)) or
+	insideInterval((centerB.x-extentsB.x), (centerA.x-extentsA.x),(centerA.x+extentsA.x)) or
+	insideInterval((centerB.x+extentsB.x) ,(centerA.x-extentsA.x),(centerA.x+extentsA.x)) 
+	):
+		if (insideInterval((centerA.y-extentsA.y), (centerB.y-extentsB.y),(centerB.y+extentsB.y)) or 
+		insideInterval((centerA.y+extentsA.y), (centerB.y-extentsB.y),(centerB.y+extentsB.y)) or
+		insideInterval((centerB.y-extentsB.y), (centerA.y-extentsA.y),(centerA.y+extentsA.y)) or
+		insideInterval((centerB.y+extentsB.y), (centerA.y-extentsA.y),(centerA.y+extentsA.y)) 
+		):
+			return true
+	return false
+
+func insideInterval(a,b,c):
+	if a>=b and a<=c:
+		return true
+	else:
+		return false
+
+func horizontal_velocity():
+	var horizontal_speed
+	var max_speed
+	if Input.is_action_pressed("ui_left"):
+		max_speed = -speed
+	elif Input.is_action_pressed("ui_right"):
+		max_speed = speed
+	else:
+		max_speed = 0
+	horizontal_speed = max_speed * Fps.MAX_FPS
+	position.x += horizontal_speed
 
 func move():
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_left"):
@@ -71,7 +150,7 @@ func move():
 		shooting_directions("up")
 		if not is_jumping:
 			animated_sprite_node.play("idle_look_up")
-		position.y-=1
+		#position.y-=1
 		
 	elif Input.is_action_pressed("ui_down"):
 		if is_jumping:
@@ -82,7 +161,6 @@ func move():
 			else:
 				shooting_directions("lowered_left")
 			animated_sprite_node.play("idle_lowered")
-		position.y+=1
 		
 	elif Input.is_action_pressed("ui_left"):
 		if facing_right:
@@ -93,7 +171,6 @@ func move():
 				animated_sprite_node.play("run_shoot")
 			else:
 				animated_sprite_node.play("run")
-		position.x-=1
 		
 	elif Input.is_action_pressed("ui_right"):
 		if not facing_right:
@@ -104,21 +181,22 @@ func move():
 				animated_sprite_node.play("run_shoot")
 			else:
 				animated_sprite_node.play("run")
-		position.x+=1
 		
 	else:
 		if facing_right:
 			shooting_directions("right")
 		else:
 			shooting_directions("left")
-		if not is_jumping:
+		if onTheTile:
 			animated_sprite_node.play("idle")
+	horizontal_velocity()
 
 func jump():
 	if Input.is_action_just_pressed("Jump"):
-		is_jumping = !is_jumping
-	if is_jumping:
-		animated_sprite_node.play("jump")
+		print(get_node("/root").get_children()[1].name)
+		if onTheTile:
+			vertical_force = -jump_force
+			animated_sprite_node.play("jump")
 
 func change_shoot():
 	if Input.is_action_just_pressed("ui_accept"):
@@ -145,9 +223,6 @@ func shoot():
 			
 				if bullet_type == 2:
 					spread_bullet()
-				#cool_down_timer_node.start()
-			
-			#can_shoot = false
 	else:
 		is_shooting = false
 
