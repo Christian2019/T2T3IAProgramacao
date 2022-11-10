@@ -14,7 +14,7 @@ var canShoot=true
 
 func _ready(): 
 	state=states.Wait
-	player = Global.MainScene.get_node("Player") 
+
 
 func shoot(): 
 	if ($SpriteSoldadoArbusto.flip_h):
@@ -36,19 +36,24 @@ func _process(delta):
 	if (stop):
 		return
 
-	if (Global.players==2):
-		if (firstTime):
-			firstTime=false
-			player1 = Global.MainScene.get_node("Player")
-			player2 = Global.MainScene.get_node("Player2")
-			
-		if (global_position.distance_to(player2.global_position)<global_position.distance_to(player1.global_position)):
-			 player = player2
-		else:
-			player = player1
-
+	firstLoad()
+	closePlayer()
 	statesController()
 
+
+func closePlayer():
+	if (Global.players==2):
+		if (global_position.distance_to(player2.global_position)<global_position.distance_to(player1.global_position)):
+				 player = player2
+		else:
+			player = player1
+func firstLoad():
+	if (firstTime):
+		firstTime=false	
+		player1 = Global.MainScene.get_node("Player")
+		player = player1
+		if (Global.players==2):
+			player2 = Global.MainScene.get_node("Player2")
 		
 func statesController():
 	var distance=global_position.x-player.global_position.x
@@ -107,7 +112,6 @@ func destroy():
 	if (!stop):
 		stop=true
 		$SpriteSoldadoArbusto.animation="Explode"
-		$SpriteSoldadoArbusto.playing=true
 		timerCreator("queue_free",0.5,null,true)
 
 func timerCreator(functionName,time,parameters,create):

@@ -1,133 +1,132 @@
-extends Area2D
+extends Node2D
 
-
-enum states{SHOOT,STOP,DEAD}
-export(NodePath) var player;
-var state=states.STOP
-
-var angulo=-180
-var player_position
-var tiros=3
-var segundos=3
-var positions:Array
-export var DetectionDistance = 450
-var bullet = preload("res://Scenes/Mateus/Bullet.tscn")
+enum states{WAIT,ACTIVE}
+var state=states.WAIT
+var bullet = preload("res://Scenes/BulletEnemy.tscn")
 var shoot_now=false;
-var player_;
 
-var rotation_direction;
-signal killPlayer()
+var life =1
+var stop=false
+var player1
+var player2
+var player
+var firstTime=true
+var camera
+
+var canShoot=true
+
 func _ready() -> void:   
-	$ChangeState.start() 
 	$AnimatedSprite.flip_h=true 
-	pass # Replace with function body.
-	 
- 
-func _physics_process(delta: float) -> void:    
-	player_position=get_node(player).position      
-	player_=get_node(player)  
-	if(state!=states.DEAD):
-		changeAnimation()
-		rotation_direction=rotation_dir()
-	else:
-		die()
 
-func rotation_dir():  
-	var angle=rad2deg((player_position-position).normalized().angle()) 
-	if((angle >= -180 and angle<=-160)  or (angle >=-20 and angle <=0)):
-		return "CENTER"
-	elif(angle< -160 or angle < 0):
-		return "UP"
-	return "DOWN"
-	
+func _physics_process(delta: float) -> void:
+	if (stop):
+		return 
+	firstLoad()
+	closePlayer()
+	insideScreen()  
+	if(state==states.ACTIVE):
+		changeAnimation()
+		shoot_bullet()
+
+func closePlayer():
+	if (Global.players==2):
+		if (global_position.distance_to(player2.global_position)<global_position.distance_to(player1.global_position)):
+				 player = player2
+		else:
+			player = player1
+
+func firstLoad():
+	if (firstTime):
+		firstTime=false	
+		camera = Global.MainScene.get_node("Camera2D")
+		player1 = Global.MainScene.get_node("Player")
+		player = player1
+		if (Global.players==2):
+			player2 = Global.MainScene.get_node("Player2")
+
 func changeAnimation(): 
-	if((player_position.x-position.x) < 0):
+	if((player.position.x-position.x) < 0):
 		$AnimatedSprite.flip_h=true; 
 	else: 
 		$AnimatedSprite.flip_h=false     
-	
-	if(rotation_direction=="CENTER"):
-		$AnimatedSprite.animation="AimNormalShoot"
-	elif(rotation_direction=="UP"):
-		$AnimatedSprite.animation="AimUpShoot"
-	else:
-		$AnimatedSprite.animation="AimShootDown"
-	
-func shootinAngle():
-	if((player_position.x-position.x) < 0):
-		if(rotation_direction=="DOWN"):
-			return Vector2(position.x-60,position.y-40)
-		elif(rotation_direction=="UP"):
-			return Vector2(position.x-60,position.y-110) 
-		else:
-			return Vector2(position.x-60,position.y-90) 
-			
-	else: 
-		if(rotation_direction=="DOWN"):
-			return Vector2(position.x+20,position.y-30)
-		elif(rotation_direction=="UP"):
-			return Vector2(position.x,position.y-120) 
-		else:
-			return Vector2(position.x+20,position.y-70) 
 		
-func shoot_bullet():  
-	var newbullet = bullet.instance()  
-	newbullet.position=shootinAngle() 
-	var bulletDistanceFromCenter=50 
-	newbullet.angle= rad2deg((player_position-position).angle()) 
-	newbullet.position.x+=bulletDistanceFromCenter*cos(deg2rad(rad2deg(player_position.angle())))
-	newbullet.position.y+=bulletDistanceFromCenter*sin(deg2rad(rad2deg(player_position.angle())))
+	var angle= rad2deg(player.position.angle_to_point(global_position))
 	
-	if(rotation_direction=="CENTER"):
-		$AnimatedSprite.play("AimNormalShoot")
-	elif(rotation_direction=="UP"):
-		$AnimatedSprite.play("AimUpShoot")
+	if(angle>20 and angle<160):
+		$AnimatedSprite.animation="Down"
+	elif(angle<-20 and angle>-160):
+		$AnimatedSprite.animation="Up"
 	else:
-		$AnimatedSprite.play("AimShootDown")
-	get_tree().current_scene.add_child(newbullet) 
+		$AnimatedSprite.animation="Normal"
 	
-func timerCreator(functionName,time):
-	var timer = Timer.new()
-	timer.connect("timeout",self,functionName)
-	timer.set_wait_time(time)
-	add_child(timer)
-	timer.one_shot=true
-	timer.start()
-	
-	var timer2 = Timer.new()
-	timer2.connect("timeout",self,"timerDestroyer",[timer,timer2])
-	timer2.set_wait_time(time+1)
-	add_child(timer2)
-	timer2.one_shot=true
-	timer2.start()  
-	
-func timerDestroyer(timer,timer2):
-	remove_child(timer)
-	remove_child(timer2) 
- 
-func die():  
-	$AnimatedSprite.play("Explode")
-	yield(get_tree().create_timer(0.35),"timeout");  
-	self.queue_free()
+func shootinPosition():
+		if($AnimatedSprite.animation=="Down"):
+			return createVector2(-16,12)
+		elif($AnimatedSprite.animation=="Up"):
+			return createVector2(-10,-15)
+		else:
+			return createVector2(-17,-2)
 
-func _on_StandEnemy_area_entered(area):
-	emit_signal("killPlayer")
-	pass # Replace with function body.
+		
+func createVector2(x,y):
+	if(!$AnimatedSprite.flip_h):
+		x*=-1
+	return Vector2(position.x+x*scale.x,position.y+y*scale.x)
+	
+func shoot_bullet():
+	if (!canShoot):
+		return 
+	canShoot=false
+	timerCreator("changeCanShoot",1,null,true)
+	var newbullet = bullet.instance()  
+	newbullet.position=shootinPosition()
+	newbullet.angle= rad2deg(player.position.angle_to_point(newbullet.position))
+	#print(newbullet.angle)
+	Global.MainScene.add_child(newbullet)
 
+func changeCanShoot():
+	canShoot=true
+
+func timerCreator(functionName,time,parameters,create):
+	if (create):
+		var timer = Timer.new()
+		if (parameters==null):
+			timer.connect("timeout",self,functionName)
+		else:
+			timer.connect("timeout",self,functionName,parameters)
+		timer.set_wait_time(time)
+		add_child(timer)
+		timer.one_shot=true
+		timer.start()
+	
+		var timer2 = Timer.new()
+		timer2.connect("timeout",self,"timerCreator",["",0,[timer,timer2],false])
+		timer2.set_wait_time(time+1)
+		add_child(timer2)
+		timer2.one_shot=true
+		timer2.start()
+	else:
+		remove_child(parameters[0])
+		remove_child(parameters[1])
  
-func _on_ChangeState_timeout() -> void: 
-	if(state==states.SHOOT):   
-			state=states.STOP  
-			$AnimatedSprite.stop()
-			$AnimatedSprite.frame=0
-			$ChangeState.start() 
-	elif(state==states.STOP):   
-			state=states.SHOOT     
-			shoot_bullet()
-			timerCreator("shoot_bullet",1) 
-			timerCreator("shoot_bullet",2) 
-	 
-#Mudar para quando a bala entra aqui
-func _on_Button_pressed():
-	state=states.DEAD
-	pass # Replace with function body.
+func destroy():
+	if (!stop):
+		stop=true
+		$AnimatedSprite.animation="Explode"
+		$AnimatedSprite.playing=true
+		timerCreator("queue_free",0.5,null,true)
+
+func insideScreen():
+	var cameraWidth = camera.cameraExtendsX*2
+	
+	if (Vector2(global_position.x,0).distance_to(Vector2(camera.global_position.x,0))<cameraWidth):
+		state=states.ACTIVE
+	else:
+		state=states.WAIT
+
+func _on_Area2D_area_entered(area: Area2D) -> void:
+	if (area.get_parent().is_in_group("Player")):
+		var player = area.get_parent()
+		if (player.contactCollision==area.get_children()[0]):
+			#print(area.name)
+			player.dead=true

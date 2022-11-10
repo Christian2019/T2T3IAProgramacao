@@ -11,7 +11,7 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 var lives
-var invincible=false
+var invincible=true
 var dead = false
 
 var contactCollision

@@ -35,4 +35,4 @@ func _physics_process(delta):
 
 
 func _on_Timer_timeout() -> void:
-	get_tree().change_scene("res://Scenes/Game/Game.tscn")
+	get_tree().change_scene("res://Scenes/RootScenes/Game.tscn")

@@ -7,7 +7,6 @@ var stop = false
 func _physics_process(delta: float) -> void:
 	if stop:
 		return
-	
 	position.x += speed*Global.Inverse_MAX_FPS*cos(deg2rad(angle))
 	position.y += speed*Global.Inverse_MAX_FPS*sin(deg2rad(angle))
 

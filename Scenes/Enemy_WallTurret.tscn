@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Spritesheets/Enemies/WallTurret/WallTurret_Transition.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Spritesheets/Enemies/WallTurret/WallTurret_Active.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Spritesheets/explosion.png" type="Texture" id=4]
-[ext_resource path="res://Scripts/Enemies/WallTurret/Enemy_WallTurret.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/Enemy_WallTurret.gd" type="Script" id=5]
 [ext_resource path="res://Assets/Spritesheets/Enemies/WallTurret/turret.png" type="Texture" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
