@@ -10,7 +10,7 @@
 [ext_resource path="res://Scenes/Enemy_WallTurret.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/Enemy_Backpack.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scripts/SoldierRespawn.gd" type="Script" id=10]
-[ext_resource path="res://Scenes/Enemies/Cannon/Enemy_Cannon.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/Enemy_Cannon.tscn" type="PackedScene" id=11]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -524,7 +524,15 @@ position = Vector2( 9687, 546 )
 [node name="Cannons" type="Node2D" parent="Enemies"]
 
 [node name="Enemy_Cannon" parent="Enemies/Cannons" instance=ExtResource( 11 )]
-position = Vector2( 7649, 472 )
+position = Vector2( 6152, 455 )
+scale = Vector2( 3, 3 )
+
+[node name="Enemy_Cannon2" parent="Enemies/Cannons" instance=ExtResource( 11 )]
+position = Vector2( 6534, 170 )
+scale = Vector2( 3, 3 )
+
+[node name="Enemy_Cannon3" parent="Enemies/Cannons" instance=ExtResource( 11 )]
+position = Vector2( 8580, 366 )
 scale = Vector2( 3, 3 )
 
 [node name="Line2D" type="Line2D" parent="."]

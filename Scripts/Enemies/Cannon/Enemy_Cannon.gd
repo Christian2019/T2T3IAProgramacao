@@ -1,21 +1,41 @@
 extends Node2D
 
 export var DetectionDistance = 450
-var player
+
 var state = -180
 var state_in_process=false
-var bullet = preload("res://Scenes/Enemies/Cannon/Bullet.tscn")
+var bullet = preload("res://Scenes/BulletEnemy.tscn")
 var shoot_cd=false
 var RotationCD=false
+var life =7
+var player1
+var player2
+var player
+var stop=false
+var firstTime=true
 
 func _ready() -> void:
 	player = Global.MainScene.get_node("Player")
-	pass 
+
 	
 func _physics_process(delta: float) -> void:
+	if (stop):
+		return
+			
+	if (Global.players==2):
+		if (firstTime):
+			firstTime=false
+			player1 = Global.MainScene.get_node("Player")
+			player2 = Global.MainScene.get_node("Player2")
+			
+		if (global_position.distance_to(player2.global_position)<global_position.distance_to(player1.global_position)):
+			 player = player2
+		else:
+			player = player1
 	drawLine()
 	stateController()
-	fire()
+	if (global_position.distance_to(Global.MainScene.get_node("Camera2D").global_position)<Global.MainScene.get_node("Camera2D").cameraExtendsX):
+		fire()
 
 func drawLine():
 	var linha = Global.MainScene.get_node("Line2D")
@@ -36,30 +56,33 @@ func changeState():
 	var cannonSliceAngle = state
 	if (playerSliceAngle!=cannonSliceAngle):
 		RotationCD=true
-		timerCreator("setRotationCD",1)
+		timerCreator("setRotationCD",1,null,true)
 		if (playerSliceAngle>cannonSliceAngle):
 			state+=30
 		else:
 			state-=30		
 
-func timerCreator(functionName,time):
-	var timer = Timer.new()
-	timer.connect("timeout",self,functionName)
-	timer.set_wait_time(time)
-	add_child(timer)
-	timer.one_shot=true
-	timer.start()
-
-	var timer2 = Timer.new()
-	timer2.connect("timeout",self,"timerDestroyer",[timer,timer2])
-	timer2.set_wait_time(time+1)
-	add_child(timer2)
-	timer2.one_shot=true
-	timer2.start()  
+func timerCreator(functionName,time,parameters,create):
+	if (create):
+		var timer = Timer.new()
+		if (parameters==null):
+			timer.connect("timeout",self,functionName)
+		else:
+			timer.connect("timeout",self,functionName,parameters)
+		timer.set_wait_time(time)
+		add_child(timer)
+		timer.one_shot=true
+		timer.start()
 	
-func timerDestroyer(timer,timer2):
-	remove_child(timer)
-	remove_child(timer2)
+		var timer2 = Timer.new()
+		timer2.connect("timeout",self,"timerCreator",["",0,[timer,timer2],false])
+		timer2.set_wait_time(time+1)
+		add_child(timer2)
+		timer2.one_shot=true
+		timer2.start()
+	else:
+		remove_child(parameters[0])
+		remove_child(parameters[1])
 
 func setRotationCD():
 	RotationCD=false
@@ -97,11 +120,11 @@ func stateController():
 	
 	match state:
 		-120:
-			$AnimatedSprite.animation="120"
+			$Structure.animation="120"
 		-150:
-			$AnimatedSprite.animation="150"
+			$Structure.animation="150"
 		-180:
-			$AnimatedSprite.animation="180"
+			$Structure.animation="180"
 		_:
 			print("default")
 
@@ -113,9 +136,9 @@ func fire():
 			
 		shoot_cd=true
 		shoot()
-		timerCreator("shoot",0.5)
-		timerCreator("shoot",1)
-		timerCreator("setShootCD",3)
+		timerCreator("shoot",0.5,null,true)
+		timerCreator("shoot",1,null,true)
+		timerCreator("setShootCD",3,null,true)
 		
 
 func outOfRange():
@@ -129,6 +152,13 @@ func outOfRange():
 		return true
 	else:
 		return false
+
+func destroy():
+	if (!stop):
+		stop=true
+		$Explosion.visible=true
+		$Structure.visible=false
+		timerCreator("queue_free",2,null,true)
 
 func _on_Teste_timeout() -> void:
 	pass
