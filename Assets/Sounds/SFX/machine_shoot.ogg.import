@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/machine_shoot.ogg-97c7688edc0ae0e2817c4215ef81ac06.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/SFX/machine_shoot.ogg"
+dest_files=[ "res://.import/machine_shoot.ogg-97c7688edc0ae0e2817c4215ef81ac06.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

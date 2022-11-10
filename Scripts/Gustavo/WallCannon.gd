@@ -2,7 +2,7 @@ extends Area2D
 
 export (PackedScene) var cannon_bullet
 
-var life = 4
+var life = 6
 var destroyed = false
 
 func loose_life():

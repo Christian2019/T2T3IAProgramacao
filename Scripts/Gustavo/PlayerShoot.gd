@@ -193,7 +193,6 @@ func move():
 
 func jump():
 	if Input.is_action_just_pressed("Jump"):
-		print(get_node("/root").get_children()[1].name)
 		if onTheTile:
 			vertical_force = -jump_force
 			animated_sprite_node.play("jump")
@@ -237,6 +236,7 @@ func bullet_shoot(dir):
 	shoot_audio()
 
 func shoot_audio():
+	
 	if shoot_audio_node.is_playing():
 		shoot_audio_node.stop()
 	
@@ -268,6 +268,7 @@ func laser_shoot():
 	laser_instance.global_position = bullet_position_node.global_position
 	laser_instance.set_scale(Vector2(2,2))
 	laser_instance.set_rotation(bullet_rotation)
+	shoot_audio()
 
 func shooting_directions(direction):
 	match direction:

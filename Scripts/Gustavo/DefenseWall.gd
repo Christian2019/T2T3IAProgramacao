@@ -10,8 +10,8 @@ var has_node_1 = true
 var has_node_2 = true
 
 func _ready():
-	node_shoot_cannon_1 = get_node("Cannon1")
-	node_shoot_cannon_2 = get_node("Cannon2")
+	node_shoot_cannon_1 = $Cannon1
+	node_shoot_cannon_2 = $Cannon2
 	node_shoot_cannon_1.shoot()
 	$Timer.start()
 	
@@ -26,10 +26,13 @@ func _on_Timer_timeout():
 	ready_cannon = !ready_cannon
 
 func _on_Door_tree_exited():
-	$Wall.texture = destroyed_wall_sprite
-	node_shoot_cannon_1.destroy_turret()
-	node_shoot_cannon_2.destroy_turret()
-	$InFrontPlayerWall.visible = true 
+	#$Wall.texture = destroyed_wall_sprite
+	$Wall.visible = false
+	#node_shoot_cannon_1.destroy_turret()
+	#node_shoot_cannon_2.destroy_turret()
+	node_shoot_cannon_1.queue_free()
+	node_shoot_cannon_2.queue_free()
+	$InFrontPlayerWall.visible = true
 	$Timer.stop()
 	
 	#Chamar a animação final da fase
