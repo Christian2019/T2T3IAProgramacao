@@ -62,8 +62,8 @@ func _ready() -> void:
 	
 	#Start
 	lives = 3
-	global_position.x=255
-	global_position.y=232
+	#global_position.x=255
+	#global_position.y=232
 	
 	print(name)
 	if (name=="Player2"):

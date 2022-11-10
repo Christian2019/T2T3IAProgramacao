@@ -34,6 +34,7 @@ var LeftFootOnTileFloor=false
 
 
 func _ready() -> void:
+	z_index=1
 	player.rotation_degrees = 0 
 	rng.randomize()
 	player.stop()

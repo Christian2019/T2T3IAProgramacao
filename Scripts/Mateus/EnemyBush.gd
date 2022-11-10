@@ -7,7 +7,8 @@ export(NodePath) var player;
 var timer=3
 var player_node;
 var status:int 
-var bullet = preload("res://Scenes/Mateus/Bullet.tscn")
+var bullet = preload("res://Scenes/BulletEnemy.tscn")
+var life =1
 # Called when the node enters the scene tree for the first time.
 func _ready(): 
 	status=states.WAIT  
