@@ -4,7 +4,6 @@
 [ext_resource path="res://Scripts/Mateus/StandShooter_Behaviour.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Spritesheets/explosion.png" type="Texture" id=3]
 
-
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 1 )
@@ -74,19 +73,18 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 9, 15.75 )
+extents = Vector2( 8, 16.375 )
 
-[node name="StandEnemy" type="Area2D"]
+[node name="Sniper" type="Area2D"]
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -9 )
 frames = SubResource( 2 )
 animation = "AimNormalShoot"
 speed_scale = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -0.75 )
+position = Vector2( 0, 8.625 )
 shape = SubResource( 3 )
 
 [node name="ChangeState" type="Timer" parent="."]

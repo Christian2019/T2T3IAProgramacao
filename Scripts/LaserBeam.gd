@@ -1,10 +1,8 @@
 extends Area2D
 
 export (Texture) var pop_sprite
-export (Array, AudioStream) var bullet_hit_audio_stream
 var sprite
-var hit_audio_node
-var speed = 400
+var speed = 800
 var stop = false
 var direction := Vector2(1,0)
 
@@ -12,12 +10,12 @@ var hit_enemy = true
 
 func _ready():
 	sprite = $Sprite
-	hit_audio_node = $HitAudio
 
 func _process(delta):
 	
 	if not stop:
-		position += direction * speed * Fps.MAX_FPS
+		
+		position += direction * speed * Global.Inverse_MAX_FPS
 
 func change_direction(dir, rot):
 	direction = dir
@@ -25,24 +23,20 @@ func change_direction(dir, rot):
 
 func _on_LaserBeam_body_entered(body):
 	if hit_enemy:
-		if body.is_in_group("Enemy"):
+		if "Enemy" in body.name:
 			body.queue_free()
+			
 			sprite.texture = pop_sprite
 			hit_enemy = false
 			stop = true
 			$Timer.start()
-			hit_audio(0)
-		elif body.is_in_group("Turret"):
+		elif "Turret" in body.name:
 			body.loose_life()
+		
 			sprite.texture = pop_sprite
 			hit_enemy = false
 			stop = true
 			$Timer.start()
-			hit_audio(1)
-
-func hit_audio(index):
-	hit_audio_node.set_stream(bullet_hit_audio_stream[index])
-	hit_audio_node.play()
 
 func _on_VisibilityNotifier2D_screen_exited():
 	if hit_enemy:
