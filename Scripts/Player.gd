@@ -11,7 +11,7 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 var lives
-var invincible=true
+var invincible=false
 var dead = false
 
 var contactCollision
@@ -61,8 +61,8 @@ func _ready() -> void:
 	
 	#Start
 	lives = 3
-	global_position.x=255
-	global_position.y=232
+	#global_position.x=255
+	#global_position.y=232
 	
 	print(name)
 	if (name=="Player2"):
@@ -297,6 +297,7 @@ func death():
 			return
 		if (state==states.INTO_THE_WATER):
 			$AnimatedSprite.global_position.y-=fix_Y_FALLING_INTO_THE_WATER
+			inWater=false
 		if (lives>0):
 			lives-=1
 		state=states.DEATH

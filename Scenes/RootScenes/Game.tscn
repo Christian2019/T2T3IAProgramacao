@@ -520,7 +520,7 @@ position = Vector2( 7057, 350 )
 scale = Vector2( 3, 3 )
 
 [node name="Player" parent="." instance=ExtResource( 8 )]
-position = Vector2( 2174, 269 )
+position = Vector2( 3601, 264 )
 z_index = 2
 
 [node name="Line2D" type="Line2D" parent="."]
