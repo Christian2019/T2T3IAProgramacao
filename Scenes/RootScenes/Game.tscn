@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://Scripts/SoldierRespawn.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://Scenes/Enemy_Bush.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/Sniper.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/Bridge.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scripts/Pause.gd" type="Script" id=15]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -524,3 +525,6 @@ z_index = 2
 
 [node name="Line2D" type="Line2D" parent="."]
 visible = false
+
+[node name="Pause" type="Node2D" parent="."]
+script = ExtResource( 15 )

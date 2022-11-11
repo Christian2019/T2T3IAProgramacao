@@ -175,8 +175,8 @@ func _process(delta: float) -> void:
 		if (bullet_type>4):
 			bullet_type=0
 		print(bullet_type)
-	if Input.is_action_pressed("Escape"+inputsExtra):
-		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
+	#if Input.is_action_pressed("Escape"+inputsExtra):
+		#get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 
 	animationController()
 	
