@@ -4,6 +4,11 @@
 [ext_resource path="res://Scripts/Sniper.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Spritesheets/explosion.png" type="Texture" id=3]
 
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 64, 64 )
+
 [sub_resource type="AtlasTexture" id=6]
 flags = 4
 atlas = ExtResource( 1 )
@@ -44,13 +49,13 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 256, 0, 64, 64 )
 
-[sub_resource type="AtlasTexture" id=8]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 192, 0, 64, 64 )
-
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
+"frames": [ SubResource( 8 ) ],
+"loop": true,
+"name": "Death",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 6 ) ],
 "loop": true,
 "name": "Down",
@@ -80,9 +85,10 @@ script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
-animation = "Normal"
+animation = "Death"
 speed_scale = 2.0
 playing = true
+flip_h = true
 
 [node name="Area2D" type="Area2D" parent="."]
 

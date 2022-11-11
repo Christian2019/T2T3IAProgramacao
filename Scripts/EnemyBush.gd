@@ -1,6 +1,6 @@
 extends Node2D
 
-enum states {Wait,Crouching,Lower,Rise,Standing}
+enum states {Wait,Crouching,Lower,Rise,Standing,DEATH}
 var bullet = preload("res://Scenes/BulletEnemy.tscn")
 var life=1
 var stop=false
@@ -9,6 +9,7 @@ var player2
 var player
 var firstTime=true
 var state
+var vertical_speed  = -8
 
 var canShoot=true
 
@@ -35,7 +36,9 @@ func shoot_bullet(dir):
 func _process(delta):
 	if (stop):
 		return
-
+	if (state==states.DEATH):
+		global_position.y+=vertical_speed
+		return 
 	firstLoad()
 	closePlayer()
 	statesController()
@@ -109,7 +112,13 @@ func playersClose():
 	return false
 
 func destroy():
-	if (!stop):
+	if (state!=states.DEATH):
+		state=states.DEATH
+		$SpriteSoldadoArbusto.animation="Death"
+		global_position.y-=10
+		timerCreator("death",0.2,null,true)
+	
+func death():
 		stop=true
 		$SpriteSoldadoArbusto.animation="Explode"
 		timerCreator("queue_free",0.5,null,true)

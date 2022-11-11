@@ -1,9 +1,10 @@
 extends Node2D
 
-enum states{WAIT,ACTIVE}
+enum states{WAIT,ACTIVE,DEATH}
 var state=states.WAIT
 var bullet = preload("res://Scenes/BulletEnemy.tscn")
 var shoot_now=false;
+var vertical_speed  = -8
 
 var life =1
 var stop=false
@@ -19,11 +20,16 @@ func _ready() -> void:
 	$AnimatedSprite.flip_h=true 
 
 func _physics_process(delta: float) -> void:
+	
 	if (stop):
 		return 
+	if (state==states.DEATH):
+		global_position.y+=vertical_speed
+		return  
 	firstLoad()
 	closePlayer()
-	insideScreen()  
+	insideScreen()
+	
 	if(state==states.ACTIVE):
 		changeAnimation()
 		shoot_bullet()
@@ -110,16 +116,20 @@ func timerCreator(functionName,time,parameters,create):
 		remove_child(parameters[1])
  
 func destroy():
-	if (!stop):
+	if (state!=states.DEATH):
+		state=states.DEATH
+		$AnimatedSprite.animation="Death"
+		timerCreator("death",0.2,null,true)
+	
+func death():
 		stop=true
 		$AnimatedSprite.animation="Explode"
-		$AnimatedSprite.playing=true
 		timerCreator("queue_free",0.5,null,true)
 
 func insideScreen():
-	var cameraWidth = camera.cameraExtendsX*2
+	var distance = camera.cameraExtendsX
 	
-	if (Vector2(global_position.x,0).distance_to(Vector2(camera.global_position.x,0))<cameraWidth):
+	if (Vector2(global_position.x,0).distance_to(Vector2(camera.global_position.x,0))<distance):
 		state=states.ACTIVE
 	else:
 		state=states.WAIT
