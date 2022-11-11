@@ -19,9 +19,7 @@ var player
 
 func _ready() -> void:
 	pass
-	
-	 
-	
+
 func _physics_process(delta: float) -> void:
 	if (stop):
 		return
@@ -183,6 +181,7 @@ func destroy():
 		$Explosion.visible=true
 		$Structure.visible=false
 		$Cannon.visible=false
+		$Area2D.queue_free()
 		timerCreator("queue_free",2,null,true)
 								
 

@@ -123,6 +123,7 @@ func destroy():
 	
 func death():
 		stop=true
+		$Area2D.queue_free()
 		$AnimatedSprite.animation="Explode"
 		timerCreator("queue_free",0.5,null,true)
 

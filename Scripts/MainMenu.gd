@@ -4,6 +4,7 @@ var start_music=false
 export var actual_position=0
 
 func _ready() -> void:
+
 	pass 
 
 func select_mode(): 

@@ -121,6 +121,7 @@ func destroy():
 func death():
 		stop=true
 		$SpriteSoldadoArbusto.animation="Explode"
+		$Area2D.queue_free()
 		timerCreator("queue_free",0.5,null,true)
 
 func timerCreator(functionName,time,parameters,create):

@@ -99,7 +99,7 @@ script = ExtResource( 4 )
 [node name="Structure" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "180"
-frame = 2
+frame = 1
 playing = true
 
 [node name="Explosion" type="AnimatedSprite" parent="."]
@@ -107,7 +107,6 @@ visible = false
 position = Vector2( -1.18749, 0.81251 )
 scale = Vector2( 1.01103, 1.01103 )
 frames = SubResource( 14 )
-frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="."]

@@ -53,8 +53,9 @@ shape = SubResource( 5 )
 
 [node name="LoweredBoxCollision" type="Area2D" parent="."]
 
-[node name="LoweredBoxCollision" type="CollisionShape2D" parent="LoweredBoxCollision"]
+[node name="LoweredBoxCollision2" type="CollisionShape2D" parent="LoweredBoxCollision"]
 position = Vector2( -3.58491, 11.3186 )
+scale = Vector2( 1, 1 )
 shape = SubResource( 114 )
 
 [node name="JumpBoxCollision" type="Area2D" parent="."]

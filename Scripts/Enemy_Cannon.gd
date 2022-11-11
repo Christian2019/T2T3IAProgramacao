@@ -165,6 +165,7 @@ func destroy():
 		stop=true
 		$Explosion.visible=true
 		$Structure.visible=false
+		$Area2D.queue_free()
 		timerCreator("queue_free",2,null,true)
 
 func _on_Teste_timeout() -> void:

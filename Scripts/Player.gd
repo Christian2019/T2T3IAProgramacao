@@ -11,7 +11,7 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 var lives
-var invincible=false
+var invincible=true
 var dead = false
 
 var contactCollision
@@ -52,7 +52,6 @@ var inputsExtra=""
 var fix_Y_FALLING_INTO_THE_WATER=30
 
 func _ready() -> void:
-	
 	screen_size= get_viewport_rect().size
 	loadTiles()
 	
@@ -83,6 +82,16 @@ func _ready() -> void:
 	
 func loadTiles():
 		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
+		Tile_Floor.append(get_parent().get_node("Bridges/Ponte/Ponte0/Area2D/CollisionShape2D"))
+		Tile_Floor.append(get_parent().get_node("Bridges/Ponte/Ponte1/Area2D/CollisionShape2D"))
+		Tile_Floor.append(get_parent().get_node("Bridges/Ponte/Ponte2/Area2D/CollisionShape2D"))
+		Tile_Floor.append(get_parent().get_node("Bridges/Ponte/Ponte3/Area2D/CollisionShape2D"))
+		Tile_Floor.append(get_parent().get_node("Bridges/Ponte2/Ponte0/Area2D/CollisionShape2D"))
+		Tile_Floor.append(get_parent().get_node("Bridges/Ponte2/Ponte1/Area2D/CollisionShape2D"))
+		Tile_Floor.append(get_parent().get_node("Bridges/Ponte2/Ponte2/Area2D/CollisionShape2D"))
+		Tile_Floor.append(get_parent().get_node("Bridges/Ponte2/Ponte3/Area2D/CollisionShape2D"))
+
+
 		Tile_Water= get_parent().get_node("Tiles/Water").get_children()
 		Tile_DeathZone= get_parent().get_node("Tiles/DeathZone").get_children()
 
@@ -124,8 +133,11 @@ func tileCollision(objectCollisionShape,tileColissionShapes):
 	var center
 	var extents
 	for index in range(tileColissionShapes.size()):
-		center= {"x":tileColissionShapes[index].position.x,"y":tileColissionShapes[index].position.y}
-		extents={"x":tileColissionShapes[index].shape.extents.x,"y":tileColissionShapes[index].shape.extents.y}
+		if !is_instance_valid(tileColissionShapes[index]):
+			tileColissionShapes[index]=null
+			continue
+		center= {"x":tileColissionShapes[index].global_position.x,"y":tileColissionShapes[index].global_position.y}
+		extents={"x":tileColissionShapes[index].shape.extents.x*tileColissionShapes[index].global_scale.x,"y":tileColissionShapes[index].shape.extents.y*tileColissionShapes[index].global_scale.y}
 		if squareCollision(objectCollisionShape.center,objectCollisionShape.extents,center,extents):
 			return true
 	return false
@@ -157,6 +169,7 @@ func fit(footPosition):
 	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 
 func _process(delta: float) -> void:
+
 	if Input.is_action_just_pressed("ChangeBullet"):
 		bullet_type+=1
 		if (bullet_type>4):
@@ -164,7 +177,7 @@ func _process(delta: float) -> void:
 		print(bullet_type)
 	if Input.is_action_pressed("Escape"+inputsExtra):
 		get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
-	
+
 	animationController()
 	
 	if (wait):
@@ -268,11 +281,6 @@ func animationController():
 	elif (state==states.DIVE):
 		$AnimatedSprite.animation="Dive"
 		contactCollision=null
-	
-
-	
-		
-
 
 func death():
 	
@@ -442,9 +450,8 @@ func timerCreator(functionName,time,parameters,create):
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
-		
-	
-	#SHOOT
+
+#SHOOT
 	
 func shootCD():
 	can_shoot = true

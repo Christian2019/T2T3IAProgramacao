@@ -96,6 +96,7 @@ wait_time = 0.5
 rotation = -3.14159
 scale = Vector2( 3.3, 3.3 )
 frames = SubResource( 5 )
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -109,7 +110,6 @@ visible = false
 position = Vector2( 1, 2 )
 scale = Vector2( 2.45588, 2.45588 )
 frames = SubResource( 10 )
-frame = 1
 playing = true
 
 [connection signal="timeout" from="Transition" to="." method="_on_Transition_timeout"]

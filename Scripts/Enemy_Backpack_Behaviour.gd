@@ -1,28 +1,24 @@
 extends KinematicBody2D
 
 export (int) var speed = 250
-export var rotation_speed = 1.5
 export var gravity = 2500
 export var jump_speed = 1000
-export var  cont_jump=2		 
+
 var side=-1
 var life=1
 
 var velocity = Vector2()
-#var maxVelocityY=480
 var maxVelocityY=600
-var rotation_dir = 0 # ang. inicial de rotação
 var state= actions.RUN
-onready var target := position # alvo inicial é a própria posição
 onready var player := $Animation
 var rng = RandomNumberGenerator.new() 
-enum actions{RUN,JUMP,TURN,DEAD} 
+enum actions{RUN,JUMP,TURN,DEAD,BRIDGE} 
 var isJumping=false 
 var run:Vector2 
 var dead=false
 var stop=false
 
-var Tile_Floor_Colider
+var Tile_Floor_Coliders=[]
 
 var Collision_With_Tile_Floor
 var Collision_With_Tile_Water
@@ -31,15 +27,13 @@ var Collision_With_Tile_DeathZone
 var RightFootOnTileFloor=false
 var LeftFootOnTileFloor=false
 
-
-
 func _ready() -> void:
 	z_index=1
 	player.rotation_degrees = 0 
 	rng.randomize()
 	player.stop()
 	$Animation.flip_h=true;
-	#target = position
+
 
 func run_left():
 	if (state==actions.DEAD):
@@ -47,14 +41,14 @@ func run_left():
 	$Animation.flip_h=true;  
 	velocity.x=-1
 	side=-1
-	velocity.x = velocity.x * speed # = velocity.normalized() * speed
+	velocity.x = velocity.x * speed 
 
 func run_right(): 
 	if (state==actions.DEAD):
 		return
 	$Animation.flip_h=false;
 	velocity.x=1  
-	velocity.x = velocity.x * speed # = velocity.normalized() * speed
+	velocity.x = velocity.x * speed 
 	
 func jump():
 		if (!isJumping and Collision_With_Tile_Floor): 
@@ -62,6 +56,11 @@ func jump():
 			isJumping=true
 
 func changeState():
+	if (Tile_Floor_Coliders.size()>0):
+		Collision_With_Tile_Floor=true
+	else:
+		Collision_With_Tile_Floor=false
+		
 	if(state==actions.RUN and ((RightFootOnTileFloor and !LeftFootOnTileFloor) or (!RightFootOnTileFloor and LeftFootOnTileFloor))):
 		rng.randomize()
 		var rand_chance=rng.randi_range(0,10) 
@@ -80,11 +79,10 @@ func changeState():
 		fit()
 		
 	if (Collision_With_Tile_Water or Collision_With_Tile_DeathZone):
-		#print("morteChangeState")
 		destroy()
 
+
 func _physics_process(delta):
-	
 	if (stop):
 		if ($Animation.frame==4):
 			queue_free()
@@ -123,10 +121,10 @@ func _physics_process(delta):
 
 
 func fit ():
-	if(Tile_Floor_Colider==null):
+	if(Tile_Floor_Coliders.size()==0):
 		return
 	var distanceToFoot= $FootPoint.global_position.y - global_position.y
-	var fitPosition = Tile_Floor_Colider.global_position.y-Tile_Floor_Colider.shape.extents.y
+	var fitPosition = Tile_Floor_Coliders[Tile_Floor_Coliders.size()-1].global_position.y-Tile_Floor_Coliders[Tile_Floor_Coliders.size()-1].shape.extents.y*Tile_Floor_Coliders[Tile_Floor_Coliders.size()-1].global_scale.y
 	fitPosition+=1
 	global_position.y=fitPosition-distanceToFoot
 	
@@ -141,15 +139,7 @@ func destroy():
 	velocity.y = -jump_speed/1.2
 	isJumping=true
 	timerCreator("explode",0.5,null,true)
-	"""
-	velocity.y += gravity * Global.Inverse_MAX_FPS
-	
-	yield(get_tree().create_timer(0.5),"timeout") 
-	velocity.y=0
-	$Animation.animation="Explode"
-	yield(get_tree().create_timer(1),"timeout");  
-	queue_free()
-	"""
+
 	
 func explode():
 	stop=true
@@ -162,11 +152,8 @@ func insideScreen():
 	var maxDistance =cameraWidth*2
 
 	if (global_position.x<-300 or global_position.x>10307 or global_position.y>965):
-		#print("fora da tela")
 		destroy()
-	#elif (global_position.x<cameraPosition.x-cameraExt*4 or global_position.x>cameraPosition.x+cameraExt*4 ):
 	elif (global_position.distance_to(cameraPosition)>maxDistance):
-		#print("destrui por longe da camera")
 		destroy()
 
 func timerCreator(functionName,time,parameters,create):
@@ -190,21 +177,13 @@ func timerCreator(functionName,time,parameters,create):
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
-		
-func _on_Timer_timeout() -> void:
-	#print(global_position)
-	pass
+
 
 func _on_SoldierColision_area_entered(area: Area2D) -> void:
 	if (area.get_parent().is_in_group("Player")):
 		var player = area.get_parent()
 		if (player.contactCollision==area.get_children()[0]):
-			#print(area.name)
 			player.dead=true
-	
-
-		
-	
 
 func _on_RightFoot_area_entered(area: Area2D) -> void:
 	if (area.name=="Floor"):
@@ -225,23 +204,15 @@ func _on_LeftFoot_area_exited(area: Area2D) -> void:
 	if (area.name=="Floor"):
 		LeftFootOnTileFloor=false
 
-
-
-
 func _on_FootCollision_area_entered(area: Area2D) -> void:
-	if (area.name=="Floor"):
-		Collision_With_Tile_Floor=true
-	elif (area.name=="DeathZone"):
+	if (area.name=="DeathZone"):
 		Collision_With_Tile_DeathZone=true
 	elif (area.name=="Water"):
 		Collision_With_Tile_Water=true
 
 
 func _on_FootCollision_area_exited(area: Area2D) -> void:
-		if (area.name=="Floor"):
-			Collision_With_Tile_Floor=false
-			
-		elif (area.name=="DeathZone"):
+		if (area.name=="DeathZone"):
 			Collision_With_Tile_DeathZone=false
 		elif (area.name=="Water"):
 			Collision_With_Tile_Water=false
@@ -250,13 +221,13 @@ func _on_FootCollision_area_exited(area: Area2D) -> void:
 func _on_FootCollision_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
 	if (area==null):
 		return
-	if (area.name=="Floor"):
-		Tile_Floor_Colider=area.get_children()[area_shape_index]
+	if (area.name=="Floor"or area.get_parent().get_parent().name=="Ponte" or area.get_parent().get_parent().name=="Ponte2"):
+		Tile_Floor_Coliders.append(area.get_children()[area_shape_index])
 
 
 func _on_FootCollision_area_shape_exited(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
 	if (area==null):
 		return
-	if (area.name=="Floor"):
-		if (area.get_children()[area_shape_index]==Tile_Floor_Colider):
-			Tile_Floor_Colider=null
+	if (area.name=="Floor" or area.get_parent().get_parent().name=="Ponte" or area.get_parent().get_parent().name=="Ponte2"):
+		Tile_Floor_Coliders.erase(area.get_children()[area_shape_index])
+	
