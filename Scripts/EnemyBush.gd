@@ -115,13 +115,13 @@ func destroy():
 	if (state!=states.DEATH):
 		state=states.DEATH
 		$SpriteSoldadoArbusto.animation="Death"
+		$Area2D.queue_free()
 		global_position.y-=10
 		timerCreator("death",0.2,null,true)
 	
 func death():
 		stop=true
 		$SpriteSoldadoArbusto.animation="Explode"
-		$Area2D.queue_free()
 		timerCreator("queue_free",0.5,null,true)
 
 func timerCreator(functionName,time,parameters,create):

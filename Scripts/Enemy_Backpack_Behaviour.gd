@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Node2D
 
 export (int) var speed = 250
 export var gravity = 2500
@@ -117,7 +117,8 @@ func _physics_process(delta):
 	
 	if (velocity.y>maxVelocityY):
 		velocity.y=maxVelocityY
-	velocity = move_and_slide(velocity, Vector2.UP)
+	global_position.x+=velocity.x*Global.Inverse_MAX_FPS
+	global_position.y+=velocity.y*Global.Inverse_MAX_FPS
 
 
 func fit ():
@@ -134,6 +135,9 @@ func destroy():
 		return
 	state=actions.DEAD
 	$SoldierColision.queue_free()
+	$RightFoot.queue_free()
+	$LeftFoot.queue_free()
+	$FootCollision.queue_free()
 	$Animation.animation="Jump"
 	velocity.x=0
 	velocity.y = -jump_speed/1.2
