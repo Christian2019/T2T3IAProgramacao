@@ -162,7 +162,7 @@ func insideScreen():
 	var maxDistance =cameraWidth*2
 
 	if (global_position.x<-300 or global_position.x>10307 or global_position.y>965):
-		print("fora da tela")
+		#print("fora da tela")
 		destroy()
 	#elif (global_position.x<cameraPosition.x-cameraExt*4 or global_position.x>cameraPosition.x+cameraExt*4 ):
 	elif (global_position.distance_to(cameraPosition)>maxDistance):

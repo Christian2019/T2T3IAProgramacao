@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/BulletPlayer.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Spritesheets/Bullets/pop.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Spritesheets/Bullets/spread.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Spritesheets/Bullets/normal.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/Bullets/pop.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Bullets/spread.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Bullets/normal.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (15).wav" type="AudioStream" id=5]
-[ext_resource path="res://Assets/Spritesheets/Bullets/fire.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/Bullets/fire.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (8).wav" type="AudioStream" id=7]
-[ext_resource path="res://Assets/Spritesheets/Bullets/machinegun.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/Bullets/machinegun.png" type="Texture" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 3.60555

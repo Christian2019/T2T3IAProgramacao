@@ -1,16 +1,17 @@
 [gd_scene load_steps=66 format=2]
 
-[ext_resource path="res://Assets/Spritesheets/Player/player2/lowered.png" type="Texture" id=1]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/death.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/running.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/look_up.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/into_the_water.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/idle.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/running_aiming_up.png" type="Texture" id=7]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/aiming_on_wather.png" type="Texture" id=8]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/jump.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/running_aiming_front.png" type="Texture" id=10]
-[ext_resource path="res://Assets/Spritesheets/Player/player2/running_aiming_down.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/Player2/lowered.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Images/Player2/death.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Player2/running.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Player2/look_up.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/Player2/into_the_water.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/Player2/idle.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/Player2/running_aiming_up.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/Player2/aiming_on_wather.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/Player2/jump.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/Player2/running_aiming_front.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/Player2/running_aiming_down.png" type="Texture" id=11]
+
 
 [sub_resource type="AtlasTexture" id=148]
 flags = 4

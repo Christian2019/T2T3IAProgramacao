@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/LaserBeam.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Spritesheets/Bullets/pop.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Spritesheets/Bullets/laser.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/Bullets/pop.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Bullets/laser.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 3 )

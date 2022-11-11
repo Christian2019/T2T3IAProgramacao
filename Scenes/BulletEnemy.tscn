@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/BulletEnemy.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Spritesheets/Bullets/bullet enemy.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Spritesheets/Bullets/pop.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/Bullets/bullet enemy.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Bullets/pop.png" type="Texture" id=4]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {

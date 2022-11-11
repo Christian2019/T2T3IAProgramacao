@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://Assets/Spritesheets/Enemies/turret2.png" type="Texture" id=1]
-[ext_resource path="res://Assets/Spritesheets/explosion.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Enemies/turret2.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Images/explosion.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Enemy_Cannon.gd" type="Script" id=4]
 
 [sub_resource type="AtlasTexture" id=2]
