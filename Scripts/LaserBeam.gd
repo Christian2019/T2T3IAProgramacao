@@ -1,46 +1,61 @@
 extends Area2D
 
 export (Texture) var pop_sprite
-var sprite
 var speed = 800
-var stop = false
-var direction := Vector2(1,0)
+var stop=false
+
 
 var hit_enemy = true
 
-func _ready():
-	sprite = $Sprite
-
 func _process(delta):
-	
-	if not stop:
-		
-		position += direction * speed * Global.Inverse_MAX_FPS
+	if (!stop):
+		position.x += speed * Global.Inverse_MAX_FPS
 
-func change_direction(dir, rot):
-	direction = dir
-	rotation_degrees = rot
-
-func _on_LaserBeam_body_entered(body):
-	if hit_enemy:
-		if "Enemy" in body.name:
-			body.queue_free()
-			
-			sprite.texture = pop_sprite
-			hit_enemy = false
-			stop = true
-			$Timer.start()
-		elif "Turret" in body.name:
-			body.loose_life()
-		
-			sprite.texture = pop_sprite
-			hit_enemy = false
-			stop = true
-			$Timer.start()
 
 func _on_VisibilityNotifier2D_screen_exited():
-	if hit_enemy:
-		get_parent().queue_free()
+		queue_free()
 
-func _on_Timer_timeout():
-	queue_free()
+func _on_LaserBeam_area_entered(area: Area2D) -> void:
+	if (area.get_parent().is_in_group("Enemy")):
+		var enemy = area.get_parent()
+		enemy.life-=1
+		if (enemy.life<=0):
+			enemy.destroy()
+		destroy()
+
+	if area.get_parent().is_in_group("Capsule"):
+		area.get_parent().explode()
+		destroy()
+
+	elif area.is_in_group("Turret"):
+		area.loose_life()
+		destroy()
+		
+func destroy():
+		stop=true
+		$CollisionShape2D.queue_free()
+		$Sprite.texture=pop_sprite
+		timerCreator("queue_free",0.2,null,true)
+		
+func timerCreator(functionName,time,parameters,create):
+	if (create):
+		var timer = Timer.new()
+		if (parameters==null):
+			timer.connect("timeout",self,functionName)
+		else:
+			timer.connect("timeout",self,functionName,parameters)
+		timer.set_wait_time(time)
+		add_child(timer)
+		timer.one_shot=true
+		timer.start()
+	
+		var timer2 = Timer.new()
+		timer2.connect("timeout",self,"timerCreator",["",0,[timer,timer2],false])
+		timer2.set_wait_time(time+1)
+		add_child(timer2)
+		timer2.one_shot=true
+		timer2.start()
+	else:
+		remove_child(parameters[0])
+		remove_child(parameters[1])
+

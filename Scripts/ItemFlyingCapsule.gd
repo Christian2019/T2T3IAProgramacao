@@ -5,14 +5,29 @@ export var falcon_index = 0
 var falcon = preload("res://Scenes/ItemPickUp.tscn")
 
 var angle = PI / 2
-var max_speed = 100
-var angular_speed = 0.7
+var max_speed = 300
+var angular_speed = 1
 var radius = 3
+var distanceToActivate=330
 
-var stop = false
+var stop = true
+var disable=true
+
+func _ready() -> void:
+	$AnimatedSprite.visible=false
+	$Area2D/CollisionShape2D.disabled=true
 
 func _process(delta):
+	if (disable):
+		activation()
 	move()
+
+func activation():
+	if (Global.MainScene.get_node("Camera2D").global_position.x>global_position.x+distanceToActivate):
+		disable=false
+		stop=false
+		$Area2D/CollisionShape2D.disabled=false
+		$AnimatedSprite.visible=true
 
 func move():
 	if stop:

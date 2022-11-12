@@ -2,9 +2,9 @@ extends Node2D
 
 export (Array, Texture) var falcons
 
-export var falcon_index = 0
-var speed = 80
-var vertical_force = -5
+var falcon_index = 0
+var speed = 100
+var vertical_force = -6
 export var gravityForce = 6
 
 var stop = false
@@ -83,5 +83,8 @@ func horizontal_velocity():
 
 func _on_Body_area_entered(area: Area2D) -> void:
 	if (area.get_parent().is_in_group("Player")):
-		area.get_parent().bullet_type=falcon_index
+		if (falcon_index==0):
+			area.get_parent().shootCDTimer=area.get_parent().shootCDTimerItem
+		else:	
+			area.get_parent().bullet_type=falcon_index
 		queue_free()

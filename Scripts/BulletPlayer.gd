@@ -33,6 +33,12 @@ func _ready():
 
 func _process(delta):
 	if not stop:
+		if (bullet_type == 2 and scale.x<3):
+			scale.x+=0.04
+			scale.y+=0.04
+		elif(scale.x>3):
+			scale.x=3
+			scale.y=3
 		if bullet_type == 3:
 			rotate_around_axis_node()
 		else:
@@ -114,13 +120,8 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 
 	if area.get_parent().is_in_group("Capsule"):
 		area.get_parent().explode()
-		
-	"""
-	if area.is_in_group("Enemy"):
-		area.queue_free() #chamar função animação de morte do inimigo
-		pop_bullet()
-	
+
 	elif area.is_in_group("Turret"):
 		area.loose_life()
 		pop_bullet()
-	"""
+

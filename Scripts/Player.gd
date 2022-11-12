@@ -11,7 +11,7 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 var lives
-var invincible=false
+var invincible=true
 var dead = false
 
 var contactCollision
@@ -23,7 +23,7 @@ var animationsPlayer2= preload("res://Scenes/AnimatedSpritePlayer2.tscn")
 var blockShootTurn=false
 var bullet = preload("res://Scenes/BulletPlayer.tscn")
 var laser = preload("res://Scenes/Laser.tscn")
-var bullet_type = 2
+var bullet_type = 0
 # 0->normal 1->machinegun 2->spread 3->flamethrower 4->laser
 
 var is_jumping = false
@@ -32,6 +32,9 @@ var is_shooting = false
 var can_shoot = true
 var shoot_Animation=false
 
+var shootCDTimerStart=0.3
+var shootCDTimerItem=0.2
+var shootCDTimer=shootCDTimerStart
 
 var bullet_rotation := 0.0
 var bullet_adjacent_1 := 0.0
@@ -251,7 +254,7 @@ func animationController():
 		
 	elif (state==states.LOWERED):
 		contactCollision=$LoweredBoxCollision.get_children()[0]
-		if Input.is_action_just_pressed("Shoot"+inputsExtra):
+		if Input.is_action_pressed("Shoot"+inputsExtra):
 			$AnimatedSprite.animation="Lowered_shoot"
 		else:
 			$AnimatedSprite.animation="Lowered"
@@ -268,12 +271,12 @@ func animationController():
 
 	elif (state==states.IDLE):
 		if Input.is_action_pressed("Arrow_UP"+inputsExtra) :
-			if Input.is_action_just_pressed("Shoot"+inputsExtra):
+			if Input.is_action_pressed("Shoot"+inputsExtra):
 				$AnimatedSprite.animation="Look_up_shoot"
 			else:
 				$AnimatedSprite.animation="Look_up"
 		else:
-			if Input.is_action_just_pressed("Shoot"+inputsExtra) and can_shoot:
+			if Input.is_action_pressed("Shoot"+inputsExtra) and can_shoot:
 				$AnimatedSprite.animation="Idle_shoot"
 			else:
 				$AnimatedSprite.animation="Idle"
@@ -297,6 +300,8 @@ func death():
 		dead=false
 		if invincible:
 			return
+		shootCDTimer=shootCDTimerStart
+		bullet_type=0
 		if (state==states.INTO_THE_WATER):
 			$AnimatedSprite.global_position.y-=fix_Y_FALLING_INTO_THE_WATER
 			inWater=false
@@ -473,32 +478,36 @@ func shoot():
 	shoot_Animation=true
 	$ShootAnimation.start()
 	shooting_directions()
-	#rint($AnimatedSprite.animation)
-	if bullet_type == 1 and Input.is_action_pressed("Shoot"+inputsExtra):
+	
+	if (inputCondition() and can_shoot):
 		is_shooting = true
-		if can_shoot:
+		can_shoot=false
+		var timeCD = shootCDTimer
+		if (bullet_type == 4):
+			laser_shoot()
+		else:
 			bullet_shoot(bullet_rotation)
-			timerCreator("shootCD",0.1,null,true)
-			can_shoot = false
-	elif Input.is_action_just_pressed("Shoot"+inputsExtra):
-		is_shooting = true
-		if can_shoot:
-			if bullet_type == 4:
-				laser_shoot()
-			else:
-				bullet_shoot(bullet_rotation)
-				if (bullet_type==3):
-					var b = bullet_rotation
-					timerCreator("bullet_shoot",0.1,[b],true)
 			
-				if bullet_type == 2:
-					spread_bullet()
-				#cool_down_timer_node.start()
-			
-			can_shoot = false
-			timerCreator("shootCD",0.1,null,true)
+		if (bullet_type == 3):
+			timerCreator("bullet_shoot",0.2,[bullet_rotation],true)
+		elif (bullet_type == 2):
+			spread_bullet()
+		elif (bullet_type == 1):
+			timeCD-=0.1
+
+		timerCreator("shootCD",timeCD,null,true)
+		
 	else:
 		is_shooting = false
+
+func inputCondition():
+	if (shootCDTimer==shootCDTimerItem or bullet_type == 1):
+		if Input.is_action_pressed("Shoot"+inputsExtra):
+			return true
+	else:
+		if Input.is_action_just_pressed("Shoot"+inputsExtra):
+			return true
+	return false
 
 func bullet_shoot(dir):
 	var bullet_instance = bullet.instance()
@@ -506,7 +515,6 @@ func bullet_shoot(dir):
 	get_parent().add_child(bullet_instance)
 	bullet_instance.global_position = bullet_position_node.global_position
 	bullet_instance.set_scale(Vector2(2,2))
-	
 	bullet_instance.set_bullet(bullet_position_node.global_position, 
 		bullet_type, dir, !$AnimatedSprite.flip_h)
 	shoot_audio()
@@ -539,10 +547,10 @@ func spread_bullet():
 
 func laser_shoot():
 	var laser_instance = laser.instance()
-	get_parent().add_child(laser_instance)
 	laser_instance.global_position = bullet_position_node.global_position
 	laser_instance.set_scale(Vector2(2,2))
 	laser_instance.set_rotation(bullet_rotation)
+	get_parent().add_child(laser_instance)
 
 func bulletInfo(bulletPosition,bulletRotation):
 		bullet_position_node.position = bulletPosition
