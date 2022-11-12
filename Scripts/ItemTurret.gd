@@ -16,6 +16,7 @@ func _ready() -> void:
 
 func loose_life():
 	call_deferred("disableCollision")
+	$Timer.stop()
 	animated_sprite.play("explosion")
 	call_item()
 
