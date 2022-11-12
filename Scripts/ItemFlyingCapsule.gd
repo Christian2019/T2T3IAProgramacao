@@ -1,7 +1,8 @@
 extends Node2D
 
-export (PackedScene) var falcon
 export var falcon_index = 0
+
+var falcon = preload("res://Scenes/ItemPickUp.tscn")
 
 var angle = PI / 2
 var max_speed = 100
@@ -30,17 +31,14 @@ func explode():
 	stop = true
 	$AnimatedSprite.play("explosion")
 	$Area2D.queue_free()
-	falcon()
+	createItem()
 
-func falcon():
+func createItem():
 	var falcon_instance = falcon.instance()
 	falcon_instance.falcon_index = falcon_index
-	print(falcon_instance.falcon_index, falcon_index)
 	falcon_instance.global_position = global_position
 	falcon_instance.set_scale(Vector2(3,3))
-	get_parent().add_child(falcon_instance)
-	
+	get_parent().call_deferred("add_child", falcon_instance)
+	queue_free()
 
-func _on_AnimatedSprite_animation_finished():
-	if $AnimatedSprite.animation == "explosion":
-		queue_free()
+

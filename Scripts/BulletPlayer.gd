@@ -113,7 +113,6 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 			enemy.destroy()
 
 	if area.get_parent().is_in_group("Capsule"):
-		print(area.get_parent().name)
 		area.get_parent().explode()
 		
 	"""

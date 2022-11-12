@@ -1,4 +1,4 @@
-extends Area2D
+extends Node2D
 
 export (Array, Texture) var falcons
 
@@ -11,21 +11,25 @@ var stop = false
 
 var Tile_Floor
 var onTheTile
+var firstTime=true
 
 func _ready():
 	$Sprite.texture = falcons[falcon_index]
-	Tile_Floor = get_parent().get_parent().get_node("Tiles/Floor").get_children()
+	Tile_Floor = Global.MainScene.get_node("Tiles/Floor").get_children()
 
+	
 func _process(delta):
 	if stop:
 		return
-	
+	if (onTheTile):
+		stop=true
+		return
 	gravity()
 	horizontal_velocity()
 
 func getGroundBoxPosition():
-		var center= {"x":(position.x+$GroundBoxCollision.position.x*scale.x),"y":(position.y+$GroundBoxCollision.position.y*scale.y)}
-		var extents= {"x":$GroundBoxCollision.shape.extents.x*scale.x,"y":$GroundBoxCollision.shape.extents.y*scale.y}
+		var center= {"x":($GroundBoxCollision/CollisionShape2D.global_position.x),"y":($GroundBoxCollision/CollisionShape2D.global_position.y)}
+		var extents= {"x":$GroundBoxCollision/CollisionShape2D.shape.extents.x*$GroundBoxCollision/CollisionShape2D.global_scale.x,"y":$GroundBoxCollision/CollisionShape2D.shape.extents.y*$GroundBoxCollision/CollisionShape2D.global_scale.y}
 		return {"center":center,"extents":extents}
 
 func gravity():
@@ -36,29 +40,23 @@ func gravity():
 			if (tileCollision(groundPosition,Tile_Floor)):
 				vertical_force = 0
 				speed = 0
-				fit(groundPosition)
 				onTheTile=true
 				return
 	onTheTile=false
-	
-	position.y += vertical_force
+	global_position.y += vertical_force
 	vertical_force += gravityForce * Global.Inverse_MAX_FPS
 
 func tileCollision(objectCollisionShape,tileColissionShapes):
 	var center
 	var extents
 	for index in range(tileColissionShapes.size()):
-		center= {"x":tileColissionShapes[index].position.x,"y":tileColissionShapes[index].position.y}
-		extents={"x":tileColissionShapes[index].shape.extents.x,"y":tileColissionShapes[index].shape.extents.y}
+		center= {"x":tileColissionShapes[index].global_position.x,"y":tileColissionShapes[index].global_position.y}
+		extents={"x":tileColissionShapes[index].shape.extents.x*tileColissionShapes[index].global_scale.x,"y":tileColissionShapes[index].shape.extents.y*tileColissionShapes[index].global_scale.y}
 		if squareCollision(objectCollisionShape.center,objectCollisionShape.extents,center,extents):
 			return true
 	return false
 
-func fit(footPosition):
-	footPosition.center.y-=1
-	while(tileCollision(footPosition,Tile_Floor)):
-		footPosition.center.y-=1
-	position.y= footPosition.center.y+1-$GroundBoxCollision.position.y*scale.y
+
 
 func squareCollision(centerA,extentsA,centerB,extentsB):
 	if (insideInterval((centerA.x-extentsA.x),(centerB.x-extentsB.x),(centerB.x+extentsB.x)) or 
@@ -81,18 +79,9 @@ func insideInterval(a,b,c):
 		return false
 
 func horizontal_velocity():
-	position.x += speed * Global.Inverse_MAX_FPS
+	global_position.x += speed * Global.Inverse_MAX_FPS
 
-func _on_PickUp_area_entered(area):
-	if area.is_in_group("Ground"):
-		if vertical_force > 0:
-			stop = true
-
-
-func _on_PickUp_body_entered(body):
-	if body.is_in_group("Player"):
-		$CollisionShape2D.queue_free()
-		$GroundBoxCollision.queue_free()
-		body.bullet_type = falcon_index
-		print("Arma player: ", body.bullet_type)
+func _on_Body_area_entered(area: Area2D) -> void:
+	if (area.get_parent().is_in_group("Player")):
+		area.get_parent().bullet_type=falcon_index
 		queue_free()

@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/ItemFlyingCapsule.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/explosion.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Images/PowerUps/flying_capsule.png" type="Texture" id=3]
-[ext_resource path="res://Scenes/ItemPickUp.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
@@ -36,9 +35,8 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 12, 7 )
 
-[node name="FlyingCapsule" type="Node2D" groups=["Capsule"]]
+[node name="ItemFlyingCapsule" type="Node2D" groups=["Capsule"]]
 script = ExtResource( 1 )
-falcon = ExtResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 5 )
