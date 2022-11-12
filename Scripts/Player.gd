@@ -20,6 +20,7 @@ var animationsPlayer1= preload("res://Scenes/AnimatedSpritePlayer1.tscn")
 var animationsPlayer2= preload("res://Scenes/AnimatedSpritePlayer2.tscn")
 
 #Shoot
+var blockShootTurn=false
 var bullet = preload("res://Scenes/BulletPlayer.tscn")
 var laser = preload("res://Scenes/Laser.tscn")
 var bullet_type = 2
@@ -219,8 +220,14 @@ func lowered():
 func animationController():
 	contactCollision=$BodyBoxCollision.get_children()[0]
 	if (side==sides.LEFT):
+		if ($AnimatedSprite.flip_h==false):
+			blockShootTurn=true
+			timerCreator("bst",0.1,null,true)
 		$AnimatedSprite.flip_h=true
 	else:
+		if ($AnimatedSprite.flip_h==true):
+			blockShootTurn=true
+			timerCreator("bst",0.1,null,true)
 		$AnimatedSprite.flip_h=false
 		
 	if (state==states.DEATH):
@@ -313,6 +320,9 @@ func death():
 			var canDrop=false
 			while(!canDrop):
 				for index in range(0,Tile_Floor.size(),1):
+					if !is_instance_valid(Tile_Floor[index]):
+						Tile_Floor[index]=null
+						continue
 					var tile = Tile_Floor[index]
 					if (tile.global_position.x-tile.shape.extents.x*tile.scale.x<respawnPositionX and
 					tile.global_position.x+tile.shape.extents.x*tile.scale.x>respawnPositionX ):
@@ -457,7 +467,12 @@ func timerCreator(functionName,time,parameters,create):
 func shootCD():
 	can_shoot = true
 	
+func bst():
+	blockShootTurn=false
+	
 func shoot():
+	if (blockShootTurn):
+		return
 	shoot_Animation=true
 	$ShootAnimation.start()
 	shooting_directions()

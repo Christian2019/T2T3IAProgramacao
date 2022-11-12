@@ -111,14 +111,12 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 		pop_bullet()
 		if (enemy.life<=0):
 			enemy.destroy()
-			
-			# disconnect(signal: String, target: Object, ~~)
 
-	"""		
-	if area.is_in_group("Capsule"):
-		area.explode()
+	if area.get_parent().is_in_group("Capsule"):
+		print(area.get_parent().name)
+		area.get_parent().explode()
 		
-	
+	"""
 	if area.is_in_group("Enemy"):
 		area.queue_free() #chamar função animação de morte do inimigo
 		pop_bullet()
