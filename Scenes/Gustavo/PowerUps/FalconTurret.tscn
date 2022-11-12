@@ -69,7 +69,8 @@ extents = Vector2( 16, 16 )
 
 [node name="FalconTurret" type="Area2D" groups=["Turret"]]
 script = ExtResource( 1 )
-falcon = ExtResource( 4 )
+item_pick_up = ExtResource( 4 )
+item_index = 2
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 7 )
