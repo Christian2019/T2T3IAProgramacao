@@ -219,16 +219,11 @@ func lowered():
 
 func animationController():
 	contactCollision=$BodyBoxCollision.get_children()[0]
-	if (side==sides.LEFT):
-		if ($AnimatedSprite.flip_h==false):
-			blockShootTurn=true
-			timerCreator("bst",0.1,null,true)
-		$AnimatedSprite.flip_h=true
-	else:
-		if ($AnimatedSprite.flip_h==true):
-			blockShootTurn=true
-			timerCreator("bst",0.1,null,true)
-		$AnimatedSprite.flip_h=false
+	if (!blockShootTurn):
+		if (side==sides.LEFT):
+			$AnimatedSprite.flip_h=true
+		else:
+			$AnimatedSprite.flip_h=false
 		
 	if (state==states.DEATH):
 		$AnimatedSprite.animation="Death"
@@ -410,6 +405,7 @@ func inTwoPlayersLimiteSpace():
 			if ((global_position.x-get_parent().get_node("Player").global_position.x)>camera60percentwidth):
 				return false
 	return true
+	
 func jump():
 	if (onTheTile and !tileCollision(getFootPosition(),Tile_Water)):
 		#Drop
@@ -471,8 +467,9 @@ func bst():
 	blockShootTurn=false
 	
 func shoot():
-	if (blockShootTurn):
-		return
+	if (!blockShootTurn):
+		blockShootTurn=true
+		timerCreator("bst",0.1,null,true)
 	shoot_Animation=true
 	$ShootAnimation.start()
 	shooting_directions()
@@ -481,7 +478,7 @@ func shoot():
 		is_shooting = true
 		if can_shoot:
 			bullet_shoot(bullet_rotation)
-			timerCreator("shootCD",0.2,null,true)
+			timerCreator("shootCD",0.1,null,true)
 			can_shoot = false
 	elif Input.is_action_just_pressed("Shoot"+inputsExtra):
 		is_shooting = true
@@ -499,7 +496,7 @@ func shoot():
 				#cool_down_timer_node.start()
 			
 			can_shoot = false
-			timerCreator("shootCD",0.5,null,true)
+			timerCreator("shootCD",0.1,null,true)
 	else:
 		is_shooting = false
 
