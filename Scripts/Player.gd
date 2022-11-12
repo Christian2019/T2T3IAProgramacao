@@ -11,7 +11,7 @@ var Tile_DeathZone
 var wait=false
 var inWater=false
 var lives
-var invincible=true
+var invincible=false
 var dead = false
 
 var contactCollision
@@ -173,6 +173,8 @@ func fit(footPosition):
 	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 
 func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("Imortal"):
+		invincible=!invincible
 
 	if Input.is_action_just_pressed("ChangeBullet"):
 		bullet_type+=1
@@ -324,10 +326,10 @@ func death():
 						Tile_Floor[index]=null
 						continue
 					var tile = Tile_Floor[index]
-					if (tile.global_position.x-tile.shape.extents.x*tile.scale.x<respawnPositionX and
-					tile.global_position.x+tile.shape.extents.x*tile.scale.x>respawnPositionX ):
+					if (tile.global_position.x-tile.shape.extents.x*tile.global_scale.x<respawnPositionX and
+					tile.global_position.x+tile.shape.extents.x*tile.global_scale.x>respawnPositionX ):
 						canDrop=true
-						respawnPositionX+=$BodyBoxCollision.get_children()[0].shape.extents.x*$BodyBoxCollision.get_children()[0].scale.x+20
+						#respawnPositionX+=$BodyBoxCollision.get_children()[0].shape.extents.x*$BodyBoxCollision.get_children()[0].scale.x+20
 						break
 				respawnPositionX+=1
 		timerCreator("respawn",1,[respawnPositionX,respawnPositionY],true)
