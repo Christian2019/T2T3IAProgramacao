@@ -58,9 +58,9 @@ func changeAnimation():
 		
 	var angle= rad2deg(player.position.angle_to_point(global_position))
 	
-	if(angle>20 and angle<160):
+	if(angle>15 and angle<165):
 		$AnimatedSprite.animation="Down"
-	elif(angle<-20 and angle>-160):
+	elif(angle<-15 and angle>-165):
 		$AnimatedSprite.animation="Up"
 	else:
 		$AnimatedSprite.animation="Normal"

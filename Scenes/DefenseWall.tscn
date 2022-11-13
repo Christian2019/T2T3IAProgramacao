@@ -1,0 +1,223 @@
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://Scripts/WallCannon.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/DefenseWallBoss/wall.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/DefenseWallBoss/wall_cannon.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/DefenseWallBoss/wall_cannon2.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/CannonBullet.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/WallDoor.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Images/DefenseWallBoss/door.png" type="Texture" id=7]
+[ext_resource path="res://Scripts/DefenseWall.gd" type="Script" id=8]
+[ext_resource path="res://Assets/Images/DefenseWallBoss/wall_destroyed.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/DefenseWallBoss/part_wall.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/DefenseWallBoss/in_front_player_wall.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/explosion.png" type="Texture" id=12]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6.5, 4 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 12, 6 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 28, 33 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 28, 0, 28, 33 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 56, 0, 28, 33 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 12, 15 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 12 )
+region = Rect2( 0, 0, 34, 34 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 12 )
+region = Rect2( 34, 0, 34, 34 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 12 )
+region = Rect2( 68, 0, 34, 34 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 12 )
+region = Rect2( 102, 0, 34, 34 )
+
+[sub_resource type="AtlasTexture" id=12]
+flags = 4
+atlas = ExtResource( 12 )
+region = Rect2( 136, 0, 34, 34 )
+
+[sub_resource type="AtlasTexture" id=13]
+flags = 4
+atlas = ExtResource( 12 )
+region = Rect2( 170, 0, 34, 34 )
+
+[sub_resource type="AtlasTexture" id=14]
+flags = 4
+atlas = ExtResource( 12 )
+region = Rect2( 204, 0, 34, 34 )
+
+[sub_resource type="SpriteFrames" id=15]
+animations = [ {
+"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
+"loop": false,
+"name": "explosion",
+"speed": 5.0
+} ]
+
+[node name="DefenseWall" type="Node2D"]
+script = ExtResource( 8 )
+destroyed_wall_sprite = ExtResource( 9 )
+
+[node name="Wall" type="Sprite" parent="."]
+z_index = -1
+texture = ExtResource( 2 )
+
+[node name="InFrontPlayerWall" type="Sprite" parent="."]
+visible = false
+z_index = 1
+texture = ExtResource( 11 )
+
+[node name="Parts" type="Node2D" parent="."]
+
+[node name="Cannon1" type="Area2D" parent="Parts" groups=["Turret"]]
+position = Vector2( -41, -5 )
+script = ExtResource( 1 )
+cannon_bullet = ExtResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="Parts/Cannon1"]
+texture = ExtResource( 4 )
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/Cannon1"]
+position = Vector2( -5.5, -3 )
+shape = SubResource( 1 )
+
+[node name="ShootBullet" type="Position2D" parent="Parts/Cannon1"]
+position = Vector2( -10, -3 )
+
+[node name="Cannon2" type="Area2D" parent="Parts" groups=["Turret"]]
+position = Vector2( -20, -5 )
+script = ExtResource( 1 )
+cannon_bullet = ExtResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="Parts/Cannon2"]
+texture = ExtResource( 3 )
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/Cannon2"]
+position = Vector2( 0, -2 )
+shape = SubResource( 7 )
+
+[node name="ShootBullet" type="Position2D" parent="Parts/Cannon2"]
+position = Vector2( -10, -3 )
+
+[node name="Door" type="Area2D" parent="Parts" groups=["Turret"]]
+position = Vector2( -36, 35 )
+z_index = -1
+script = ExtResource( 6 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Parts/Door"]
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/Door"]
+shape = SubResource( 6 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( -16, 72 )
+
+[node name="PartWall" type="Sprite" parent="."]
+texture = ExtResource( 10 )
+
+[node name="AnimatedSprite1" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( -37, 35 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( -48, 24 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[node name="AnimatedSprite3" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( -50, 51 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[node name="AnimatedSprite4" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( -16, 26 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[node name="AnimatedSprite5" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( -18, 53 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[node name="AnimatedSprite6" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 13, 26 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[node name="AnimatedSprite7" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 11, 53 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[node name="AnimatedSprite8" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 44, 26 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[node name="AnimatedSprite9" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 42, 53 )
+z_index = 4
+frames = SubResource( 15 )
+animation = "explosion"
+
+[connection signal="tree_exited" from="Parts/Door" to="." method="_on_Door_tree_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

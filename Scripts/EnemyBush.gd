@@ -1,6 +1,8 @@
 extends Node2D
 
 enum states {Wait,Crouching,Lower,Rise,Standing,DEATH}
+export var final_Sniper=false
+var sniper = preload("res://Scenes/Sniper.tscn")
 var bullet = preload("res://Scenes/BulletEnemy.tscn")
 var life=1
 var stop=false
@@ -34,6 +36,10 @@ func shoot_bullet(dir):
 	get_tree().current_scene.add_child(newbullet)
 
 func _process(delta):
+	if (final_Sniper):
+		if(playersClose()):
+			$SpriteSoldadoArbusto.play("Rise")
+		return
 	if (stop):
 		return
 	if (state==states.DEATH):
@@ -153,3 +159,17 @@ func _on_Area2D_area_entered(area: Area2D) -> void:
 		if (player.contactCollision==area.get_children()[0]):
 			#print(area.name)
 			player.dead=true
+
+
+func _on_SpriteSoldadoArbusto_animation_finished() -> void:
+	
+	if (final_Sniper and $SpriteSoldadoArbusto.animation=="Rise"):
+		var s = sniper.instance()
+		s.global_position=global_position
+		s.z_index=1
+		s.global_scale=global_scale
+		s.position.y-=46
+		s.position.x+=10
+		get_parent().get_parent().get_node("Snipers").call_deferred("add_child", s)
+		queue_free()
+		
