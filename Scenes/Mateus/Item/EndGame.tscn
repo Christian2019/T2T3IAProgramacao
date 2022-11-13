@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Fonts/Contra.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scenes/RootScenes/EndGame.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Sounds/Contra (NES) Music - Title Theme.mp3" type="AudioStream" id=3]
+
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+size = 30
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 799.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="FinalScreen" type="Node2D" parent="."]
+position = Vector2( 198, 4 )
+scale = Vector2( 1, 0.8 )
+
+[node name="Mensagem" type="Label" parent="FinalScreen"]
+margin_left = 29.0
+margin_top = 386.25
+margin_right = 628.0
+margin_bottom = 494.25
+theme = SubResource( 1 )
+custom_colors/font_color = Color( 0.647059, 0.647059, 0.647059, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "    Fim de jogo
+Obrigado por jogar!!"
+
+[node name="MusicaFundo" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
