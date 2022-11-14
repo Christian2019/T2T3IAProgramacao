@@ -53,7 +53,7 @@ position = Vector2( 513, 402.187 )
 scale = Vector2( 3.99414, 3.58761 )
 texture = ExtResource( 2 )
 
-[node name="1Player" type="Label" parent="FinalScreen"]
+[node name="Player1" type="Label" parent="FinalScreen"]
 margin_left = 226.0
 margin_top = 533.0
 margin_right = 466.0
@@ -63,7 +63,7 @@ custom_colors/font_color = Color( 0.647059, 0.647059, 0.647059, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "1 Player"
 
-[node name="2Player" type="Label" parent="FinalScreen"]
+[node name="Player2" type="Label" parent="FinalScreen"]
 margin_left = 226.0
 margin_top = 583.0
 margin_right = 496.0
