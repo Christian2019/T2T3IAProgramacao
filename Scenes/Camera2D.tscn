@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/Contra.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Scripts/HUD.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/FPS.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Images/HUD/GameOverRed.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/HUD/GameOverBlue.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 17
@@ -21,6 +23,16 @@ script = ExtResource( 3 )
 
 [node name="Lives2" type="Node2D" parent="HUD"]
 
+[node name="Sprite" type="Sprite" parent="HUD"]
+position = Vector2( -404, -267 )
+scale = Vector2( 0.691781, 0.691781 )
+texture = ExtResource( 6 )
+
+[node name="Sprite2" type="Sprite" parent="HUD"]
+position = Vector2( 404, -267 )
+scale = Vector2( 0.691781, 0.691781 )
+texture = ExtResource( 5 )
+
 [node name="FPS" type="Label" parent="."]
 margin_left = -108.0
 margin_top = -292.0
@@ -30,3 +42,11 @@ custom_colors/font_color = Color( 0.886275, 0.121569, 0.121569, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "FPS: 999"
 script = ExtResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+margin_left = -514.0
+margin_top = -323.0
+margin_right = 512.0
+margin_bottom = 327.0
+color = Color( 0, 0, 0, 1 )

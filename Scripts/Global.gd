@@ -1,6 +1,6 @@
 extends Node
 var Inverse_MAX_FPS
-var players=2
+var players=1
 var MainScene
 func _ready() -> void:
 	MainScene=get_node("/root").get_children()[1]

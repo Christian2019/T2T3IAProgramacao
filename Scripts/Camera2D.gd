@@ -7,13 +7,26 @@ var FpsAjustPosition =13
 var maxX=9800
 var onePlayerDead=false
 var playerName="Player"
-
+var openingSpeedStart=20
+var opening=true
 
 func _ready() -> void:
-	pass 
-
+	$HUD.visible=false
+	$ColorRect.visible=true
+	$HUD/Sprite.visible=false
+	$HUD/Sprite2.visible=false
 
 func _physics_process(delta: float) -> void:
+	if opening:
+		if ($ColorRect.rect_position.x<513):
+			$ColorRect.rect_position.x+=openingSpeedStart
+			return
+		else:
+			$ColorRect.queue_free()
+			Global.MainScene.startGame=true
+			$HUD.visible=true
+			opening=false
+			
 	if (Global.players==1):
 		onePlayer()
 	else:

@@ -1,6 +1,7 @@
 extends Node2D
 
 var player2 = preload("res://Scenes/Player.tscn")
+var startGame=false
 
 func _ready() -> void:
 	if (Global.players==2):

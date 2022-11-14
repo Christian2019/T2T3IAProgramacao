@@ -53,6 +53,7 @@ func apocalypse():
 	destroyChildrens("Enemies/Cannons")
 	destroyChildrens("Enemies/Enemies_Bush")
 	destroyChildrens("Enemies/Snipers")
+	destroyChildrens("Bullets")
 		
 func destroyChildrens(path):
 	if  Global.MainScene.get_node(path).get_child_count()==0:

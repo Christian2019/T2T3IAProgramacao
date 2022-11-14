@@ -14,7 +14,7 @@ var lives= 2
 var invincible=false
 var dead = false
 var endGame=false
-
+var invincibleVisibilityCD=false
 
 var contactCollision
 
@@ -54,6 +54,7 @@ var state = states.JUMP
 var side= sides.RIGHT
 var inputsExtra=""
 var startEndGame=false
+var startGame=false
 
 #Ajuste de animacao
 var fix_Y_FALLING_INTO_THE_WATER=30
@@ -70,8 +71,10 @@ func _ready() -> void:
 	
 	#Start
 
-	#global_position.x=255
-	#global_position.y=232
+	#global_position.x=200
+	#global_position.y=100
+	visible=false
+
 	
 	print(name)
 	if (name=="Player2"):
@@ -88,7 +91,7 @@ func _ready() -> void:
 	#Test
 	#global_position.x=6783
 	#global_position.y=232
-	
+
 func loadTiles():
 		Tile_Floor= get_parent().get_node("Tiles/Floor").get_children()
 		Tile_Floor.append(get_parent().get_node("Bridges/Ponte/Ponte0/Area2D/CollisionShape2D"))
@@ -178,6 +181,13 @@ func fit(footPosition):
 	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 
 func _process(delta: float) -> void:
+	if (!startGame):
+		if Global.MainScene.startGame:
+			visible=true
+			startGame=true
+		else:
+			return
+		
 	if (gameOver):
 		return
 	if !endGame and Input.is_action_just_pressed("Imortal"):
@@ -224,9 +234,17 @@ func _process(delta: float) -> void:
 func gameOver():
 	gameOver=true
 	if(Global.players==1):
+		if name=="Player":
+			Global.MainScene.get_node("Camera2D").get_node("HUD/Sprite").visible=true
+		else:
+			Global.MainScene.get_node("Camera2D").get_node("HUD/Sprite2").visible=true
+		
 		if(Global.MainScene.get_node_or_null("Player2")!=null):
 			Global.players=2
-		get_tree().change_scene("res://Scenes/RootScenes/GameOver.tscn")
+		
+		visible=false	
+		timerCreator("goToGameOverScreen",2,null,true)
+		
 	else:
 		for n in get_children():
 			n.queue_free()
@@ -234,9 +252,14 @@ func gameOver():
 		Global.players=1
 		if name=="Player":
 			Global.MainScene.get_node("Camera2D").playerName="Player2"
+			Global.MainScene.get_node("Camera2D").get_node("HUD/Sprite").visible=true
+		else:
+			Global.MainScene.get_node("Camera2D").get_node("HUD/Sprite2").visible=true
+			
 		
-
-
+func goToGameOverScreen():
+	get_tree().change_scene("res://Scenes/RootScenes/GameOver.tscn")
+	
 func endGameFunc():
 	if (!startEndGame):
 		$AnimatedSprite.animation="Idle"
@@ -261,12 +284,18 @@ func endGameFunc():
 func goToFinalScene():
 	get_tree().change_scene("res://Scenes/RootScenes/StartScreen.tscn")
 	
+func invincibleVisibilityChange():
+	if (!invincibleVisibilityCD):
+		$AnimatedSprite.visible=!$AnimatedSprite.visible
+		invincibleVisibilityCD=true
+		timerCreator("changeVisibilityCD",0.1,null,true)
+		return
+
+func changeVisibilityCD():
+	invincibleVisibilityCD=false
 
 func lowered():
-	if (invincible):
-		$AnimatedSprite.visible=!$AnimatedSprite.visible
-	else:
-		$AnimatedSprite.visible=true
+	
 	if (state==states.IDLE):
 		if !endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
 			state=states.LOWERED
@@ -275,6 +304,10 @@ func lowered():
 			state=states.IDLE
 
 func animationController():
+	if (invincible):
+		invincibleVisibilityChange()
+	else:
+		$AnimatedSprite.visible=true
 	if (endGame):
 		return
 	contactCollision=$BodyBoxCollision.get_children()[0]
