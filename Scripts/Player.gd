@@ -332,7 +332,7 @@ func death():
 	
 	if (dead):
 		dead=false
-		if invincible:
+		if invincible and !tileCollision(getBodyPosition(),Tile_DeathZone):
 			return
 		shootCDTimer=shootCDTimerStart
 		bullet_type=0
