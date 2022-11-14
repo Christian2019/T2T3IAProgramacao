@@ -172,7 +172,6 @@ position = Vector2( 5154, 331 )
 scale = Vector2( 2.98214, 2.98214 )
 z_index = -3
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="MainMusic" type="AudioStreamPlayer" parent="."]
@@ -591,7 +590,7 @@ z_index = 1
 item_index = 3
 
 [node name="Player" parent="." instance=ExtResource( 8 )]
-position = Vector2( 9198, 369 )
+position = Vector2( 226, 117 )
 z_index = 2
 
 [node name="Line2D" type="Line2D" parent="."]

@@ -10,7 +10,7 @@ var Tile_Water
 var Tile_DeathZone
 var wait=false
 var inWater=false
-var lives
+var lives= 2
 var invincible=false
 var dead = false
 var endGame=false
@@ -50,13 +50,15 @@ export (Array, AudioStream) var gun_shoot_audio
 
 enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING,DIVE}
 enum sides{RIGHT,LEFT}
-var state = states.IDLE
+var state = states.JUMP
 var side= sides.RIGHT
 var inputsExtra=""
 var startEndGame=false
 
 #Ajuste de animacao
 var fix_Y_FALLING_INTO_THE_WATER=30
+
+var gameOver=false
 
 func _ready() -> void:
 	screen_size= get_viewport_rect().size
@@ -67,7 +69,7 @@ func _ready() -> void:
 	shoot_audio_node = $ShootAudio
 	
 	#Start
-	lives = 3
+
 	#global_position.x=255
 	#global_position.y=232
 	
@@ -176,6 +178,8 @@ func fit(footPosition):
 	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 
 func _process(delta: float) -> void:
+	if (gameOver):
+		return
 	if !endGame and Input.is_action_just_pressed("Imortal"):
 		invincible=!invincible
 		#Global.MainScene.get_node("DefenseWall").queue_free()
@@ -208,12 +212,30 @@ func _process(delta: float) -> void:
 		shoot()
 	if (!endGame):
 		death()
+		if(gameOver):
+			return
 	
 	if (endGame):
 		endGameFunc()
 	
 	#Mantem o personagem dentro da tela
 	insideScreen()
+
+func gameOver():
+	gameOver=true
+	if(Global.players==1):
+		if(Global.MainScene.get_node_or_null("Player2")!=null):
+			Global.players=2
+		get_tree().change_scene("res://Scenes/RootScenes/GameOver.tscn")
+	else:
+		for n in get_children():
+			n.queue_free()
+		global_position = Vector2(0,0)
+		Global.players=1
+		if name=="Player":
+			Global.MainScene.get_node("Camera2D").playerName="Player2"
+		
+
 
 func endGameFunc():
 	if (!startEndGame):
@@ -334,6 +356,7 @@ func death():
 		dead=false
 		if invincible and !tileCollision(getBodyPosition(),Tile_DeathZone):
 			return
+		gravity=0
 		shootCDTimer=shootCDTimerStart
 		bullet_type=0
 		if (state==states.INTO_THE_WATER):
@@ -341,6 +364,9 @@ func death():
 			inWater=false
 		if (lives>0):
 			lives-=1
+		else:
+			gameOver()
+			return
 		state=states.DEATH
 		$AnimatedSprite.frame=0
 		wait=true
@@ -371,7 +397,7 @@ func respawn(respawnPositionX,respawnPositionY):
 	wait=false
 	global_position.x=respawnPositionX
 	global_position.y=respawnPositionY
-	state=states.IDLE
+	state=states.JUMP
 	$AnimatedSprite.playing=true
 	invincible=true
 	timerCreator("removeInvincible",2,null,true)

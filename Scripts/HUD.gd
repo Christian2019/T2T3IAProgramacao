@@ -8,8 +8,11 @@ var medalStartY=-290
 var medalStartX=-476
 var medalStartY2=-290
 var medalStartX2=376
+var twoPlayersMode=false
 
 func _ready() -> void:
+	if Global.players==2:
+		twoPlayersMode=true
 	pass 
 
 func _process(delta: float) -> void:
@@ -25,7 +28,7 @@ func _process(delta: float) -> void:
 			medal.position.x=medalStartX+30*index
 			$Lives.add_child(medal)
 			lives.append(medal)
-	if (Global.players==2):
+	if (twoPlayersMode):
 		var player2_lives =get_parent().get_parent().get_node("Player2").lives
 		if (lives2.size()!=player2_lives):
 			for n in $Lives2.get_children():

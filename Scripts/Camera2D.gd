@@ -5,6 +5,8 @@ var cameraExtendsX=513
 var BackgroundWidth=10307
 var FpsAjustPosition =13
 var maxX=9800
+var onePlayerDead=false
+var playerName="Player"
 
 
 func _ready() -> void:
@@ -21,7 +23,7 @@ func _physics_process(delta: float) -> void:
 	global_position.x = clamp(position.x,0+cameraExtendsX,BackgroundWidth- cameraExtendsX)
 
 func onePlayer():
-	var playerPositionX = get_parent().get_node("Player").global_position.x
+	var playerPositionX = get_parent().get_node(playerName).global_position.x
 	if (cameraClampX<playerPositionX-cameraExtendsX):
 		cameraClampX=playerPositionX-cameraExtendsX
 		if (playerPositionX<maxX):

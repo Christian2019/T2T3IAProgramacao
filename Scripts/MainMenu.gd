@@ -45,5 +45,5 @@ func _process(delta: float) -> void:
 			start_music=true
 			$AudioStreamPlayer2D.play()
 		if(Input.is_action_pressed("Start")):
-			get_tree().change_scene("res://Scenes/RootScenes/TelaTransicao.tscn")
+			get_tree().change_scene("res://Scenes/RootScenes/Transition_Screen.tscn")
 	
