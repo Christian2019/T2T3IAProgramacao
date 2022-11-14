@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Videos/14.11.2022_18.04.29_REC-_online-video-cutter.com_.webm" type="VideoStream" id=1]
+[ext_resource path="res://Scripts/DemoScreen.gd" type="Script" id=2]
+
+[node name="DemoScreen" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="VideoPlayer" type="VideoPlayer" parent="."]
+margin_right = 1025.0
+margin_bottom = 642.0
+stream = ExtResource( 1 )
+volume_db = 14.41
+autoplay = true
+
+[connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]

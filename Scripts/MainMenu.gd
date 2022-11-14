@@ -88,3 +88,7 @@ func timerCreator(functionName,time,parameters,create):
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
+
+
+func _on_Timer_timeout() -> void:
+	get_tree().change_scene("res://Scenes/RootScenes/DemoScreen.tscn")
