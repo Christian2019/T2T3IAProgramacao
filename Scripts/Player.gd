@@ -495,14 +495,14 @@ func horizontal_Move():
 func inTwoPlayersLimiteSpace():
 	if Global.players==1:
 		return true
-	var camera60percentwidth=get_parent().get_node("Camera2D").cameraExtendsX*1.2
+	var cameraPercentWidth=get_parent().get_node("Camera2D").cameraExtendsX*1.2
 	if (name=="Player"):
 		if (global_position.x>get_parent().get_node("Player2").global_position.x):
-			if ((global_position.x-get_parent().get_node("Player2").global_position.x)>camera60percentwidth):
+			if ((global_position.x-get_parent().get_node("Player2").global_position.x)>cameraPercentWidth):
 				return false
 	else:
 		if (global_position.x>get_parent().get_node("Player").global_position.x):
-			if ((global_position.x-get_parent().get_node("Player").global_position.x)>camera60percentwidth):
+			if ((global_position.x-get_parent().get_node("Player").global_position.x)>cameraPercentWidth):
 				return false
 	return true
 	

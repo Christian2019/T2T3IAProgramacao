@@ -134,7 +134,7 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 
 func score(entity):
 	var score = 0
-	print(entity.name)
+	#print(entity.name)
 	
 	if (entity.name.substr(0, "ItemFlyingCapsule".length())=="ItemFlyingCapsule"):
 		score = 500
