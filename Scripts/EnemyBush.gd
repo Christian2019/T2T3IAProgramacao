@@ -167,7 +167,7 @@ func _on_SpriteSoldadoArbusto_animation_finished() -> void:
 	if (final_Sniper and $SpriteSoldadoArbusto.animation=="Rise"):
 		var s = sniper.instance()
 		s.global_position=global_position
-		s.z_index=1
+		s.z_index=2
 		s.global_scale=global_scale
 		s.position.y-=46
 		s.position.x+=10

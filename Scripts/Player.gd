@@ -282,7 +282,7 @@ func endGameFunc():
 
 	position.x += speed*Global.Inverse_MAX_FPS
 func goToFinalScene():
-	get_tree().change_scene("res://Scenes/RootScenes/StartScreen.tscn")
+	get_tree().change_scene("res://Scenes/RootScenes/EndGame.tscn")
 	
 func invincibleVisibilityChange():
 	if (!invincibleVisibilityCD):
