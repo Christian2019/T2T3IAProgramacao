@@ -1,7 +1,7 @@
 extends Node2D
 
 var creating =false
-var Enemy_Backpack = preload("res://Scenes/Enemy_Backpack.tscn")
+var Enemy_Backpack = preload("res://Scenes/Soldier.tscn")
 
 func _ready() -> void:
 	pass 

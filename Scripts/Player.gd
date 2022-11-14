@@ -607,7 +607,7 @@ func inputCondition():
 
 func bullet_shoot(dir):
 	var bullet_instance = bullet.instance()
-	bullet_instance.player=name
+	bullet_instance.playerName=name
 	get_parent().add_child(bullet_instance)
 	bullet_instance.global_position = bullet_position_node.global_position
 	bullet_instance.set_scale(Vector2(2,2))

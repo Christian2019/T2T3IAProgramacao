@@ -83,6 +83,14 @@ func horizontal_velocity():
 
 func _on_Body_area_entered(area: Area2D) -> void:
 	if (area.get_parent().is_in_group("Player")):
+		var score = 1000
+		print("ItemPickUp")
+		
+		if (area.get_parent().name=="Player"):
+			Global.player1Score+=score
+		else:
+			Global.player2Score+=score
+			
 		if (falcon_index==0):
 			area.get_parent().shootCDTimer=area.get_parent().shootCDTimerItem
 		else:	

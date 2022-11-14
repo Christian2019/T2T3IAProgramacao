@@ -13,7 +13,7 @@ var timer_node
 var direction : Vector2
 var stop = false
 
-var player
+var playerName
 var normal_speed = 1000
 var flame_bullet_speed = 350
 var angular_speed = 4
@@ -117,11 +117,41 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 		pop_bullet()
 		if (enemy.life<=0):
 			enemy.destroy()
+			score(enemy)
 
-	if area.get_parent().is_in_group("Capsule"):
+	elif area.get_parent().is_in_group("Capsule"):
 		area.get_parent().explode()
-
-	elif area.is_in_group("Turret"):
-		area.loose_life()
+		score(area.get_parent())
 		pop_bullet()
 
+	elif area.is_in_group("Turret"):
+		area.loose_life()		
+		pop_bullet()
+		if (area.name=="ItemTurret"):
+			score(area)
+		elif (area.life<=0):
+			score(area)
+
+func score(entity):
+	var score = 0
+	print(entity.name)
+	
+	if (entity.name.substr(0, "ItemFlyingCapsule".length())=="ItemFlyingCapsule"):
+		score = 500
+	elif (entity.name.substr(0, "Enemy_Bush".length())=="Enemy_Bush"):
+		score = 500
+	elif (entity.name.substr(0, "Sniper".length())=="Sniper"):
+		score = 500
+	elif (entity.name.substr(0, "Enemy_Cannon".length())=="Enemy_Cannon"):
+		score = 500
+	elif (entity.name.substr(0, "Enemy_WallTurret".length())=="Enemy_WallTurret"):
+		score = 300
+	elif (entity.name=="Cannon1" or entity.name=="Cannon2"):
+		score = 1000
+	elif (entity.name=="Door"):
+		score = 10000
+	
+	if (playerName=="Player"):
+		Global.player1Score+=score
+	else:
+		Global.player2Score+=score

@@ -7,6 +7,7 @@ var item_pick_up = preload("res://Scenes/ItemPickUp.tscn")
 var is_close = true
 var is_transitioning = false
 
+
 var animated_sprite
 
 func _ready() -> void:
