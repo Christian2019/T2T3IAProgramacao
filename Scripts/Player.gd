@@ -13,6 +13,8 @@ var inWater=false
 var lives
 var invincible=false
 var dead = false
+var endGame=false
+
 
 var contactCollision
 
@@ -23,7 +25,7 @@ var animationsPlayer2= preload("res://Scenes/AnimatedSpritePlayer2.tscn")
 var blockShootTurn=false
 var bullet = preload("res://Scenes/BulletPlayer.tscn")
 var laser = preload("res://Scenes/Laser.tscn")
-var bullet_type = 0
+var bullet_type = 2
 # 0->normal 1->machinegun 2->spread 3->flamethrower 4->laser
 
 var is_jumping = false
@@ -51,6 +53,7 @@ enum sides{RIGHT,LEFT}
 var state = states.IDLE
 var side= sides.RIGHT
 var inputsExtra=""
+var startEndGame=false
 
 #Ajuste de animacao
 var fix_Y_FALLING_INTO_THE_WATER=30
@@ -173,15 +176,17 @@ func fit(footPosition):
 	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("Imortal"):
+	if !endGame and Input.is_action_just_pressed("Imortal"):
 		invincible=!invincible
+		#Global.MainScene.get_node("DefenseWall").queue_free()
+		
 
-	if Input.is_action_just_pressed("ChangeBullet"):
+	if !endGame and Input.is_action_just_pressed("ChangeBullet"):
 		bullet_type+=1
 		if (bullet_type>4):
 			bullet_type=0
 		print(bullet_type)
-	#if Input.is_action_pressed("Escape"+inputsExtra):
+	#if !endGame and Input.is_action_pressed("Escape"+inputsExtra):
 		#get_tree().change_scene("res://Scenes/Prototypes/PrototypeMenu.tscn")
 
 	animationController()
@@ -199,16 +204,41 @@ func _process(delta: float) -> void:
 	horizontal_Move()
 	
 	lowered()
-	
-	if (state!=states.DIVE and Input.is_action_pressed("Shoot"+inputsExtra)):
+	if (state!=states.DIVE and !endGame and Input.is_action_pressed("Shoot"+inputsExtra)):
 		shoot()
+	if (!endGame):
+		death()
 	
-	death()
-	
+	if (endGame):
+		endGameFunc()
 	
 	#Mantem o personagem dentro da tela
 	insideScreen()
 
+func endGameFunc():
+	if (!startEndGame):
+		$AnimatedSprite.animation="Idle"
+		if ($FootBoxCollision.global_position.y>621 or global_position.x<9198.001):
+			global_position=Vector2(9198.001,369)
+		return
+	invincible=false
+	$AnimatedSprite.flip_h=false
+	if (global_position.x>10022 and global_position.x<10073 and onTheTile):
+		gravity-=jumpForce
+		$AnimatedSprite.animation="Jump"
+		speed=100
+	elif onTheTile:
+		$AnimatedSprite.animation="Running"
+		speed=200
+	if (global_position.x==10289.5):
+		if (visible):
+			timerCreator("goToFinalScene",2,null,true)
+		visible=false
+
+	position.x += speed*Global.Inverse_MAX_FPS
+func goToFinalScene():
+	get_tree().change_scene("res://Scenes/RootScenes/StartScreen.tscn")
+	
 
 func lowered():
 	if (invincible):
@@ -216,13 +246,15 @@ func lowered():
 	else:
 		$AnimatedSprite.visible=true
 	if (state==states.IDLE):
-		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
+		if !endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
 			state=states.LOWERED
 	if (state==states.LOWERED):
-		if !Input.is_action_pressed("Arrow_DOWN"+inputsExtra) or gravity>=1:
+		if !!endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra) or gravity>=1:
 			state=states.IDLE
 
 func animationController():
+	if (endGame):
+		return
 	contactCollision=$BodyBoxCollision.get_children()[0]
 	if (!blockShootTurn):
 		if (side==sides.LEFT):
@@ -241,9 +273,9 @@ func animationController():
 			
 	elif (state==states.INTO_THE_WATER):
 		contactCollision=$HeadOnTheWaterCollision.get_children()[0]
-		if Input.is_action_pressed("Arrow_UP"+inputsExtra) and (Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or Input.is_action_pressed("Arrow_LEFT"+inputsExtra)):
+		if !endGame and Input.is_action_pressed("Arrow_UP"+inputsExtra) and (!endGame and Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or !endGame and Input.is_action_pressed("Arrow_LEFT"+inputsExtra)):
 			$AnimatedSprite.animation="Aiming_on_water_Diagonal"
-		elif Input.is_action_pressed("Arrow_UP"+inputsExtra) :
+		elif !endGame and Input.is_action_pressed("Arrow_UP"+inputsExtra) :
 			$AnimatedSprite.animation="Aiming_on_water_Up"
 		elif shoot_Animation:
 			$AnimatedSprite.animation="Aiming_on_water_Front"
@@ -256,15 +288,15 @@ func animationController():
 		
 	elif (state==states.LOWERED):
 		contactCollision=$LoweredBoxCollision.get_children()[0]
-		if Input.is_action_pressed("Shoot"+inputsExtra):
+		if !endGame and Input.is_action_pressed("Shoot"+inputsExtra):
 			$AnimatedSprite.animation="Lowered_shoot"
 		else:
 			$AnimatedSprite.animation="Lowered"
 			
 	elif (state==states.RUNNING):
-		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra) :
+		if !endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra) :
 			$AnimatedSprite.animation="Running_aiming_down"
-		elif Input.is_action_pressed("Arrow_UP"+inputsExtra):
+		elif !endGame and Input.is_action_pressed("Arrow_UP"+inputsExtra):
 			$AnimatedSprite.animation="Running_aiming_up"
 		elif shoot_Animation:
 			$AnimatedSprite.animation="Running_aiming_front"
@@ -272,13 +304,13 @@ func animationController():
 			$AnimatedSprite.animation="Running"
 
 	elif (state==states.IDLE):
-		if Input.is_action_pressed("Arrow_UP"+inputsExtra) :
-			if Input.is_action_pressed("Shoot"+inputsExtra):
+		if !endGame and Input.is_action_pressed("Arrow_UP"+inputsExtra) :
+			if !endGame and Input.is_action_pressed("Shoot"+inputsExtra):
 				$AnimatedSprite.animation="Look_up_shoot"
 			else:
 				$AnimatedSprite.animation="Look_up"
 		else:
-			if Input.is_action_pressed("Shoot"+inputsExtra) and can_shoot:
+			if !endGame and Input.is_action_pressed("Shoot"+inputsExtra) and can_shoot:
 				$AnimatedSprite.animation="Idle_shoot"
 			else:
 				$AnimatedSprite.animation="Idle"
@@ -372,21 +404,23 @@ func climb():
 func horizontal_Move():
 	#Dive
 	if (state == states.INTO_THE_WATER):
-		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
+		if !endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
 			state=states.DIVE
 	if (state ==states.DIVE):
-		if !Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
+		if !!endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
 			state=states.INTO_THE_WATER
 		return
 	
-	if Input.is_action_pressed("Arrow_RIGHT"+inputsExtra):
+	if !endGame and Input.is_action_pressed("Arrow_RIGHT"+inputsExtra):
 		if (inTwoPlayersLimiteSpace()):
-			position.x += speed*Global.Inverse_MAX_FPS
+			var maxX=10060
+			if(global_position.x<maxX):
+				position.x += speed*Global.Inverse_MAX_FPS
 		side=sides.RIGHT
 		if (state==states.IDLE):
 			state=states.RUNNING
 			
-	elif Input.is_action_pressed("Arrow_LEFT"+inputsExtra):
+	elif !endGame and Input.is_action_pressed("Arrow_LEFT"+inputsExtra):
 		position.x -= speed*Global.Inverse_MAX_FPS
 		side=sides.LEFT
 		if (state==states.IDLE):
@@ -416,8 +450,8 @@ func inTwoPlayersLimiteSpace():
 func jump():
 	if (onTheTile and !tileCollision(getFootPosition(),Tile_Water)):
 		#Drop
-		if Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
-			if Input.is_action_pressed("Jump"+inputsExtra):
+		if !endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
+			if !endGame and Input.is_action_pressed("Jump"+inputsExtra):
 				state=states.DROP_FALLING
 				var footPosition= getFootPosition()
 				while(tileCollision(footPosition,Tile_Floor)):
@@ -427,7 +461,7 @@ func jump():
 					
 		else:
 			#Jump
-			if Input.is_action_pressed("Jump"+inputsExtra):
+			if !endGame and Input.is_action_pressed("Jump"+inputsExtra):
 				position.y-=1
 				gravity-=jumpForce
 				state=states.JUMP
@@ -451,16 +485,17 @@ func timerCreator(functionName,time,parameters,create):
 		else:
 			timer.connect("timeout",self,functionName,parameters)
 		timer.set_wait_time(time)
-		add_child(timer)
 		timer.one_shot=true
-		timer.start()
+		timer.autostart=true
+		call_deferred("add_child",timer)
+		
 	
 		var timer2 = Timer.new()
 		timer2.connect("timeout",self,"timerCreator",["",0,[timer,timer2],false])
 		timer2.set_wait_time(time+1)
-		add_child(timer2)
 		timer2.one_shot=true
-		timer2.start()
+		timer2.autostart=true
+		call_deferred("add_child",timer2)
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
@@ -504,10 +539,10 @@ func shoot():
 
 func inputCondition():
 	if (shootCDTimer==shootCDTimerItem or bullet_type == 1):
-		if Input.is_action_pressed("Shoot"+inputsExtra):
+		if !endGame and Input.is_action_pressed("Shoot"+inputsExtra):
 			return true
 	else:
-		if Input.is_action_just_pressed("Shoot"+inputsExtra):
+		if !endGame and Input.is_action_just_pressed("Shoot"+inputsExtra):
 			return true
 	return false
 
@@ -586,13 +621,13 @@ func shooting_directions():
 	elif ($AnimatedSprite.animation=="Idle" or $AnimatedSprite.animation=="Idle_shoot" ):
 		bulletInfo(Vector2(17, -4.832),0)
 	elif ($AnimatedSprite.animation=="Jump"):
-		if Input.is_action_pressed("Arrow_UP"+inputsExtra) and (Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or Input.is_action_pressed("Arrow_LEFT"+inputsExtra)):
+		if !endGame and Input.is_action_pressed("Arrow_UP"+inputsExtra) and (!endGame and Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or !endGame and Input.is_action_pressed("Arrow_LEFT"+inputsExtra)):
 			bulletInfo(Vector2(10.613, -15.611),-30)
-		elif Input.is_action_pressed("Arrow_DOWN"+inputsExtra) and (Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or Input.is_action_pressed("Arrow_LEFT"+inputsExtra)):
+		elif !endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra) and (!endGame and Input.is_action_pressed("Arrow_RIGHT"+inputsExtra) or !endGame and Input.is_action_pressed("Arrow_LEFT"+inputsExtra)):
 			bulletInfo(Vector2(13, 6),27)
-		elif Input.is_action_pressed("Arrow_UP"+inputsExtra):
+		elif !endGame and Input.is_action_pressed("Arrow_UP"+inputsExtra):
 			bulletInfo(Vector2(0.236, -14.124),-90)
-		elif Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
+		elif !endGame and Input.is_action_pressed("Arrow_DOWN"+inputsExtra):
 			bulletInfo(Vector2(0.236, 4.832),90)
 		else:
 			bulletInfo(Vector2(9.198, -6.69),0)

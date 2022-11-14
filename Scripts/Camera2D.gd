@@ -4,6 +4,7 @@ var cameraClampX=0
 var cameraExtendsX=513
 var BackgroundWidth=10307
 var FpsAjustPosition =13
+var maxX=9800
 
 
 func _ready() -> void:
@@ -15,7 +16,7 @@ func _physics_process(delta: float) -> void:
 		onePlayer()
 	else:
 		twoPlayers()
-
+	cameraClampX=global_position.x-cameraExtendsX
 	#Limita extremos da fase	
 	global_position.x = clamp(position.x,0+cameraExtendsX,BackgroundWidth- cameraExtendsX)
 
@@ -23,7 +24,8 @@ func onePlayer():
 	var playerPositionX = get_parent().get_node("Player").global_position.x
 	if (cameraClampX<playerPositionX-cameraExtendsX):
 		cameraClampX=playerPositionX-cameraExtendsX
-		global_position.x=playerPositionX
+		if (playerPositionX<maxX):
+			global_position.x=playerPositionX
 		
 func twoPlayers():
 	var player1PositionX = get_parent().get_node("Player").global_position.x
@@ -34,6 +36,7 @@ func twoPlayers():
 	else:
 		further=player2PositionX
 	if (further>global_position.x+cameraExtendsX*0.4):
-		global_position.x+=further-(global_position.x+cameraExtendsX*0.4)
-		cameraClampX=global_position.x-cameraExtendsX
+		if (global_position.x+further-(global_position.x+cameraExtendsX*0.4)<maxX):
+			global_position.x+=further-(global_position.x+cameraExtendsX*0.4)
+		
 

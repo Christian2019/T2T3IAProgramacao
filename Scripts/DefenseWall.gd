@@ -38,6 +38,10 @@ func _on_Door_tree_exited():
 
 func apocalypse():
 	print("Fim da fase")
+	Global.MainScene.get_node("Player").endGame=true
+	if (Global.players==2):
+		Global.MainScene.get_node("Player2").endGame=true	
+	#Global.MainScene.get_node("Camera2D").global_position.x=Global.MainScene.get_node("Camera2D").maxX
 	creatExplosions()
 	var soldiersRespawns = Global.MainScene.get_node("Enemies/SoldierRespawns").get_children()
 	for index in range(0,soldiersRespawns.size(),1):
@@ -60,6 +64,9 @@ func destroyChildrens(path):
 		
 func creatExplosions():
 	activateExplosions($AnimatedSprite1)
+	$Destroy.play()
+	Global.MainScene.get_node("MainMusic").stop()
+
 	for index in range(1,9,1):
 		timerCreator("activateExplosions",(index+1)*0.2,[get_node("AnimatedSprite"+str(index+1))],true)
 
@@ -79,16 +86,25 @@ func timerCreator(functionName,time,parameters,create):
 		else:
 			timer.connect("timeout",self,functionName,parameters)
 		timer.set_wait_time(time)
-		add_child(timer)
 		timer.one_shot=true
-		timer.start()
+		timer.autostart=true
+		call_deferred("add_child",timer)
+		
 	
 		var timer2 = Timer.new()
 		timer2.connect("timeout",self,"timerCreator",["",0,[timer,timer2],false])
 		timer2.set_wait_time(time+1)
-		add_child(timer2)
 		timer2.one_shot=true
-		timer2.start()
+		timer2.autostart=true
+		call_deferred("add_child",timer2)
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
+
+
+func _on_AnimatedSprite9_tree_exited() -> void:
+	Global.MainScene.get_node("EndGame").play()
+	Global.MainScene.get_node("Player").startEndGame=true
+	if (Global.players==2):
+		Global.MainScene.get_node("Player2").startEndGame=true	
+	

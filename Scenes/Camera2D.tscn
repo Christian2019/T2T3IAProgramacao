@@ -10,7 +10,6 @@ size = 17
 font_data = ExtResource( 2 )
 
 [node name="Camera2D" type="Camera2D"]
-position = Vector2( 512, 343 )
 current = true
 zoom = Vector2( 1, 1.02 )
 script = ExtResource( 1 )

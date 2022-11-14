@@ -208,16 +208,17 @@ func timerCreator(functionName,time,parameters,create):
 		else:
 			timer.connect("timeout",self,functionName,parameters)
 		timer.set_wait_time(time)
-		add_child(timer)
 		timer.one_shot=true
-		timer.start()
+		timer.autostart=true
+		call_deferred("add_child",timer)
+		
 	
 		var timer2 = Timer.new()
 		timer2.connect("timeout",self,"timerCreator",["",0,[timer,timer2],false])
 		timer2.set_wait_time(time+1)
-		add_child(timer2)
 		timer2.one_shot=true
-		timer2.start()
+		timer2.autostart=true
+		call_deferred("add_child",timer2)
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
