@@ -66,7 +66,7 @@ func destroyChildrens(path):
 func creatExplosions():
 	activateExplosions($AnimatedSprite1)
 	$Destroy.play()
-	Global.MainScene.get_node("MainMusic").stop()
+	Global.MainScene.get_node("Sounds/MainMusic").stop()
 
 	for index in range(1,9,1):
 		timerCreator("activateExplosions",(index+1)*0.2,[get_node("AnimatedSprite"+str(index+1))],true)
@@ -104,7 +104,7 @@ func timerCreator(functionName,time,parameters,create):
 
 
 func _on_AnimatedSprite9_tree_exited() -> void:
-	Global.MainScene.get_node("EndGame").play()
+	Global.MainScene.get_node("Sounds/EndGame").play()
 	Global.MainScene.get_node("Player").startEndGame=true
 	if (Global.players==2):
 		Global.MainScene.get_node("Player2").startEndGame=true	

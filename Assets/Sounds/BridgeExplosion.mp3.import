@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/BridgeExplosion.mp3-e18276e9b01449325effb152c10f8f04.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sounds/BridgeExplosion.mp3"
+dest_files=[ "res://.import/BridgeExplosion.mp3-e18276e9b01449325effb152c10f8f04.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

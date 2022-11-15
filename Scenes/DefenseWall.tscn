@@ -12,7 +12,7 @@
 [ext_resource path="res://Assets/Images/DefenseWallBoss/part_wall.png" type="Texture" id=10]
 [ext_resource path="res://Assets/Images/DefenseWallBoss/in_front_player_wall.png" type="Texture" id=11]
 [ext_resource path="res://Assets/Images/explosion.png" type="Texture" id=12]
-[ext_resource path="res://Assets/Sounds/boss_defeat.ogg" type="AudioStream" id=13]
+[ext_resource path="res://Assets/Sounds/BossDefeat.ogg" type="AudioStream" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6.5, 4 )
@@ -133,7 +133,7 @@ script = ExtResource( 6 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Parts/Door"]
 frames = SubResource( 5 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/Door"]

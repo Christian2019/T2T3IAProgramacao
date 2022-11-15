@@ -45,8 +45,6 @@ var bullet_adjacent_3 := 0.0
 var bullet_adjacent_4 := 0.0
 
 var bullet_position_node
-var shoot_audio_node
-export (Array, AudioStream) var gun_shoot_audio
 
 enum states{DEATH,FALLING_INTO_THE_WATER,INTO_THE_WATER,JUMP,LOWERED,RUNNING,IDLE,DROP_FALLING,DIVE}
 enum sides{RIGHT,LEFT}
@@ -67,7 +65,7 @@ func _ready() -> void:
 	
 	#Shoot
 	bullet_position_node = $BulletPosition
-	shoot_audio_node = $ShootAudio
+	
 	
 	#Start
 
@@ -613,27 +611,6 @@ func bullet_shoot(dir):
 	bullet_instance.set_scale(Vector2(2,2))
 	bullet_instance.set_bullet(bullet_position_node.global_position, 
 		bullet_type, dir, !$AnimatedSprite.flip_h)
-	shoot_audio()
-
-func shoot_audio():
-	if shoot_audio_node.is_playing():
-		shoot_audio_node.stop()
-	
-	var audio
-	match bullet_type:
-		0:
-			audio = gun_shoot_audio[bullet_type]
-		1:
-			audio = gun_shoot_audio[bullet_type]
-		2:
-			audio = gun_shoot_audio[bullet_type]
-		3:
-			audio = gun_shoot_audio[bullet_type]
-		4:
-			audio = gun_shoot_audio[bullet_type]
-	
-	shoot_audio_node.set_stream(audio)
-	shoot_audio_node.play()
 
 func spread_bullet():
 	bullet_shoot(bullet_adjacent_1)
@@ -693,9 +670,7 @@ func shooting_directions():
 	
 
 func _on_Timer_timeout() -> void:
-	
 	pass
-
 
 
 func _on_ShootAnimation_timeout() -> void:

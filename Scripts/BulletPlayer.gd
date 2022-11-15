@@ -1,13 +1,13 @@
 extends Area2D
 
 export(Array, Texture) var bullet_type_sprite_node
-export(Array, AudioStream) var bullet_hit_audio
+
 var bullet_type = 0;
 # 0->normal 1->machinegun 2->spread 3->flamethrower 4->bullet pop
 
 var sprite_node
 var axis_node
-var hit_audio_node
+
 var timer_node
 
 var direction : Vector2
@@ -26,7 +26,6 @@ var dir_correction = 1
 func _ready():
 	sprite_node = $Sprite
 	axis_node = $Position2D
-	hit_audio_node = $HitAudio
 	timer_node = $Timer
 	direction.x = 1
 	direction.y = 0
@@ -95,12 +94,13 @@ func pop_bullet():
 	$CollisionShape2D.queue_free()
 	sprite_node.texture = bullet_type_sprite_node[4]
 	stop = true
-	hit_audio(1)
+
 	timer_node.start()
 
 func hit_audio(index):
-	hit_audio_node.set_stream(bullet_hit_audio[index])
-	hit_audio_node.play()
+#	hit_audio_node.set_stream(bullet_hit_audio[index])
+	#hit_audio_node.play()
+	return
 
 func _on_Timer_timeout():
 	sprite_node.visible = false

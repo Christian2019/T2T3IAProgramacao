@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Bullet4.ogg-4386b6c4e78ce8373b52f6bd70f9ab90.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Bullet4.ogg"
+dest_files=[ "res://.import/Bullet4.ogg-4386b6c4e78ce8373b52f6bd70f9ab90.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

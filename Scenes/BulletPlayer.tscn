@@ -1,12 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/BulletPlayer.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/Bullets/pop.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Images/Bullets/spread.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/Bullets/normal.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (15).wav" type="AudioStream" id=5]
 [ext_resource path="res://Assets/Images/Bullets/fire.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Sounds/NES - Contra - Effects/Contra SFX (8).wav" type="AudioStream" id=7]
 [ext_resource path="res://Assets/Images/Bullets/machinegun.png" type="Texture" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -15,7 +13,6 @@ radius = 3.60555
 [node name="BulletPlayer" type="Area2D"]
 script = ExtResource( 1 )
 bullet_type_sprite_node = [ ExtResource( 4 ), ExtResource( 8 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 2 ) ]
-bullet_hit_audio = [ ExtResource( 7 ), ExtResource( 5 ) ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -31,9 +28,6 @@ wait_time = 0.2
 
 [node name="Position2D" type="Position2D" parent="."]
 
-[node name="HitAudio" type="AudioStreamPlayer2D" parent="."]
-
 [connection signal="area_entered" from="." to="." method="_on_BulletPlayer_area_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="finished" from="HitAudio" to="." method="_on_HitAudio_finished"]

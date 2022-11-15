@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/BossDefeat.ogg-c4d050457bffe856be3ad123230a8236.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/BossDefeat.ogg"
+dest_files=[ "res://.import/BossDefeat.ogg-c4d050457bffe856be3ad123230a8236.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

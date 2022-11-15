@@ -4,6 +4,7 @@ var start_music=false
 export var actual_position=0
 
 var stop=false
+var click=false
 
 func select_mode(): 
 	if(Input.is_action_pressed("Arrow_UP") and actual_position==1):
@@ -45,6 +46,7 @@ func _process(delta: float) -> void:
 			$AudioStreamPlayer2D.play()
 		if(Input.is_action_pressed("Start")):
 			stop=true
+			click=true
 			turnOn()
 			timerCreator("changeToTransition_Screen",3,null,true)
 			
@@ -91,4 +93,5 @@ func timerCreator(functionName,time,parameters,create):
 
 
 func _on_Timer_timeout() -> void:
-	get_tree().change_scene("res://Scenes/RootScenes/DemoScreen.tscn")
+	if (!click):
+		get_tree().change_scene("res://Scenes/RootScenes/DemoScreen.tscn")
