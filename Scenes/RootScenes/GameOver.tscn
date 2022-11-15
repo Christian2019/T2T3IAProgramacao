@@ -132,7 +132,7 @@ margin_bottom = -167.0
 theme = SubResource( 1 )
 custom_colors/font_color = Color( 0.647059, 0.647059, 0.647059, 1 )
 custom_fonts/font = SubResource( 2 )
-text = "29500"
+text = "35000"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true

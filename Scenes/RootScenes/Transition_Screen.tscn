@@ -110,7 +110,7 @@ margin_bottom = -75.75
 theme = SubResource( 1 )
 custom_colors/font_color = Color( 0.647059, 0.647059, 0.647059, 1 )
 custom_fonts/font = SubResource( 2 )
-text = "29500"
+text = "35000"
 align = 1
 valign = 1
 

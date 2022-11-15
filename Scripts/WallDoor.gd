@@ -9,4 +9,4 @@ func loose_life():
 	if life <= 0 and !destroyed:
 		destroyed = true
 		get_parent().get_parent().doorDestroyed()
-		
+		queue_free()
