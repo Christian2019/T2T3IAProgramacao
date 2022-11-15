@@ -3,6 +3,7 @@ extends Node2D
 var up = true
 
 func _ready() -> void:
+	$Game_over.play()
 	$FinalScreen/Flash/ScoreP1.text=str(Global.player1Score)
 	$FinalScreen/Flash/ScoreP2.text=str(Global.player2Score)
 	turnOn()

@@ -95,4 +95,5 @@ func _on_Body_area_entered(area: Area2D) -> void:
 			area.get_parent().shootCDTimer=area.get_parent().shootCDTimerItem
 		else:	
 			area.get_parent().bullet_type=falcon_index
+		Global.MainScene.get_node("Sounds/ItemPickUp").play()
 		queue_free()

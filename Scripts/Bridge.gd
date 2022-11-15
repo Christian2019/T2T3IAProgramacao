@@ -31,8 +31,16 @@ func firstLoad():
 		if (Global.players==2):
 			player2 = Global.MainScene.get_node("Player2")
 
- 
+func playSound(path):
+	var parent = Global.MainScene.get_node(path).get_children()
+	for index in range(0,parent.size(),1):
+		var child= parent[index]
+		if !child.playing:
+			child.play()
+			return 
 func destroyBlock(index):
+	playSound("Sounds/BridgeExplosion")
+	timerCreator("playSound",0.4,["Sounds/BridgeExplosion"],true)
 	get_node("Ponte"+str(index)+"/Explosion").play("Explosion")
 	get_node("Ponte"+str(index)+"/Area2D").queue_free()
 	var timer=0.6

@@ -39,6 +39,7 @@ func _on_Timer_timeout():
 	ready_cannon = !ready_cannon
 
 func doorDestroyed():
+	print("Porta Destruida")
 	$Wall.visible = false
 	node_shoot_cannon_1.queue_free()
 	node_shoot_cannon_2.queue_free()

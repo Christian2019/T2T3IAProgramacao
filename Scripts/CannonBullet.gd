@@ -3,15 +3,20 @@ extends Area2D
 var horizontal_speed
 var vertical_force = -2
 export var gravityForce=5
-var camera =  Global.MainScene.get_node("Camera2D")
+var camera 
 var stop = false
+var start
 
 func _ready():
+	start=true
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	horizontal_speed = rng.randi_range(40,80)
 
 func _process(delta):
+	if (start):
+		start=false
+		camera =  Global.MainScene.get_node("Camera2D")
 	outOfScreen()
 	if stop:
 		return

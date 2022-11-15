@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/GameOver.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/Contra.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/Images/Menu/MenuSelectThingy.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/Prototypes/GameOverScreen.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Sounds/Game_over.ogg" type="AudioStream" id=5]
 
 [sub_resource type="Theme" id=1]
 
@@ -131,9 +132,13 @@ margin_bottom = -167.0
 theme = SubResource( 1 )
 custom_colors/font_color = Color( 0.647059, 0.647059, 0.647059, 1 )
 custom_fonts/font = SubResource( 2 )
-text = "20000"
+text = "29500"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 1.01, 1.53 )
 drag_margin_h_enabled = true
+
+[node name="Game_over" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -11.154

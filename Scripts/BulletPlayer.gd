@@ -132,6 +132,7 @@ func pop_bullet():
 	sprite_node.texture = bullet_type_sprite_node[4]
 	stop = true
 	timer_node.start()
+	
 
 func _on_Timer_timeout():
 	queue_free()
@@ -145,8 +146,13 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 		if (enemy.life<=0):
 			enemy.destroy()
 			score(enemy)
+			if Global.MainScene.get_node("Sounds/DeathEnemy").canSound:
+				Global.MainScene.get_node("Sounds/DeathEnemy").canSound=false
+				playSound("Sounds/DeathEnemy")
 		else:
-			playSound("Sounds/Enemy_hit")
+			if Global.MainScene.get_node("Sounds/Enemy_hit").canSound:
+				Global.MainScene.get_node("Sounds/Enemy_hit").canSound=false
+				playSound("Sounds/Enemy_hit")
 
 	elif area.get_parent().is_in_group("Capsule"):
 		playSound("Sounds/Enemy_hit")
