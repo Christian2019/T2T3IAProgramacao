@@ -5,17 +5,14 @@
 [ext_resource path="res://Assets/Images/PowerUps/flying_capsule.png" type="Texture" id=3]
 
 [sub_resource type="AtlasTexture" id=2]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 34, 34 )
 
 [sub_resource type="AtlasTexture" id=3]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 34, 0, 34, 34 )
 
 [sub_resource type="AtlasTexture" id=4]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 68, 0, 34, 34 )
 

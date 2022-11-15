@@ -13,6 +13,6 @@ func _ready() -> void:
 
 
 func _on_Timer_timeout() -> void:
-	#print("player1Score: ",Global.player1Score)
-	#print("player2Score: ",Global.player2Score)
+	print("player1Score: ",Global.player1Score)
+	print("player2Score: ",Global.player2Score)
 	return

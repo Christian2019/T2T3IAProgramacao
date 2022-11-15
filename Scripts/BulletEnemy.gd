@@ -11,6 +11,7 @@ func _ready() -> void:
 	new_parent.add_child(self)
 
 func _physics_process(delta: float) -> void:
+	
 	outOfScreen()
 	if stop:
 		return

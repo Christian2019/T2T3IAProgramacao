@@ -39,8 +39,10 @@ func playSound(path):
 			child.play()
 			return 
 func destroyBlock(index):
-	playSound("Sounds/BridgeExplosion")
-	timerCreator("playSound",0.4,["Sounds/BridgeExplosion"],true)
+	if Global.MainScene.get_node("Sounds/BridgeExplosion").canSound:
+		Global.MainScene.get_node("Sounds/BridgeExplosion").canSound=false
+		playSound("Sounds/BridgeExplosion")
+		timerCreator("playSound",0.4,["Sounds/BridgeExplosion"],true)
 	get_node("Ponte"+str(index)+"/Explosion").play("Explosion")
 	get_node("Ponte"+str(index)+"/Area2D").queue_free()
 	var timer=0.6
@@ -58,6 +60,7 @@ func changeToNothing(index):
 	get_node("Ponte"+str(index)).queue_free()
 
 func _process(delta: float) -> void:
+
 		firstLoad()
 		closePlayer()
 		if(destroy == false):

@@ -14,6 +14,7 @@ func _ready():
 	horizontal_speed = rng.randi_range(40,80)
 
 func _process(delta):
+	
 	if (start):
 		start=false
 		camera =  Global.MainScene.get_node("Camera2D")

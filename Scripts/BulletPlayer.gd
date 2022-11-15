@@ -23,7 +23,7 @@ var going_right = true
 
 var dir_correction = 1
 var start=true
-var camera =  Global.MainScene.get_node("Camera2D")
+var camera
 
 func _ready():
 	sprite_node = $Sprite
@@ -69,10 +69,12 @@ func playSound(path):
 			return
 
 func _process(delta):
-	outOfScreen()
+	
 	if (start):
 		start=false
+		camera =  Global.MainScene.get_node("Camera2D")
 		sounds()
+	outOfScreen()
 	if not stop:
 		if (bullet_type == 2 and scale.x<3):
 			scale.x+=0.04
@@ -143,9 +145,9 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 		var enemy = area.get_parent()
 		enemy.life-=1
 		pop_bullet()
-		if (enemy.life<=0):
-			enemy.destroy()
+		if (enemy.life==0):
 			score(enemy)
+			enemy.destroy()
 			if Global.MainScene.get_node("Sounds/DeathEnemy").canSound:
 				Global.MainScene.get_node("Sounds/DeathEnemy").canSound=false
 				playSound("Sounds/DeathEnemy")
@@ -156,18 +158,20 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 
 	elif area.get_parent().is_in_group("Capsule"):
 		playSound("Sounds/Enemy_hit")
-		area.get_parent().explode()
 		score(area.get_parent())
+		area.get_parent().explode()
 		pop_bullet()
 
 	elif area.is_in_group("Turret"):
 		playSound("Sounds/Enemy_hit")
-		area.loose_life()		
-		pop_bullet()
 		if (area.name.substr(0, "ItemTurret".length())=="ItemTurret"):
 			score(area)
-		elif (area.life<=0):
+		elif (area.life-1==0):
 			score(area)
+		pop_bullet()
+		area.loose_life()		
+		
+		
 
 func score(entity):
 	var score = 0

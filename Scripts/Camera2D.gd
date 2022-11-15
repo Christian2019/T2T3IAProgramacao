@@ -17,6 +17,7 @@ func _ready() -> void:
 	$HUD/Sprite2.visible=false
 
 func _physics_process(delta: float) -> void:
+	
 	if opening:
 		if ($ColorRect.rect_position.x<513):
 			$ColorRect.rect_position.x+=openingSpeedStart

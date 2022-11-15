@@ -25,7 +25,7 @@ var animationsPlayer2= preload("res://Scenes/AnimatedSpritePlayer2.tscn")
 var blockShootTurn=false
 var bullet = preload("res://Scenes/BulletPlayer.tscn")
 var laser = preload("res://Scenes/Laser.tscn")
-var bullet_type = 2
+var bullet_type = 0
 # 0->normal 1->machinegun 2->spread 3->flamethrower 4->laser
 
 var is_jumping = false
@@ -74,7 +74,7 @@ func _ready() -> void:
 	visible=false
 
 	
-	print(name)
+
 	if (name=="Player2"):
 		global_position.x+=50
 		inputsExtra="2"
@@ -179,6 +179,7 @@ func fit(footPosition):
 	position.y= footPosition.center.y+1-$FootBoxCollision.position.y*scale.y
 
 func _process(delta: float) -> void:
+
 	if (!startGame):
 		if Global.MainScene.startGame:
 			visible=true

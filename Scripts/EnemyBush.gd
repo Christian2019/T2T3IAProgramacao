@@ -36,6 +36,7 @@ func shoot_bullet(dir):
 	get_tree().current_scene.add_child(newbullet)
 
 func _process(delta):
+	
 	if (final_Sniper):
 		if(playersClose()):
 			$SpriteSoldadoArbusto.play("Rise")

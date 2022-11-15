@@ -12,6 +12,7 @@ var stop = false
 var Tile_Floor
 var onTheTile
 var firstTime=true
+var camera
 
 func _ready():
 	$Sprite.texture = falcons[falcon_index]
@@ -19,6 +20,11 @@ func _ready():
 
 	
 func _process(delta):
+	if (firstTime):
+		firstTime=false
+		camera =  Global.MainScene.get_node("Camera2D")
+
+	outOfScreen()
 	if stop:
 		return
 	if (onTheTile):
@@ -96,4 +102,10 @@ func _on_Body_area_entered(area: Area2D) -> void:
 		else:	
 			area.get_parent().bullet_type=falcon_index
 		Global.MainScene.get_node("Sounds/ItemPickUp").play()
+		queue_free()
+
+func outOfScreen():
+	var ext=600
+	if (camera.global_position.x-ext>global_position.x or camera.global_position.x+ext<global_position.x
+	or camera.global_position.y-ext>global_position.y or camera.global_position.y+ext<global_position.y):
 		queue_free()

@@ -12,15 +12,24 @@ var distanceToActivate=330
 
 var stop = true
 var disable=true
+var camera
+var start=true
 
 func _ready() -> void:
 	$AnimatedSprite.visible=false
 	$Area2D/CollisionShape2D.disabled=true
 
 func _process(delta):
+	
+	if(start):
+		start=false
+		camera =  Global.MainScene.get_node("Camera2D")
 	if (disable):
 		activation()
+	else:
+		outOfScreen()
 	move()
+	
 
 func activation():
 	if (Global.MainScene.get_node("Camera2D").global_position.x>global_position.x+distanceToActivate):
@@ -56,4 +65,8 @@ func createItem():
 	get_parent().call_deferred("add_child", falcon_instance)
 	queue_free()
 
-
+func outOfScreen():
+	var ext=600
+	if (camera.global_position.x-ext>global_position.x or camera.global_position.x+ext<global_position.x
+	or camera.global_position.y-ext>global_position.y or camera.global_position.y+ext<global_position.y):
+		queue_free()

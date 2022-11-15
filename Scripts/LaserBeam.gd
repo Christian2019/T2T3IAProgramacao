@@ -19,7 +19,7 @@ func _on_LaserBeam_area_entered(area: Area2D) -> void:
 	if (area.get_parent().is_in_group("Enemy")):
 		var enemy = area.get_parent()
 		enemy.life-=1
-		if (enemy.life<=0):
+		if (enemy.life==0):
 			enemy.destroy()
 		destroy()
 

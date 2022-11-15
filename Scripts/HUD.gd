@@ -16,6 +16,7 @@ func _ready() -> void:
 	pass 
 
 func _process(delta: float) -> void:
+	
 	var player_lives =get_parent().get_parent().get_node("Player").lives
 	if (lives.size()!=player_lives):
 		for n in $Lives.get_children():
