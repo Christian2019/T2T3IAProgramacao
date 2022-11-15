@@ -1,30 +1,26 @@
 extends AnimatedSprite
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 export var finalx:int
 export var finalx2:int
 export var finalx3:int
 
-var animation1=true
-var animation2=false
-var animation3=false
-var dancemfer=false
-# Called when the node enters the scene tree for the first time.
+enum states{MOONWALK,ROLL,WALK,DANCE}
+var state = states.ROLL
+
 func _ready():
-	pass # Replace with function body.
+	timerCreator("changeState",30,[states.MOONWALK],true)    
+	timerCreator("changeState",50,[states.WALK],true)     
+	timerCreator("changeState",70,[states.DANCE],true) 
+	
+func changeState(s):
+	state=s
 
 func MOONWALK(): 
-	animation1=false   
-	if(animation2):
-		play("WALK") 
-		if(position.x<=finalx2):
-			position.x+=3
-		else:
-			position.x-=3
+	play("WALK") 
+	if(position.x<=finalx2):
+		position.x+=3
+	else:
+		position.x-=3
 
 func ROLL():  
 	play("ROLL")
@@ -34,30 +30,25 @@ func ROLL():
 		position.x-=2
 
 func WALK():  
-	animation2=false  
-	if(animation3):
-		play("WALK") 
-		if(position.x < finalx3):
-			position.x+=2
-		elif(position.x >finalx3):
-			position.x-=2
- 
+	play("WALK") 
+	if(position.x < finalx3):
+		position.x+=2
+	elif(position.x >finalx3):
+		position.x-=2
 
-func play_dance():
-	animation3=false;
-	animation2=false 
-	if(not animation1 and not animation2 and not animation3): 
-		play("DANCE")
-	
 func _process(delta):
-		if(animation1):
-			ROLL()  
-		animation2=true
-		timerCreator("MOONWALK",30,[],true)    
-		animation3=true
-		timerCreator("WALK",50,[],true)     
-		timerCreator("play_dance",70,[],true)     
+	stateController()
+		   
 	 
+func stateController():
+	if (state==states.ROLL):
+		ROLL()
+	elif (state==states.MOONWALK):
+		MOONWALK()
+	elif (state==states.WALK):
+		WALK()
+	elif (state==states.DANCE):
+		play("DANCE")
 
 func timerCreator(functionName,time,parameters,create):
 	if (create):
