@@ -26,17 +26,14 @@ animations = [ {
 } ]
 
 [sub_resource type="AtlasTexture" id=2]
-flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=3]
-flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 32, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=4]
-flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 64, 0, 32, 32 )
 
@@ -52,17 +49,14 @@ animations = [ {
 extents = Vector2( 44.5, 44.5 )
 
 [sub_resource type="AtlasTexture" id=11]
-flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 34, 34 )
 
 [sub_resource type="AtlasTexture" id=12]
-flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 34, 0, 34, 34 )
 
 [sub_resource type="AtlasTexture" id=13]
-flags = 4
 atlas = ExtResource( 4 )
 region = Rect2( 68, 0, 34, 34 )
 
@@ -96,7 +90,7 @@ wait_time = 0.5
 rotation = -3.14159
 scale = Vector2( 3.3, 3.3 )
 frames = SubResource( 5 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -110,7 +104,6 @@ visible = false
 position = Vector2( 1, 2 )
 scale = Vector2( 2.45588, 2.45588 )
 frames = SubResource( 10 )
-frame = 2
 playing = true
 
 [connection signal="timeout" from="Transition" to="." method="_on_Transition_timeout"]

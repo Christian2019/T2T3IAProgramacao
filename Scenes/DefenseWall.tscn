@@ -133,6 +133,7 @@ script = ExtResource( 6 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Parts/Door"]
 frames = SubResource( 5 )
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Parts/Door"]
@@ -214,6 +215,5 @@ animation = "explosion"
 stream = ExtResource( 13 )
 volume_db = -4.952
 
-[connection signal="tree_exited" from="Parts/Door" to="." method="_on_Door_tree_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="tree_exited" from="AnimatedSprite9" to="." method="_on_AnimatedSprite9_tree_exited"]

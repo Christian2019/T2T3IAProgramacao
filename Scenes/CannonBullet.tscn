@@ -8,17 +8,14 @@
 radius = 4.0
 
 [sub_resource type="AtlasTexture" id=2]
-flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 34, 34 )
 
 [sub_resource type="AtlasTexture" id=3]
-flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 34, 0, 34, 34 )
 
 [sub_resource type="AtlasTexture" id=4]
-flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 68, 0, 34, 34 )
 
@@ -44,10 +41,5 @@ shape = SubResource( 1 )
 visible = false
 frames = SubResource( 5 )
 
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
-position = Vector2( 2.38419e-07, 2.38419e-07 )
-scale = Vector2( 0.4, 0.4 )
-
 [connection signal="area_entered" from="." to="." method="_on_CannonBullet_area_entered"]
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
-[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

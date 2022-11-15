@@ -8,4 +8,5 @@ func loose_life():
 	#print("Perdeu vida: ", life)
 	if life <= 0:
 		destroyed = true
+		get_parent().get_parent().doorDestroyed()
 		queue_free()

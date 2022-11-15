@@ -379,6 +379,8 @@ func animationController():
 	elif (state==states.DIVE):
 		$AnimatedSprite.animation="Dive"
 		contactCollision=null
+		if (!Input.is_action_pressed("Arrow_DOWN"+inputsExtra)):
+			state=states.INTO_THE_WATER
 
 func death():
 	

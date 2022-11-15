@@ -38,11 +38,8 @@ func _on_Timer_timeout():
 			node_shoot_cannon_2.shoot()
 	ready_cannon = !ready_cannon
 
-func _on_Door_tree_exited():
-	#$Wall.texture = destroyed_wall_sprite
+func doorDestroyed():
 	$Wall.visible = false
-	#node_shoot_cannon_1.destroy_turret()
-	#node_shoot_cannon_2.destroy_turret()
 	node_shoot_cannon_1.queue_free()
 	node_shoot_cannon_2.queue_free()
 	$InFrontPlayerWall.visible = true
@@ -66,7 +63,7 @@ func apocalypse():
 	destroyChildrens("Enemies/Cannons")
 	destroyChildrens("Enemies/Enemies_Bush")
 	destroyChildrens("Enemies/Snipers")
-	destroyChildrens("Bullets")
+	destroyChildrens("BulletsEnemy")
 		
 func destroyChildrens(path):
 	if  Global.MainScene.get_node(path).get_child_count()==0:

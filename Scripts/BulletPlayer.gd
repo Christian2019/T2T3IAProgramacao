@@ -23,6 +23,7 @@ var going_right = true
 
 var dir_correction = 1
 var start=true
+var camera =  Global.MainScene.get_node("Camera2D")
 
 func _ready():
 	sprite_node = $Sprite
@@ -30,7 +31,15 @@ func _ready():
 	timer_node = $Timer
 	direction.x = 1
 	direction.y = 0
+	var new_parent = Global.MainScene.get_node("BulletsPlayer")
+	get_parent().remove_child(self)
+	new_parent.add_child(self)
 
+func outOfScreen():
+	var ext=600
+	if (camera.global_position.x-ext>global_position.x or camera.global_position.x+ext<global_position.x
+	or camera.global_position.y-ext>global_position.y or camera.global_position.y+ext<global_position.y):
+		queue_free()
 	
 func sounds():
 	var path
@@ -60,6 +69,7 @@ func playSound(path):
 			return
 
 func _process(delta):
+	outOfScreen()
 	if (start):
 		start=false
 		sounds()
@@ -117,28 +127,13 @@ func radius_position(dir):
 		angle = 3 * PI/4
 	return dir * radius
 
-func _on_VisibilityNotifier2D_screen_exited():
-	queue_free()
-
-	
-
 func pop_bullet():
 	$CollisionShape2D.queue_free()
 	sprite_node.texture = bullet_type_sprite_node[4]
 	stop = true
-
 	timer_node.start()
 
-func hit_audio(index):
-#	hit_audio_node.set_stream(bullet_hit_audio[index])
-	#hit_audio_node.play()
-	return
-
 func _on_Timer_timeout():
-	sprite_node.visible = false
-
-
-func _on_HitAudio_finished():
 	queue_free()
 
 
@@ -150,13 +145,17 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 		if (enemy.life<=0):
 			enemy.destroy()
 			score(enemy)
+		else:
+			playSound("Sounds/Enemy_hit")
 
 	elif area.get_parent().is_in_group("Capsule"):
+		playSound("Sounds/Enemy_hit")
 		area.get_parent().explode()
 		score(area.get_parent())
 		pop_bullet()
 
 	elif area.is_in_group("Turret"):
+		playSound("Sounds/Enemy_hit")
 		area.loose_life()		
 		pop_bullet()
 		if (area.name.substr(0, "ItemTurret".length())=="ItemTurret"):

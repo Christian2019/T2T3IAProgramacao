@@ -3,20 +3,19 @@ extends Area2D
 export var angle = 0
 export var speed = 200
 var stop = false
+var camera =  Global.MainScene.get_node("Camera2D")
 
 func _ready() -> void:
-	var new_parent = Global.MainScene.get_node("Bullets")
+	var new_parent = Global.MainScene.get_node("BulletsEnemy")
 	get_parent().remove_child(self)
 	new_parent.add_child(self)
 
 func _physics_process(delta: float) -> void:
+	outOfScreen()
 	if stop:
 		return
 	position.x += speed*Global.Inverse_MAX_FPS*cos(deg2rad(angle))
 	position.y += speed*Global.Inverse_MAX_FPS*sin(deg2rad(angle))
-
-func _on_VisibilityNotifier2D_screen_exited():
-	queue_free()
 
 func destroy():
 	$AnimatedSprite.play("pop")
@@ -53,3 +52,9 @@ func timerCreator(functionName,time,parameters,create):
 	else:
 		remove_child(parameters[0])
 		remove_child(parameters[1])
+		
+func outOfScreen():
+	var ext=600
+	if (camera.global_position.x-ext>global_position.x or camera.global_position.x+ext<global_position.x
+	or camera.global_position.y-ext>global_position.y or camera.global_position.y+ext<global_position.y):
+		queue_free()

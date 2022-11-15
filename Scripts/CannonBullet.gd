@@ -3,7 +3,7 @@ extends Area2D
 var horizontal_speed
 var vertical_force = -2
 export var gravityForce=5
-
+var camera =  Global.MainScene.get_node("Camera2D")
 var stop = false
 
 func _ready():
@@ -12,6 +12,7 @@ func _ready():
 	horizontal_speed = rng.randi_range(40,80)
 
 func _process(delta):
+	outOfScreen()
 	if stop:
 		return
 	
@@ -35,14 +36,8 @@ func explode():
 	$AnimatedSprite.play("explosion")
 	#queue_free()
 
-
 func _on_AnimatedSprite_animation_finished():
 	queue_free()
-
-
-func _on_VisibilityNotifier2D_screen_exited():
-	queue_free()
-
 
 func _on_CannonBullet_area_entered(area: Area2D) -> void:
 	if (area.get_parent().is_in_group("Player")):
@@ -52,5 +47,9 @@ func _on_CannonBullet_area_entered(area: Area2D) -> void:
 			player.dead=true
 			explode()
 
-
+func outOfScreen():
+	var ext=600
+	if (camera.global_position.x-ext>global_position.x or camera.global_position.x+ext<global_position.x
+	or camera.global_position.y-ext>global_position.y or camera.global_position.y+ext<global_position.y):
+		queue_free()
 
