@@ -1,10 +1,31 @@
 extends Node2D
 
 
+var speed=5
+var pisca=false
 
-func _ready() -> void:
-	$Player1.text= "P1 Score: "+str(Global.player1Score)+"/35000"
-	$Player2.text= "P2 Score: "+str(Global.player2Score)+"/35000"
+var tempo=0
+var senoTempo=0
+var visibility=true
+
+func _ready(): 
+	$Timer.start()
+	
+func flashText():
+	if !pisca:
+		if(senoTempo>0):
+			visibility=true
+		else:
+			visibility=false
+	else:
+		visibility=true
+		modulate.a=senoTempo
+	
+	$Obrigado.visible=visibility
+func _physics_process(delta):
+	tempo+=delta
+	senoTempo=sin(tempo*speed)   
+	flashText()
 
 
 func _on_Timer_timeout() -> void:
