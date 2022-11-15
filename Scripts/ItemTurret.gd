@@ -6,6 +6,7 @@ var item_pick_up = preload("res://Scenes/ItemPickUp.tscn")
 
 var is_close = true
 var is_transitioning = false
+var destroyed=false
 
 
 var animated_sprite
@@ -16,6 +17,9 @@ func _ready() -> void:
 	$Timer.start()
 
 func loose_life():
+	if(destroyed or is_close):
+		return
+	destroyed=true
 	call_deferred("disableCollision")
 	$Timer.stop()
 	animated_sprite.play("explosion")

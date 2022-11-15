@@ -9,6 +9,19 @@ var ready_cannon = false
 var has_node_1 = true
 var has_node_2 = true
 
+var bossSoundStarted=false
+
+func startBossSound():
+	if (bossSoundStarted):
+		return
+	bossSoundStarted=true
+	playBossSound()
+	timerCreator("playBossSound",1,null,true)
+	timerCreator("playBossSound",2,null,true)
+	
+func playBossSound():
+	Global.MainScene.get_node("Sounds/BossStart").play()
+
 func _ready():
 	node_shoot_cannon_1 = $Parts/Cannon1
 	node_shoot_cannon_2 = $Parts/Cannon2
@@ -37,7 +50,7 @@ func _on_Door_tree_exited():
 	apocalypse()
 
 func apocalypse():
-	print("Fim da fase")
+	#print("Fim da fase")
 	Global.MainScene.get_node("Player").endGame=true
 	if (Global.players==2):
 		Global.MainScene.get_node("Player2").endGame=true	

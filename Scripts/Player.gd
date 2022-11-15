@@ -225,9 +225,15 @@ func _process(delta: float) -> void:
 	
 	if (endGame):
 		endGameFunc()
+		
+	sounds()
 	
 	#Mantem o personagem dentro da tela
 	insideScreen()
+
+func sounds():
+	if(global_position.x>9480):
+		Global.MainScene.get_node("DefenseWall").startBossSound()
 
 func gameOver():
 	gameOver=true

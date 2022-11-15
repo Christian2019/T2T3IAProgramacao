@@ -22,6 +22,7 @@ var radius = 50
 var going_right = true
 
 var dir_correction = 1
+var start=true
 
 func _ready():
 	sprite_node = $Sprite
@@ -30,7 +31,38 @@ func _ready():
 	direction.x = 1
 	direction.y = 0
 
+	
+func sounds():
+	var path
+	if bullet_type==0 or bullet_type==1:
+		path ="Sounds/Bullet01"
+	elif bullet_type==2:
+		path ="Sounds/Bullet2"
+		if Global.MainScene.get_node(path).canSound:
+			Global.MainScene.get_node(path).canSound=false
+		else:
+			return
+	elif bullet_type==3:
+		path ="Sounds/Bullet3"
+	else:
+		return
+				
+	playSound(path)
+
+func playSound(path):
+	
+	var parent = Global.MainScene.get_node(path).get_children()
+	
+	for index in range(0,parent.size(),1):
+		var child= parent[index]
+		if !child.playing:
+			child.play()
+			return
+
 func _process(delta):
+	if (start):
+		start=false
+		sounds()
 	if not stop:
 		if (bullet_type == 2 and scale.x<3):
 			scale.x+=0.04
@@ -127,7 +159,7 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 	elif area.is_in_group("Turret"):
 		area.loose_life()		
 		pop_bullet()
-		if (area.name=="ItemTurret"):
+		if (area.name.substr(0, "ItemTurret".length())=="ItemTurret"):
 			score(area)
 		elif (area.life<=0):
 			score(area)
@@ -135,8 +167,9 @@ func _on_BulletPlayer_area_entered(area: Area2D) -> void:
 func score(entity):
 	var score = 0
 	#print(entity.name)
-	
-	if (entity.name.substr(0, "ItemFlyingCapsule".length())=="ItemFlyingCapsule"):
+	if (entity.name.substr(0, "ItemTurret".length())=="ItemTurret"):
+		score = 500
+	elif (entity.name.substr(0, "ItemFlyingCapsule".length())=="ItemFlyingCapsule"):
 		score = 500
 	elif (entity.name.substr(0, "Enemy_Bush".length())=="Enemy_Bush"):
 		score = 500
