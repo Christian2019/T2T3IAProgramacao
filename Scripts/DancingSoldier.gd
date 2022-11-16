@@ -1,21 +1,9 @@
 extends AnimatedSprite
 
+var final =500
+var speed=1
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
- 
-export var finaly:int;
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 func _process(delta):
-	if( position.y >=finaly):
-		position.y-=1
+	print(global_position)
+	if( global_position.y >=final):
+		global_position.y-=speed

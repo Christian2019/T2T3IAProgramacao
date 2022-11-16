@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/EndGameScreen.mp3-630618ed0140867a71e373635d764f79.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sounds/EndGameScreen.mp3"
+dest_files=[ "res://.import/EndGameScreen.mp3-630618ed0140867a71e373635d764f79.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
