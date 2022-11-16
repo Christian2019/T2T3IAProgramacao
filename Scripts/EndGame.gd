@@ -10,8 +10,12 @@ var visibility=true
 
 func _ready(): 
 	timerCreator("playVideo",8,null,true)
+	timerCreator("increaseMusicSound",93,null,true)
 	timerCreator("reduceMusicSound",192,null,true)
-	
+
+func increaseMusicSound():
+	$AudioStreamPlayer.volume_db=5
+
 func reduceMusicSound():
 	$AudioStreamPlayer.volume_db=-10
 	
