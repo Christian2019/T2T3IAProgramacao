@@ -83,13 +83,19 @@ func shoot_bullet():
 	if (!canShoot):
 		return 
 	canShoot=false
-	timerCreator("changeCanShoot",1,null,true)
+	timerCreator("changeCanShoot",6,null,true)
+	shoot()
+	timerCreator("shoot",1,null,true)
+	timerCreator("shoot",2,null,true)
+	
+
+func shoot():
 	var newbullet = bullet.instance()  
 	newbullet.position=shootinPosition()
 	newbullet.angle= rad2deg(player.position.angle_to_point(newbullet.position))
 	#print(newbullet.angle)
 	Global.MainScene.add_child(newbullet)
-
+		
 func changeCanShoot():
 	canShoot=true
 
