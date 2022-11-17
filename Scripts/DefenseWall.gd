@@ -50,7 +50,7 @@ func doorDestroyed():
 func apocalypse():
 	#print("Fim da fase")
 	Global.MainScene.get_node("Player").endGame=true
-	if (Global.players==2):
+	if (Global.MainScene.get_node_or_null("Player2")!=null):
 		Global.MainScene.get_node("Player2").endGame=true	
 	#Global.MainScene.get_node("Camera2D").global_position.x=Global.MainScene.get_node("Camera2D").maxX
 	creatExplosions()

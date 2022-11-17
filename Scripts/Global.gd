@@ -1,6 +1,6 @@
 extends Node
 var Inverse_MAX_FPS
-var players=1
+var players=2
 var MainScene
 var player1Score=0
 var player2Score=0

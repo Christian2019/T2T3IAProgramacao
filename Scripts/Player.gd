@@ -51,8 +51,9 @@ enum sides{RIGHT,LEFT}
 var state = states.JUMP
 var side= sides.RIGHT
 var inputsExtra=""
-var startEndGame=false
+var startEndGame=true
 var startGame=false
+
 
 #Ajuste de animacao
 var fix_Y_FALLING_INTO_THE_WATER=30
@@ -69,8 +70,8 @@ func _ready() -> void:
 	
 	#Start
 
-	#global_position.x=200
-	#global_position.y=100
+	global_position.x=200
+	global_position.y=100
 	visible=false
 
 	
@@ -265,12 +266,19 @@ func gameOver():
 		
 func goToGameOverScreen():
 	get_tree().change_scene("res://Scenes/RootScenes/GameOver.tscn")
+var block=true
+func egf():
+	block=false
 	
 func endGameFunc():
-	if (!startEndGame):
+	if (startEndGame):
+		timerCreator("egf",3,null,true)
+		startEndGame=false
 		$AnimatedSprite.animation="Idle"
 		if ($FootBoxCollision.global_position.y>621 or global_position.x<9198.001):
 			global_position=Vector2(9198.001,369)
+		return
+	if (block):
 		return
 	invincible=false
 	$AnimatedSprite.flip_h=false
@@ -286,7 +294,7 @@ func endGameFunc():
 			timerCreator("goToFinalScene",2,null,true)
 		visible=false
 
-	position.x += speed*Global.Inverse_MAX_FPS
+	global_position.x += speed*Global.Inverse_MAX_FPS
 func goToFinalScene():
 	get_tree().change_scene("res://Scenes/RootScenes/EndGame.tscn")
 	
