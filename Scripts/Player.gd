@@ -406,7 +406,12 @@ func death():
 		if (lives>0):
 			lives-=1
 		else:
-			gameOver()
+			#gameOver()
+			state=states.DEATH
+			$AnimatedSprite.frame=0
+			wait=true
+			get_parent().get_node("Sounds/DeathSound").play()
+			timerCreator("gameOver",2,null,true)
 			return
 		state=states.DEATH
 		$AnimatedSprite.frame=0
