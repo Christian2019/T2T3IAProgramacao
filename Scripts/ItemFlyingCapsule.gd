@@ -5,7 +5,7 @@ export var falcon_index = 0
 var falcon = preload("res://Scenes/ItemPickUp.tscn")
 
 var angle = PI / 2
-var max_speed = 300
+var max_speed = 350
 var angular_speed = 1
 var radius = 3
 var distanceToActivate=330
