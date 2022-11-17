@@ -78,6 +78,7 @@ func _ready() -> void:
 	if (name=="Player2"):
 		global_position.x+=50
 		inputsExtra="2"
+		z_index=2
 		scale.x=4.24
 		scale.y=2.69
 		remove_child($AnimatedSprite)

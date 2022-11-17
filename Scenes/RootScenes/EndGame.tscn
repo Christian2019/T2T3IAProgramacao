@@ -195,7 +195,6 @@ scale = Vector2( 3.5, 3.5 )
 z_index = 2
 frames = SubResource( 16 )
 animation = "ROLL"
-frame = 2
 speed_scale = 2.0
 playing = true
 script = ExtResource( 6 )

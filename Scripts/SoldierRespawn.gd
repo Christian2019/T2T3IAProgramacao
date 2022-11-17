@@ -7,7 +7,7 @@ func _ready() -> void:
 	pass 
 
 func _process(delta: float) -> void:
-	if ($Soldiers.get_children().size()<3 and playersCondition()):
+	if ($Soldiers.get_children().size()<2 and playersCondition()):
 		if (!creating):
 			creating=true
 			
@@ -28,7 +28,7 @@ func playersCondition():
 func done():
 	creating=false
 	
-	var n = 3-$Soldiers.get_children().size()
+	var n = 2-$Soldiers.get_children().size()
 	
 	for index in range(0,n,1):
 		var time=float(intRandom(1,10))/10
