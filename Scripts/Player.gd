@@ -441,7 +441,7 @@ func respawn(respawnPositionX,respawnPositionY):
 	state=states.JUMP
 	$AnimatedSprite.playing=true
 	invincible=true
-	timerCreator("removeInvincible",2,null,true)
+	timerCreator("removeInvincible",3,null,true)
 	
 func removeInvincible():
 	invincible=false
