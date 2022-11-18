@@ -1,6 +1,6 @@
 extends Area2D
 
-var life = 1
+var life = 40
 var destroyed = false
 
 func loose_life():

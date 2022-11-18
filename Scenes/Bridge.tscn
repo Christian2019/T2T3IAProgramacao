@@ -196,6 +196,7 @@ scale = Vector2( 6.28125, 6.1875 )
 frames = SubResource( 4 )
 
 [node name="Explosion" type="AnimatedSprite" parent="Ponte2"]
+visible = false
 position = Vector2( 174.688, 2.90623 )
 scale = Vector2( 8.58824, 7.76102 )
 frames = SubResource( 30 )
@@ -217,6 +218,7 @@ animation = "Normal"
 offset = Vector2( -0.218853, -0.0909096 )
 
 [node name="Explosion" type="AnimatedSprite" parent="Ponte3"]
+visible = false
 position = Vector2( 378.891, 6.03126 )
 scale = Vector2( 8.58824, 7.76102 )
 frames = SubResource( 30 )

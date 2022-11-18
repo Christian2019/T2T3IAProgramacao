@@ -7,8 +7,10 @@ var pisca=false
 var tempo=0
 var senoTempo=0
 var visibility=true
+var videoStart
 
 func _ready(): 
+	videoStart=false
 	timerCreator("playVideo",8,null,true)
 	timerCreator("increaseMusicSound",93,null,true)
 	timerCreator("reduceMusicSound",192,null,true)
@@ -20,6 +22,7 @@ func reduceMusicSound():
 	$AudioStreamPlayer.volume_db=-10
 	
 func playVideo():
+	videoStart=true
 	$VideoPlayer.play()
 	$DanceParty/DancingSniper.playing=true
 	$DanceParty/DancingSniper2.playing=true
@@ -38,6 +41,9 @@ func flashText():
 	
 	$Obrigado.visible=visibility
 func _physics_process(delta):
+	if (videoStart):
+		if ($VideoPlayer.paused):
+			$VideoPlayer.paused=false
 	tempo+=delta
 	senoTempo=sin(tempo*speed)   
 	flashText()
