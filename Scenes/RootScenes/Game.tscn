@@ -431,6 +431,7 @@ volume_db = -2.477
 
 [node name="MainMusic" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 3 )
+volume_db = 4.952
 autoplay = true
 
 [node name="EndGame" type="AudioStreamPlayer" parent="Sounds"]
